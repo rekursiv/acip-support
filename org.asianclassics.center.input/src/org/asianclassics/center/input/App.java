@@ -2,7 +2,7 @@ package org.asianclassics.center.input;
 
 import java.util.logging.Level;
 
-//import org.asianclassics.center.CenterPanel;
+import org.asianclassics.center.CenterPanel;
 import org.asianclassics.center.LoginController;
 import org.asianclassics.center.TaskView;
 import org.asianclassics.center.link.LinkManager;

@@ -1,6 +1,7 @@
 package org.asianclassics.center.input;
 
 import org.asianclassics.center.TaskView;
+import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.event.LogoutEvent;
 import org.asianclassics.tibetan.edit.TibetanEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -15,6 +16,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -86,6 +88,7 @@ public class InputTaskView extends TaskView {
 		itCon.setView(this);
 		editor.init(null);
 	}
+
 	
 	public void setWorkingText(String text) {
 		editor.setWorkingText(text);

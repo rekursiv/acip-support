@@ -85,7 +85,7 @@ public class App {
 		
 		CenterPanel cp = new CenterPanel(shell, SWT.NONE, injector);
 		
-		taskView = new TaskView(cp.getMainStackView(), SWT.NONE, injector);
+		taskView = new DummyTaskView(cp.getMainStackView(), SWT.NONE, injector);
 		cp.getMainStackView().setTaskView(taskView);
 				
 		setupLogging();

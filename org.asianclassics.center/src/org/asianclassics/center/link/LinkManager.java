@@ -37,7 +37,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class LinkManager extends ReceiverAdapter implements Runnable {
 	
-	private boolean testDirectLink = false;   // // // //
+	private boolean testDirectLink = true;   // // // //
 	
 	protected JChannel channel = null;
 	private boolean isServer = false;
