@@ -1,0 +1,14 @@
+
+add focus listener, edit->display on unfocus
+
+
+===
+
+test xcdr: space conversion
+fix minor bug when moving cursor leftwards over "KA-space-SHAD"
+
+OR change ACIP spec so "one space=tsek" and "two spaces=spaces"
+
+
+
+

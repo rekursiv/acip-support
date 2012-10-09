@@ -1,0 +1,16 @@
+
+
+
+
+
+
+
+========
+
+deploy:
+ LinkManager#testDirectLink=false
+ disable log->view
+ disable log->console
+ enable log->file
+ 
+ 
