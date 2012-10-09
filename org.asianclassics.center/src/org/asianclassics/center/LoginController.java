@@ -3,7 +3,6 @@ package org.asianclassics.center;
 import java.util.logging.Logger;
 
 import org.asianclassics.center.event.LinkReadyEvent;
-import org.asianclassics.center.event.LoginEvent;
 import org.asianclassics.center.event.LoginFailureEvent;
 import org.asianclassics.center.event.LoginRequestEvent;
 import org.asianclassics.center.event.LoginSuccessEvent;

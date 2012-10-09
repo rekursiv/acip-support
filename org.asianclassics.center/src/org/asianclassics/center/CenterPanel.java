@@ -2,17 +2,16 @@ package org.asianclassics.center;
 
 import java.util.logging.Level;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
-
-import com.google.inject.Injector;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Composite;
 
 import util.logging.LogSetup;
 import util.logging.LogView;
-import org.eclipse.swt.layout.FillLayout;
+
+import com.google.inject.Injector;
 
 public class CenterPanel extends Composite {
 	private MainStackView mainStackView;
