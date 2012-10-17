@@ -17,7 +17,7 @@ public class CenterPanel extends Composite {
 	private MainStackView mainStackView;
 	private LogView logView;
 
-	boolean showLogView = false;
+
 	private Composite statusPanel;
 
 	public CenterPanel(Composite parent, int style, Injector injector) {
@@ -31,7 +31,7 @@ public class CenterPanel extends Composite {
 		int statusPanelHeight = 25;
 		
 //		if (true) {  // for WindowBuilder	
-		if (showLogView) {
+		if (CenterShell.showLogView) {
 			logView = new LogView(this, SWT.NONE);
 			FormData fd_logView = new FormData();
 			fd_logView.right = new FormAttachment(100, -12);

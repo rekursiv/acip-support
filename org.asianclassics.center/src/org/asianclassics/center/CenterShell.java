@@ -15,6 +15,7 @@ import com.google.inject.Injector;
 
 public class CenterShell extends Shell {
 	
+	public static final boolean showLogView = true;
 	private static final boolean logToConsole = true;
 	private static final boolean logToFile = true;	
 	
@@ -30,8 +31,8 @@ public class CenterShell extends Shell {
 		setupLogging();
 		
 		injector.getInstance(LoginController.class);
-		linkManager = injector.getInstance(LinkManager.class);
-		linkManager.init();
+//		linkManager = injector.getInstance(LinkManager.class);
+//		linkManager.init();
 //		linkManager.test();
 		
 		open();
