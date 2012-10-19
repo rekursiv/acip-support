@@ -35,7 +35,9 @@ import com.google.inject.Singleton;
 public class LinkManager extends ReceiverAdapter implements Runnable {
 	
 	private boolean testDirectLink = true;   // // // //
-	
+
+	private volatile boolean initInProgress = false;
+	private volatile boolean initInterrupt = false;
 	protected JChannel channel = null;
 	private boolean isServer = false;
 	private String serverIp = null;
@@ -43,8 +45,6 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	private CouchDbInstance localLink;
 	private CouchDbInstance remoteLink;
 	private final Logger log;
-	private boolean initInProgress = false;
-	private boolean initInterrupt = false;
 	private String dbPrefix;
 	private EventBus eb;
 	
@@ -105,7 +105,15 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		new Thread(this).start();
 	}
 	
-	public void shutdown() {
+	public void destroy() {
+		if (initInProgress) initInterrupt = true;
+		else shutdown();
+	}
+	
+	
+	
+	
+	private void shutdown() {
 		log.info("Shutting down");
 		if (channel!=null) channel.close();
 		if (localLink!=null) {
@@ -116,12 +124,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		}
 	}
 	
-	public void destroy() {
-		if (initInProgress) initInterrupt = true;
-		else shutdown();
-	}
-	
-	public void checkLocalForServer() throws Exception {
+	private void checkLocalForServer() throws Exception {
 		if (localLink.checkIfDbExists(new DbPath("acip-center-bootstrap"))) {
 			log.info("DB server is local");
 			isServer = true;
@@ -131,7 +134,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		}
 	}
 	
-	public void connectGroup() throws Exception {
+	private void connectGroup() throws Exception {
 		channel = new JChannel("jgroups-stack.xml");
 		myIp = channel.getProtocolStack().getTransport().getBindAddress().getHostAddress();
 		log.info(myIp);
@@ -150,7 +153,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 
 	}
 	
-	public void updateStatusFull(final String message) {
+	private void updateStatusFull(final String message) {
 		final String nodeType;
 		if (isServer) {
 			nodeType = "Server";
@@ -169,7 +172,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		});
 	}
 	
-	public void updateStatus(final String message) {
+	private void updateStatus(final String message) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -178,7 +181,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		});
 	}
 	
-	public void initLogin() {
+	private void initLogin() {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -187,7 +190,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		});
 	}
 	
-	public void setupServer() throws Exception {
+	private void setupServer() throws Exception {
 		log.info("Seting up server...");
 		if (isServer) {
 			// ???
@@ -211,6 +214,11 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		}
 	}
 	
+	
+	
+	
+	
+	
 	public CouchDbConnector getDb(String suffix) {
 		return new CustomCouchDbConnector(dbPrefix+suffix, getServerLink());
 	}
@@ -222,7 +230,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 
 	
 	@Override
-	public void viewAccepted(View view) {
+	public void viewAccepted(View view) {   //  TODO:  synchronized ??
 		log.info(view.toString());
 		if (isServer) {
 			try {

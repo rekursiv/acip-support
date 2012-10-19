@@ -8,7 +8,7 @@ import com.google.inject.spi.InjectionListener;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
-public class CenterModule  extends AbstractModule {
+public class CenterModule extends AbstractModule {
 	private final EventBus eventBus = new EventBus();
 
 	@Override
