@@ -31,8 +31,8 @@ public class CenterShell extends Shell {
 		setupLogging();
 		
 		injector.getInstance(LoginController.class);
-//		linkManager = injector.getInstance(LinkManager.class);
-//		linkManager.init();
+		linkManager = injector.getInstance(LinkManager.class);
+		linkManager.init();
 //		linkManager.test();
 		
 		open();

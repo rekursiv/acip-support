@@ -10,13 +10,13 @@ import org.eclipse.swt.layout.FormAttachment;
 
 public class TextEntryRow extends EntryRow {
 	protected static final int simpleBoxWidth = 300;
-	protected enum BoxType {
+	public enum BoxType {
 		SIMPLE, STANDARD, WIDE
 	}
 	protected StyledText text;
 
-	public TextEntryRow(final Composite parent, String rowLabel, String dbField, BoxType boxType) {
-		super(parent, rowLabel, dbField);
+	public TextEntryRow(final Composite parent, String rowLabel, BoxType boxType) {
+		super(parent, rowLabel);
 
 		FormData fd_text = new FormData();
 

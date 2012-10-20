@@ -5,22 +5,20 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 
+import com.google.inject.Injector;
+
 public class EntryScroller extends Composite {
 	private ScrolledComposite scroller;
 	private Composite entryView;
 
-	/**
-	 * Create the composite.
-	 * @param parent
-	 * @param style
-	 */
-	public EntryScroller(Composite parent, int style) {
+
+	public EntryScroller(Composite parent, int style, Injector injector) {
 		super(parent, style);
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 		scroller = new ScrolledComposite(this, SWT.V_SCROLL);
 		scroller.setExpandHorizontal(true);
 		scroller.setExpandVertical(true);	
-		entryView = new EntryView(scroller, SWT.NONE);
+		entryView = new EntryView(scroller, SWT.NONE, injector);
 		scroller.setContent(entryView);
 		pack();
 	}

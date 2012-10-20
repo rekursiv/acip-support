@@ -11,12 +11,12 @@ public class ComboBoxEntryRow extends EntryRow {
 	private Combo combo;
 
 
-	public ComboBoxEntryRow(final Composite parent, String rowLabel, String dbField) {
-		this(parent, rowLabel, dbField, false);
-	}
+//	public ComboBoxEntryRow(final Composite parent, String rowLabel, String dbField) {
+//		this(parent, rowLabel, dbField, false);
+//	}
 	
 	public ComboBoxEntryRow(final Composite parent, String rowLabel, String dbField, boolean isReadOnly) {
-		super(parent, rowLabel, dbField);
+		super(parent, rowLabel);
 		
 		combo = new Combo(this, isReadOnly?SWT.READ_ONLY:SWT.NONE);
 		FormData fd_combo = new FormData();

@@ -35,6 +35,7 @@ public class LoginController {
 	@Subscribe
 	public void onLinkReady(LinkReadyEvent evt) {
 		this.userDb = lm.getDb("users");
+		eb.post(new LoginRequestEvent("test"));						/////////////////    DEBUG:  Auto Login    /////////////////
 	}
 	
 	@Subscribe

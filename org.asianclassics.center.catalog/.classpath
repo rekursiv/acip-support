@@ -25,6 +25,5 @@
 	<classpathentry kind="lib" path="C:/projects/javalib/slf4j-1.6.2/slf4j-1.6.2/slf4j-api-1.6.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.tibetan.edit"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.tibetan.transcoder"/>
-	<classpathentry kind="lib" path="swing2swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

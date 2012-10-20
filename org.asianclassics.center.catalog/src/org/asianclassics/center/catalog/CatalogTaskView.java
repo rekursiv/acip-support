@@ -20,8 +20,9 @@ import com.google.inject.Injector;
 
 public class CatalogTaskView extends TaskView {
 	private Button btnLogout;
-	private Label lblGenericTaskPanel;
+	private Label lblWorkerId;
 	private EventBus eb;
+	private CatalogTaskStackView stack;
 
 	
 	public CatalogTaskView(Composite parent, int style) {
@@ -43,20 +44,28 @@ public class CatalogTaskView extends TaskView {
 			}
 		});
 		FormData fd_btnLogout = new FormData();
-		fd_btnLogout.right = new FormAttachment(0, 210);
-		fd_btnLogout.bottom = new FormAttachment(0, 110);
-		fd_btnLogout.top = new FormAttachment(0, 80);
-		fd_btnLogout.left = new FormAttachment(0, 150);
+		fd_btnLogout.right = new FormAttachment(0, 385);
+		fd_btnLogout.left = new FormAttachment(0, 325);
 		btnLogout.setLayoutData(fd_btnLogout);
 		btnLogout.setText("Logout");
 		
-		lblGenericTaskPanel = new Label(this, SWT.NONE);
-		FormData fd_lblGenericTaskPanel = new FormData();
-		fd_lblGenericTaskPanel.bottom = new FormAttachment(20);
-		fd_lblGenericTaskPanel.right = new FormAttachment(0, 395);
-		fd_lblGenericTaskPanel.top = new FormAttachment(0, 35);
-		fd_lblGenericTaskPanel.left = new FormAttachment(0, 55);
-		lblGenericTaskPanel.setLayoutData(fd_lblGenericTaskPanel);
+		lblWorkerId = new Label(this, SWT.NONE);
+		fd_btnLogout.top = new FormAttachment(0, 10);
+		fd_btnLogout.bottom = new FormAttachment(0, 40);
+		FormData fd_lblWorkerId = new FormData();
+		fd_lblWorkerId.bottom = new FormAttachment(btnLogout, 25);
+		fd_lblWorkerId.top = new FormAttachment(btnLogout, 0, SWT.TOP);
+		fd_lblWorkerId.right = new FormAttachment(0, 275);
+		fd_lblWorkerId.left = new FormAttachment(0, 12);
+		lblWorkerId.setLayoutData(fd_lblWorkerId);
+		
+		stack = new CatalogTaskStackView(this, SWT.NONE, injector);
+		FormData fd_composite = new FormData();
+		fd_composite.bottom = new FormAttachment(100, -12);
+		fd_composite.right = new FormAttachment(100, -12);
+		fd_composite.top = new FormAttachment(btnLogout, 6);
+		fd_composite.left = new FormAttachment(0, 12);
+		stack.setLayoutData(fd_composite);
 
 		if (injector!=null) injector.injectMembers(this);
 	}
@@ -68,7 +77,7 @@ public class CatalogTaskView extends TaskView {
 
 	@Subscribe
 	public void onLoginSuccess(LoginSuccessEvent evt) {
-		lblGenericTaskPanel.setText("CatalogTaskView:   user= '"+evt.getWorkerId()+"'");
+		lblWorkerId.setText("Worker ID:  "+evt.getWorkerId());
 	}
 	
 	@Override

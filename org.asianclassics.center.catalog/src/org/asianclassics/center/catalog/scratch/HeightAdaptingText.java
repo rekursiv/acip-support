@@ -1,4 +1,4 @@
-package org.asianclassics.center.catalog.entry;
+package org.asianclassics.center.catalog.scratch;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
