@@ -8,6 +8,7 @@ import java.util.logging.LogManager;
 import org.asianclassics.center.link.LinkManager;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import util.logging.LogSetup;
 
@@ -45,6 +46,7 @@ public class CenterShell extends Shell {
 			}
 		}
 		if (linkManager!=null) linkManager.destroy();
+		SWTResourceManager.dispose();
 		
 	}
 	

@@ -181,9 +181,6 @@ public class EntryModel extends Entity {
 	public void setColophon(String colophon) {
 		this.colophon = colophon;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	
 
 

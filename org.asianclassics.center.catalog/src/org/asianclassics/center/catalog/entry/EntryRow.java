@@ -11,9 +11,15 @@ import org.eclipse.swt.layout.GridData;
 import com.google.inject.Inject;
 
 public class EntryRow extends Composite {
+	public enum HiliteMode {
+		NONE, COPIED, INVALID
+	}
+
 	private static final int labelWidth = 100;
 	protected Label lblRow;
 	protected EntryController ctlr;
+//	protected boolean isModified;
+//	protected boolean settingData;
 
 	public EntryRow(Composite parent, String rowLabel) {
 		super(parent, SWT.NONE);
@@ -37,6 +43,24 @@ public class EntryRow extends Composite {
 	@Inject
 	public void inject(EntryController ctlr) {
 		this.ctlr = ctlr;
+//		isModified = false;
+//		settingData = false;
+	}
+	
+	protected void onModify() {
+		if (ctlr!=null) ctlr.onModify();
+		setHilite(HiliteMode.NONE);
+/*		
+		if (!settingData) {
+			isModified = true;
+			ctlr.onModify();
+			System.out.println("onModify");
+		}
+*/
+	}
+	
+	protected void setHilite(HiliteMode mode) {
+		
 	}
 	
 	@Override
