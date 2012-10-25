@@ -2,6 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/util.logging"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.center"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.database"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.tibetan.edit"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.tibetan.transcoder"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.ektorp"/>
 	<classpathentry kind="lib" path="C:/projects/eclipse/plugins/org.eclipse.osgi_3.8.0.v20120529-1548.jar" sourcepath="C:/projects/eclipse/plugins/org.eclipse.osgi_3.8.0.v20120529-1548.jar"/>
 	<classpathentry kind="lib" path="C:/projects/eclipse/plugins/org.eclipse.core.commands_3.6.1.v20120521-2329.jar" sourcepath="C:/projects/eclipse/plugins/org.eclipse.core.commands_3.6.1.v20120521-2329.jar"/>
 	<classpathentry kind="lib" path="C:/projects/eclipse/plugins/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar" sourcepath="C:/projects/eclipse/plugins/org.eclipse.equinox.common.source_3.6.100.v20120522-1841.jar"/>
@@ -15,15 +21,10 @@
 	<classpathentry kind="lib" path="C:/projects/eclipse/plugins/com.ibm.icu_4.4.2.v20110823.jar" sourcepath="C:/projects/eclipse/plugins/com.ibm.icu.source_4.4.2.v20110823.jar"/>
 	<classpathentry kind="lib" path="C:/projects/eclipse/plugins/org.eclipse.ui.forms_3.5.200.v20120521-2329.jar" sourcepath="C:/projects/eclipse/plugins/org.eclipse.ui.forms_3.5.200.v20120521-2329.jar"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/jackson-core-asl-1.9.7.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.center"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/guice-3.0/guice-3.0-no_aop.jar"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/guice-3.0/javax.inject.jar"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/guava-13.0.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/util.logging"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.ektorp"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.database"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/slf4j-1.6.2/slf4j-1.6.2/slf4j-api-1.6.2.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.tibetan.edit"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.tibetan.transcoder"/>
+	<classpathentry kind="lib" path="C:/projects/javalib/jgroups-3.1.0.Final.jar" sourcepath="C:/projects/javalib/jgroups-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

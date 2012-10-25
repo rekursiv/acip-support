@@ -65,11 +65,13 @@ public class TextEntryRow extends EntryRow {
 	
 	@Subscribe
 	public void onModelPostRead(EntryModelPostReadEvent evt) {
-		text.setText(getModelData());
+		String data = getModelData();
+		if (data==null) data="";
+		text.setText(data);
 	}
 	
 	protected String getModelData() {  //  override me
-		return "";
+		return null;
 	}
 	
 	
@@ -103,7 +105,7 @@ public class TextEntryRow extends EntryRow {
 	
 	@Override
 	protected void setHilite(HiliteMode mode) {
-		if (mode==HiliteMode.NONE) text.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));  //???
+		if (mode==HiliteMode.NONE) text.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		else if (mode==HiliteMode.INVALID) text.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		else if (mode==HiliteMode.COPIED) text.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
 	}

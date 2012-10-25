@@ -181,7 +181,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		});
 	}
 	
-	private void initLogin() {
+	private void linkReady() {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -210,7 +210,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 			} else {
 				updateStatus("Linked with remote database at "+serverIp);
 			} 
-			initLogin();
+			linkReady();
 		}
 	}
 	
