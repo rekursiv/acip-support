@@ -32,8 +32,8 @@ public class MainStackView extends Composite {
 	
 	@Subscribe
 	public void onMakeTop(MainMakeTopEvent evt) {
-		if (evt.getMvt()==MainViewType.LOGIN) stack.topControl = loginView;
-		else if (evt.getMvt()==MainViewType.TASK) stack.topControl = taskView;
+		if (evt.getViewType()==MainViewType.LOGIN) stack.topControl = loginView;
+		else if (evt.getViewType()==MainViewType.TASK) stack.topControl = taskView;
 		layout();
 	}
 

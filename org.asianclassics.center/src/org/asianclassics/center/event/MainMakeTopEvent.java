@@ -6,18 +6,18 @@ public class MainMakeTopEvent {
 		LOGIN, TASK
 	}
 
-	private MainViewType mvt;
+	private MainViewType viewType;
 	
 	public MainMakeTopEvent(MainViewType mvt) {
-		this.setMvt(mvt);
+		this.setViewType(mvt);
 	}
 
-	public MainViewType getMvt() {
-		return mvt;
+	public MainViewType getViewType() {
+		return viewType;
 	}
 
-	public void setMvt(MainViewType mvt) {
-		this.mvt = mvt;
+	public void setViewType(MainViewType mvt) {
+		this.viewType = mvt;
 	}
 
 }
