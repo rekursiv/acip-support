@@ -20,17 +20,16 @@ import com.google.inject.Singleton;
 public class EntryController {
 	
 	private EntryModel model;
-	private LinkManager lm;
 	private EventBus eb;
 	
 	private boolean isModified;
 	private boolean isValid;
-	private EntryRepo entryRepo;
+	private EntryRepo repo;
 	
 	@Inject
-	public EntryController(EventBus eb, LinkManager lm) {
+	public EntryController(EventBus eb, EntryRepo repo) {
 		this.eb = eb;
-		this.lm = lm;
+		this.repo = repo;
 	}
 
 	public EntryModel getModel() {
@@ -49,15 +48,14 @@ public class EntryController {
 	///////////////////////
 	
 
-	@Subscribe
-	public void onLogin(LoginSuccessEvent evt) {
-		entryRepo = new EntryRepo(lm.getDb("catalog"));
-	}
+//	@Subscribe
+//	public void onLogin(LoginSuccessEvent evt) {
+//	}
 	
 	
 	public void read() {
 //		model = entryRepo.get("M0057421-001");    //      M0057413-001, M0057415-001, TEST=M0057421-001
-		model = entryRepo.get("13a97262be40000");
+		model = repo.get("13a97262be40000");
 		eb.post(new EntryModelPostReadEvent());
 		isModified = false;
 	}
@@ -66,7 +64,7 @@ public class EntryController {
 		if (model!=null) {
 			System.out.println("isModified="+isModified);
 			eb.post(new EntryModelPreWriteEvent());
-			entryRepo.update(model);                       //   TODO:  how to create new??
+			repo.update(model);                       //   TODO:  how to create new??
 		}
 	}
 
@@ -82,7 +80,7 @@ public class EntryController {
 		EntryModel e = new EntryModel();
 		e.setAuthor("me");
 		e.setColophon("it's a long story");
-		entryRepo.add(e);
+		repo.add(e);
 	}
 
 }

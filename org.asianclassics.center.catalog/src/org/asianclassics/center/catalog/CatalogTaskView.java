@@ -1,6 +1,8 @@
 package org.asianclassics.center.catalog;
 
 import org.asianclassics.center.TaskView;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.event.LogoutEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -78,6 +80,7 @@ public class CatalogTaskView extends TaskView {
 	@Subscribe
 	public void onLoginSuccess(LoginSuccessEvent evt) {
 		lblWorkerId.setText("Worker ID:  "+evt.getWorkerId());
+		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));      /// /// ///    ENTRY / SELECTION
 	}
 	
 	@Override

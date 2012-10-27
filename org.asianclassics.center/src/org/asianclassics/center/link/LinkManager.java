@@ -220,7 +220,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	
 	
 	public CouchDbConnector getDb(String suffix) {
-		return new CustomCouchDbConnector(dbPrefix+suffix, getServerLink());
+		return new CustomCouchDbConnector(dbPrefix+suffix, getServerLink());   ///  FIXME:  handle re-assignment of DB
 	}
 	
 	public CouchDbInstance getServerLink() {
@@ -265,7 +265,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 				log.warning("detected server app leaving the group");
 				// the app on the server can crash or be shut down while the database remains up,
 				// so for now we just log the event and hope for the best
-				// (in the future we may want to do something more sophisticated here...)
+				// (in the future we may want to do something more sophisticated here, like test the DB connection)
 			}
 		}
 	}

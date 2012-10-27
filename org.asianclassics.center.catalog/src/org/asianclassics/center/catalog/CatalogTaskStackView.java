@@ -16,16 +16,13 @@ public class CatalogTaskStackView extends Composite {
 	private StackLayout stack;
 	private EntryScroller entry;
 	private SelectionView selection;
+	private Injector injector;
 	
 	public CatalogTaskStackView(Composite parent, int style, Injector injector) {
 		super(parent, style);
+		this.injector = injector;
 		stack = new StackLayout();
 		setLayout(stack);
-		selection = new SelectionView(this, SWT.NONE, injector);
-		entry = new EntryScroller(this, SWT.NONE, injector);
-		
-		stack.topControl = selection;
-		layout();
 		
 		if (injector!=null) injector.injectMembers(this);
 	}
@@ -33,8 +30,14 @@ public class CatalogTaskStackView extends Composite {
 	
 	@Subscribe
 	public void onMakeTop(CatalogTaskMakeTopEvent evt) {
-		if (evt.getViewType()==CatalogTaskViewType.SELECTION) stack.topControl = selection;
-		else if (evt.getViewType()==CatalogTaskViewType.ENTRY) stack.topControl = entry;
+		if (evt.getViewType()==CatalogTaskViewType.SELECTION) {
+			if (selection==null) selection = new SelectionView(this, SWT.NONE, injector);
+			stack.topControl = selection;
+		}
+		else if (evt.getViewType()==CatalogTaskViewType.ENTRY) {
+			if (entry==null) entry = new EntryScroller(this, SWT.NONE, injector);
+			stack.topControl = entry;
+		}
 		layout();
 	}
 
