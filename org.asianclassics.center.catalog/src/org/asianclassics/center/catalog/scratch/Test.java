@@ -22,6 +22,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.jface.viewers.TableViewerColumn;
 
 
 public class Test extends Composite {
@@ -30,26 +32,51 @@ public class Test extends Composite {
 	private Button btnDebug;
 	private EventBus eb;
 	private LinkManager lm;
-	private Group grpFinishedSutras;
 	private Group grpSutrasToBe;
-	private List list;
+	private Button btnAddSutra;
+	private Button btnBeginANew;
+	private Table table;
+	private TableViewer tableViewer;
+	private TableColumn tblclmnFoo;
+	private TableViewerColumn tableViewerColumn;
+	private TableColumn tblclmnBar;
+	private TableViewerColumn tableViewerColumn_1;
 
 
 	public Test(Composite parent, int style, Injector injector) {
 		super(parent, style);
 		
-		grpFinishedSutras = new Group(this, SWT.NONE);
-		grpFinishedSutras.setText("Edit a sutra you have worked on before");
-		grpFinishedSutras.setBounds(35, 207, 279, 199);
-		
-		list = new List(grpFinishedSutras, SWT.BORDER | SWT.V_SCROLL);
-		list.setBounds(41, 45, 102, 114);
-		list.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		list.setItems(new String[] {"M00432-001", "M00432-002", "M00432-003", "M00432-004", "M00432-005", "M00433-001", "M00433-002"});
-		
 		grpSutrasToBe = new Group(this, SWT.NONE);
 		grpSutrasToBe.setText("Enter a new sutra");
-		grpSutrasToBe.setBounds(37, 92, 174, 97);
+		grpSutrasToBe.setBounds(10, 10, 279, 97);
+		
+		btnAddSutra = new Button(grpSutrasToBe, SWT.NONE);
+		btnAddSutra.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+		btnAddSutra.setBounds(10, 24, 203, 25);
+		btnAddSutra.setText("Add sutra 4 to poti 57422");
+		
+		btnBeginANew = new Button(grpSutrasToBe, SWT.NONE);
+		btnBeginANew.setBounds(10, 62, 203, 25);
+		btnBeginANew.setText("Begin new poti");
+		
+		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
+		table = tableViewer.getTable();
+		table.setHeaderVisible(true);
+		table.setBounds(31, 151, 306, 181);
+		
+		tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		tblclmnFoo = tableViewerColumn.getColumn();
+		tblclmnFoo.setWidth(120);
+		tblclmnFoo.setText("Foo");
+		
+		tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tblclmnBar = tableViewerColumn_1.getColumn();
+		tblclmnBar.setWidth(100);
+		tblclmnBar.setText("Bar");
 		
 
 		

@@ -19,11 +19,11 @@ public class TitleTibEntryRow extends TextEntryRow {
 	
 	@Override
 	protected String getModelData() {
-		return ctlr.getModel().getTitleTibetan();
+		return ctlr.getModel().titleTibetan;
 	}
 	
 	@Override
 	protected void setModelData(String data) {
-		ctlr.getModel().setTitleTibetan(data);
+		ctlr.getModel().titleTibetan = data;
 	}
 }

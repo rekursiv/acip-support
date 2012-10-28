@@ -1,15 +1,10 @@
 package org.asianclassics.center.catalog.entry;
 
 import org.asianclassics.center.catalog.entry.model.EntryModel;
+import org.asianclassics.center.catalog.event.EntryEditEvent;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
-import org.asianclassics.center.catalog.event.TestEvent;
-import org.asianclassics.center.event.LoginSuccessEvent;
-import org.asianclassics.center.link.LinkManager;
-import org.asianclassics.database.CustomCouchDbConnector;
-import org.ektorp.CouchDbConnector;
-import org.ektorp.CouchDbInstance;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -48,9 +43,12 @@ public class EntryController {
 	///////////////////////
 	
 
-//	@Subscribe
-//	public void onLogin(LoginSuccessEvent evt) {
-//	}
+	@Subscribe
+	public void onEdit(EntryEditEvent evt) {
+		model = evt.getEntry();
+		eb.post(new EntryModelPostReadEvent());
+		isModified = false;
+	}
 	
 	
 	public void read() {
@@ -64,7 +62,7 @@ public class EntryController {
 		if (model!=null) {
 			System.out.println("isModified="+isModified);
 			eb.post(new EntryModelPreWriteEvent());
-			repo.update(model);                       //   TODO:  how to create new??
+			repo.update(model);
 		}
 	}
 
@@ -78,8 +76,8 @@ public class EntryController {
 	
 	public void test() {                       ////////////////////   TEST
 		EntryModel e = new EntryModel();
-		e.setAuthor("me");
-		e.setColophon("it's a long story");
+//		e.setAuthor("me");
+//		e.setColophon("it's a long story");
 		repo.add(e);
 	}
 

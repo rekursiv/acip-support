@@ -2,6 +2,8 @@ package org.asianclassics.center.catalog.entry;
 
 import org.asianclassics.center.catalog.entry.row.TitleSktEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleTibEntryRow;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -17,7 +19,7 @@ import org.eclipse.swt.widgets.Label;
 public class EntryView extends Composite {
 
 	private EventBus eb;
-	private Button btnRead;
+	private Button btnSelect;
 	private Injector injector;
 	private EntryController ctlr;
 	private Button btnWrite;
@@ -36,14 +38,14 @@ public class EntryView extends Composite {
 		
 		
 		
-		btnRead = new Button(this, SWT.NONE);
-		btnRead.addSelectionListener(new SelectionAdapter() {
+		btnSelect = new Button(this, SWT.NONE);
+		btnSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ctlr.read();
+				eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
 			}
 		});
-		btnRead.setText("Read");
+		btnSelect.setText("<< Selection");
 		
 		btnWrite = new Button(this, SWT.NONE);
 		btnWrite.addSelectionListener(new SelectionAdapter() {

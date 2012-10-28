@@ -1,9 +1,11 @@
 package org.asianclassics.center.catalog;
 
 
+import org.asianclassics.center.catalog.entry.EntryController;
 import org.asianclassics.center.catalog.entry.EntryScroller;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
+import org.asianclassics.center.event.LinkReadyEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -25,6 +27,15 @@ public class CatalogTaskStackView extends Composite {
 		setLayout(stack);
 		
 		if (injector!=null) injector.injectMembers(this);
+	}
+	
+	
+	@Subscribe
+	public void onLinkReady(LinkReadyEvent evt) {
+		// instantiate the controllers in advance so they may receive events
+		// their respective views will be lazy-instantiated when needed
+		injector.getInstance(SelectionController.class);
+		injector.getInstance(EntryController.class);
 	}
 	
 	

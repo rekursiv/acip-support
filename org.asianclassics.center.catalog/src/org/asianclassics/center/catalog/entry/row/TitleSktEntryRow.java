@@ -17,11 +17,11 @@ public class TitleSktEntryRow extends TextEntryRow {
 	
 	@Override
 	protected String getModelData() {
-		return ctlr.getModel().getTitleSanskrit();
+		return ctlr.getModel().titleSanskrit;
 	}
 	
 	@Override
 	protected void setModelData(String data) {
-		ctlr.getModel().setTitleSanskrit(data);
+		ctlr.getModel().titleSanskrit = data;
 	}
 }

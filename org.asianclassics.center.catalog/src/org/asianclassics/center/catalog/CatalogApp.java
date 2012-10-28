@@ -30,7 +30,7 @@ public class CatalogApp {
 	
 	protected void init() {
 		CenterShell cs = new CenterShell();
-		cs.setSize(800, 600);
+		cs.setSize(800, 1000);
 		cs.setText("ACIP Input Center Catalog Entry");
 		cs.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
