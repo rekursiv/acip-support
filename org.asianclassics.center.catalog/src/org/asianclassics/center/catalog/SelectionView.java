@@ -1,8 +1,15 @@
 package org.asianclassics.center.catalog;
 
+import java.util.List;
+
 import org.asianclassics.center.catalog.entry.model.EntryModel;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.IntNode;
+import org.codehaus.jackson.node.TextNode;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -16,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.ektorp.ViewResult.Row;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
@@ -37,6 +45,9 @@ public class SelectionView extends Composite {
 	private TableViewer sutraTableViewer;
 	private TableViewerColumn sutraCol;
 	private TableViewerColumn titleCol;
+	private boolean isNewPotiSelected;
+	private int sutraIndex;
+	private int potiIndex;
 
 	public SelectionView(Composite parent, int style, Injector injector) {
 		super(parent, style);
@@ -100,9 +111,7 @@ public class SelectionView extends Composite {
 		potiTable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				int potiIndex = ((EntryModel)e.item.getData()).potiIndex;
-				System.out.println("you selected "+potiIndex);
-				updateSutraTable(potiIndex);
+				onPotiSelect(e.item.getData());
 			}
 		});
 		potiTable.setLinesVisible(true);
@@ -114,13 +123,20 @@ public class SelectionView extends Composite {
 		potiCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((EntryModel)element).potiIndex+"";
+				if (isString(element)) return (String)element;
+				return ((Row)element).getValue();
 			}
 		});
 		
 		sutraTableViewer = new TableViewer(grpEditASutra, SWT.BORDER | SWT.FULL_SELECTION);
 		sutraTableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		sutraTable = sutraTableViewer.getTable();
+		sutraTable.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onSutraSelect(e.item.getData());
+			}
+		});
 		sutraTable.setLinesVisible(true);
 		sutraTable.setHeaderVisible(true);
 		sutraTable.setBounds(117, 25, 368, 175);
@@ -131,7 +147,8 @@ public class SelectionView extends Composite {
 		sutraCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((EntryModel)element).sutraIndex+"";
+				if (isInt(element))	return "<Add sutra>";
+				else return ((Row)element).getValueAsNode().get("sutraIndex").asText();
 			}
 		});
 		
@@ -141,7 +158,8 @@ public class SelectionView extends Composite {
 		titleCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((EntryModel)element).titleTibetan;
+				if (isInt(element)) return "";
+				else return ((Row)element).getValueAsNode().get("titleTibetan").asText();
 			}
 		});
 		
@@ -151,22 +169,75 @@ public class SelectionView extends Composite {
 		
 	}
 	
+
+
+
+
+
 	@Inject
 	public void inject(EventBus eb, SelectionController ctlr) {
 		this.eb = eb;
 		this.ctlr = ctlr;
 		
 		updateTables();   ///   FIXME
+		
+		potiTableViewer.getTable().setSelection(1);  // does NOT fire a select event
+		onPotiSelect(potiTableViewer.getTable().getItem(1).getData());  // FIXME
 	}
 	
 
 	private void updateTables() {
 		potiTableViewer.setInput(ctlr.getPotiList());
 		potiTableViewer.refresh();
+		potiTableViewer.insert("<Add poti>", 0);   ///   FIXME
 	}
 	
-	private void updateSutraTable(int potiIndex) {
-		ctlr.getSutraList(potiIndex);
+	private void onPotiSelect(Object data) {
+		if (isString(data)) {
+			potiIndex = -1;
+			sutraIndex = -1;
+			sutraTableViewer.setInput(null);
+			sutraTableViewer.refresh();
+//			sutraTableViewer.insert("sutra #1 will be added", 0);
+			isNewPotiSelected = true;
+			updateAction(true);
+		} else {
+			potiIndex = ((Row)data).getValueAsInt();
+			List<Row> sutraList = ctlr.getSutraList(potiIndex);
+			int nextSutra = sutraList.get(0).getValueAsNode().get("sutraIndex").asInt()+1;
+			sutraTableViewer.setInput(sutraList);
+			sutraTableViewer.refresh();
+			sutraTableViewer.insert(nextSutra, 0);
+			
+			
+			sutraTableViewer.getTable().setSelection(1);  // does NOT fire a select event
+			onSutraSelect(sutraTableViewer.getTable().getItem(1).getData());
+		}
+	}
+	
+	private void onSutraSelect(Object data) {
+		if (isInt(data)) {
+			sutraIndex = (int)data;
+			updateAction(true);
+		}
+		else {
+			sutraIndex = ((Row)data).getValueAsNode().get("sutraIndex").asInt();
+			updateAction(false);
+		}
+	}
+	
+	private void updateAction(boolean isNew) {
+		System.out.println("poti="+potiIndex+"   sutra="+sutraIndex+"   new="+isNew);
+	}
+	
+	
+	protected boolean isInt(Object obj) {
+		return obj.getClass().isAssignableFrom(Integer.class);
+	}
+
+
+	private boolean isString(Object obj) {
+		return obj.getClass().isAssignableFrom(String.class);
 	}
 	
 	@Override

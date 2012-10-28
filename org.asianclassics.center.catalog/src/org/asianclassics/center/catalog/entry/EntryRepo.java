@@ -7,6 +7,7 @@ import org.asianclassics.center.link.LinkManager;
 import org.ektorp.ComplexKey;
 import org.ektorp.ViewQuery;
 import org.ektorp.ViewResult;
+import org.ektorp.ViewResult.Row;
 import org.ektorp.support.CouchDbRepositorySupport;
 import org.ektorp.support.View;
 
@@ -30,12 +31,20 @@ public class EntryRepo extends CouchDbRepositorySupport<EntryModel> {
 	}
 
 	
-	@View(name="getPotis", map="function(doc) {if (doc.sutraIndex===1) emit([doc.inputBy, doc.potiIndex], null)}")
-	public List<EntryModel> getPotis(String worker, int limit) {
-		ComplexKey startKey = ComplexKey.of(worker);
-		ComplexKey endKey = ComplexKey.of(worker, ComplexKey.emptyObject());
-		ViewQuery q = createQuery("getPotis").limit(limit).includeDocs(true).startKey(startKey).endKey(endKey);
-		return db.queryView(q, type);
+	@View(name="getPotis", map="function(doc) {if (doc.sutraIndex===1) emit([doc.inputBy, doc.potiIndex], doc.potiIndex)}")
+	public List<Row> getPotis(String worker, int limit) {
+		ComplexKey endKey = ComplexKey.of(worker);
+		ComplexKey startKey = ComplexKey.of(worker, ComplexKey.emptyObject());
+		ViewQuery q = createQuery("getPotis").descending(true).limit(limit).includeDocs(false).startKey(startKey).endKey(endKey);
+		return db.queryView(q).getRows();
+	}
+	
+	@View(name="getSutras", map="function(doc) {emit([doc.potiIndex, doc.sutraIndex], {sutraIndex:doc.sutraIndex, titleTibetan:doc.titleTibetan})}")
+	public List<Row> getSutras(int potiIndex, int limit) {
+		ComplexKey endKey = ComplexKey.of(potiIndex);
+		ComplexKey startKey = ComplexKey.of(potiIndex, ComplexKey.emptyObject());
+		ViewQuery q = createQuery("getSutras").descending(true).limit(limit).includeDocs(false).startKey(startKey).endKey(endKey);
+		return db.queryView(q).getRows();
 	}
 	
 	

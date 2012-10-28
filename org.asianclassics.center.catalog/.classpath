@@ -26,5 +26,14 @@
 	<classpathentry kind="lib" path="C:/projects/javalib/guava-13.0.1.jar"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/slf4j-1.6.2/slf4j-1.6.2/slf4j-api-1.6.2.jar"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/jgroups-3.1.0.Final.jar" sourcepath="C:/projects/javalib/jgroups-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Aaron/.m2/repository/org/codehaus/jackson/jackson-mapper-asl/1.9.7/jackson-mapper-asl-1.9.7.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.codehaus.jackson"/>
+			<attribute name="maven.artifactId" value="jackson-mapper-asl"/>
+			<attribute name="maven.version" value="1.9.7"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
