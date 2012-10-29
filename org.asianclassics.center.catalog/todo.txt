@@ -1,5 +1,4 @@
 
-make user names case-insensitive (for DB lookup)
 
 DB lock/sync
 

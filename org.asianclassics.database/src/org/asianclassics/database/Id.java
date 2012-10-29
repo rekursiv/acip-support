@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Id {
 	
-	private static final boolean addExtraRandom = false;
+	private static final boolean addExtraRandom = true;
 	
 	private static short idSequence=0;
 

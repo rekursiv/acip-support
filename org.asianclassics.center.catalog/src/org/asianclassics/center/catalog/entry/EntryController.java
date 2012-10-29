@@ -11,6 +11,8 @@ import org.asianclassics.center.catalog.event.EntryValidateEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.asianclassics.database.DateTimeStamp;
 import org.ektorp.ViewResult.Row;
+import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -61,7 +63,7 @@ public class EntryController {
 		model.isValid = isValid;
 		if (isValid) {
 			if (model.dateTimeFirstSubmitted==null) {
-				model.dateTimeFirstSubmitted = DateTimeStamp.gen();
+				model.dateTimeFirstSubmitted = new DateTime(ISOChronology.getInstanceUTC());
 			}
 			write();
 			eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
@@ -103,7 +105,7 @@ public class EntryController {
 		if (model!=null) {
 			System.out.println("isModified="+isModified);
 			eb.post(new EntryModelPreWriteEvent());
-			model.dateTimeLastEdited = DateTimeStamp.gen();
+//			model.dateTimeLastEdited = DateTimeStamp.gen();
 			// TODO:  editDate ???
 
 			repo.update(model);

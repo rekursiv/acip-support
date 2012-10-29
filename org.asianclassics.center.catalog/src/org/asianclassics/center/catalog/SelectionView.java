@@ -160,7 +160,11 @@ public class SelectionView extends Composite {
 			@Override
 			public String getText(Object element) {
 				if (isInt(element)) return "";
-				else return ((Row)element).getValueAsNode().get("titleTibetan").asText();
+				else {
+					JsonNode title = ((Row)element).getValueAsNode().get("titleTibetan");
+					if (title==null) return "";
+					else return title.asText();
+				}
 			}
 		});
 		

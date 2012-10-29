@@ -35,5 +35,6 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/projects/javalib/joda-time-2.1/joda-time-2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
