@@ -1,3 +1,12 @@
 
 make user names case-insensitive (for DB lookup)
 
+DB lock/sync
+
+SelectionView:
+ add "valid" field to Sutra list:  yes/no
+ in list: mark invalid sutras in red
+
+EntryView:
+ hide "advanced" btns
+

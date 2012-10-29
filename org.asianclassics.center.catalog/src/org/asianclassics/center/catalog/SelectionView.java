@@ -128,7 +128,7 @@ public class SelectionView extends Composite {
 		sutraTable.setHeaderVisible(true);
 		
 		sutraCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);
-		sutraCol.getColumn().setWidth(60);
+		sutraCol.getColumn().setWidth(80);
 		sutraCol.getColumn().setText("Sutra #");
 		sutraCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -139,22 +139,22 @@ public class SelectionView extends Composite {
 		});
 		
 		dateCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);
-		dateCol.getColumn().setWidth(106);
+		dateCol.getColumn().setWidth(100);
 		dateCol.getColumn().setText("Date Submitted");
 		dateCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				if (isInt(element))	return "";
 				else {
-					JsonNode date = ((Row)element).getValueAsNode().get("submitDate");
-					if (date==null) return "null";
-					else return date.asText();   ///   TODO:  decode date
+					JsonNode date = ((Row)element).getValueAsNode().get("dateTimeFirstSubmitted");
+					if (date==null) return "---";
+					else return date.asText().substring(0, date.asText().lastIndexOf('T'));  // show only date part
 				}
 			}
 		});
 		
 		titleCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);
-		titleCol.getColumn().setWidth(427);
+		titleCol.getColumn().setWidth(416);
 		titleCol.getColumn().setText("Tibetan Title");
 		titleCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -164,14 +164,10 @@ public class SelectionView extends Composite {
 			}
 		});
 		
-		
-		
 		if (injector!=null) injector.injectMembers(this);
 		
 	}
 	
-
-
 
 
 
@@ -187,15 +183,16 @@ public class SelectionView extends Composite {
 	public void onMakeTop(CatalogTaskMakeTopEvent evt) {   //  NOTE:  won't be fired on first "lazy load"
 		if (evt.getViewType()==CatalogTaskViewType.SELECTION) {
 			System.out.println("onMakeTop");
-			if (idOfEntryToEdit==null) updateTables();
+//			if (idOfEntryToEdit==null) updateTables();   //  FIXME:  this doesn't update the tables after entry is deleted
+			updateTables();   //  WORKAROUND FOR NOW:  just update them every time
 		}
 	}
 	
-	@Subscribe
-	public void onLogout(LogoutEvent evt) {
-		System.out.println("onLogout");
-		idOfEntryToEdit=null;
-	}
+//	@Subscribe
+//	public void onLogout(LogoutEvent evt) {   // will be needed if above gets fixed
+//		System.out.println("onLogout");
+//		idOfEntryToEdit=null;
+//	}
 	
 
 	private void updateTables() {

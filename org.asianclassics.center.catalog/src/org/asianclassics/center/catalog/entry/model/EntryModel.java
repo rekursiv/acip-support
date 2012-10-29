@@ -10,13 +10,17 @@ import org.ektorp.support.Entity;
 public class EntryModel extends Entity {
 	private static final long serialVersionUID = -8518504850247837263L;
 
-	public long submitDate;   //  FIXME
-//	public int appVersion;
+	public boolean _deleted;
+	
+	public String appId;
+	public boolean isValid;
+	public String inputBy;
 	
 	public int potiIndex;
 	public int sutraIndex;
 	
-	public String inputBy;
+	public String dateTimeFirstSubmitted;
+	public String dateTimeLastEdited;
 	
 
 	public String titleTibetan;

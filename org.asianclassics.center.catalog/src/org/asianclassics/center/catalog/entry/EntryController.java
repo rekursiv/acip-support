@@ -1,10 +1,16 @@
 package org.asianclassics.center.catalog.entry;
 
+import java.util.List;
+
 import org.asianclassics.center.catalog.entry.model.EntryModel;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.EntryEditEvent;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
+import org.asianclassics.database.DateTimeStamp;
+import org.ektorp.ViewResult.Row;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -50,23 +56,61 @@ public class EntryController {
 		isModified = false;
 	}
 	
-	
-	public void read() {
-//		model = entryRepo.get("M0057421-001");    //      M0057413-001, M0057415-001, TEST=M0057421-001
-		model = repo.get("13a97262be40000");
-		eb.post(new EntryModelPostReadEvent());
-		isModified = false;
+	public void submit() {
+		validate();
+		model.isValid = isValid;
+		if (isValid) {
+			if (model.dateTimeFirstSubmitted==null) {
+				model.dateTimeFirstSubmitted = DateTimeStamp.gen();
+			}
+			write();
+			eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
+		} else {
+			write();
+			// TODO:  show msg to user
+		}
+		
 	}
-
-	public void write() {
+	
+	public void saveAsDraft() {
+		write();
+		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
+	}
+	
+	public void delete() {
+		if (model!=null) {
+			boolean okToDelete = true;
+			if (model.sutraIndex==1) {  //  deleting sutra #1 would make the entire poti invisible in the selection interface
+				List<Row> sutraList = repo.getSutras(model.potiIndex, 2);
+				System.out.println("size="+sutraList.size());
+				if (sutraList.size()>1) okToDelete = false;  // so we prevent that from happening unless #1 is the only one
+			}
+			// TODO:  get verification from user
+			if (okToDelete) {
+				model._deleted=true;
+				repo.update(model);
+				eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
+			} else {
+				System.out.println("NOT OK to delete!");
+				// TODO:  show msg to user
+			}
+		}
+	}
+	
+	
+	
+	private void write() {
 		if (model!=null) {
 			System.out.println("isModified="+isModified);
 			eb.post(new EntryModelPreWriteEvent());
+			model.dateTimeLastEdited = DateTimeStamp.gen();
+			// TODO:  editDate ???
+
 			repo.update(model);
 		}
 	}
 
-	public void validate() {
+	private void validate() {
 		isValid = true;
 		eb.post(new EntryValidateEvent());
 		System.out.println("isValid="+isValid);
@@ -75,10 +119,7 @@ public class EntryController {
 	
 	
 	public void test() {                       ////////////////////   TEST
-		EntryModel e = new EntryModel();
-//		e.setAuthor("me");
-//		e.setColophon("it's a long story");
-		repo.add(e);
+
 	}
 
 }

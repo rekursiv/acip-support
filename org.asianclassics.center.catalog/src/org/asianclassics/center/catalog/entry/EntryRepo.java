@@ -38,7 +38,7 @@ public class EntryRepo extends CouchDbRepositorySupport<EntryModel> {
 		return db.queryView(q).getRows();
 	}
 	
-	@View(name="getSutras", map="function(doc) {emit([doc.potiIndex, doc.sutraIndex], {_id:doc._id, submitDate:doc.submitDate, sutraIndex:doc.sutraIndex, titleTibetan:doc.titleTibetan})}")
+	@View(name="getSutras", map="function(doc) {emit([doc.potiIndex, doc.sutraIndex], {_id:doc._id, dateTimeFirstSubmitted:doc.dateTimeFirstSubmitted, sutraIndex:doc.sutraIndex, titleTibetan:doc.titleTibetan})}")
 	public List<Row> getSutras(int potiIndex, int limit) {
 		ComplexKey endKey = ComplexKey.of(potiIndex);
 		ComplexKey startKey = ComplexKey.of(potiIndex, ComplexKey.emptyObject());

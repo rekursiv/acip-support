@@ -63,7 +63,6 @@ public class SelectionController {
 	
 	private void addSutra(int potiIndex, int sutraIndex) {
 		EntryModel entry = new EntryModel();
-		entry.submitDate = 2012;                       ///    TEST
 		entry.potiIndex = potiIndex;
 		entry.sutraIndex = sutraIndex;
 		entry.titleTibetan = "This is sutra # "+entry.sutraIndex+" in poti # "+entry.potiIndex;

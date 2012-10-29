@@ -19,52 +19,55 @@ import org.eclipse.swt.widgets.Label;
 public class EntryView extends Composite {
 
 	private EventBus eb;
-	private Button btnSelect;
+	private Button btnSubmit;
 	private Injector injector;
 	private EntryController ctlr;
-	private Button btnWrite;
-	private Button btnValidate;
+	private Button btnSaveAsDraft;
+	private Button btnDelete;
 
 	public EntryView(Composite parent, int style, Injector injector) {
 		super(parent, SWT.NONE);
 		this.injector = injector;
 		setLayout(new GridLayout(1, false));
 
+		btnSubmit = new Button(this, SWT.NONE);
+		btnSubmit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ctlr.submit();
+			}
+		});
+		btnSubmit.setText("Submit");
+		
+		btnSaveAsDraft = new Button(this, SWT.NONE);
+		btnSaveAsDraft.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ctlr.saveAsDraft();
+			}
+		});
+		btnSaveAsDraft.setText("Save as draft");
+		
+		btnDelete = new Button(this, SWT.NONE);
+		btnDelete.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ctlr.delete();
+			}
+		});
+		btnDelete.setText("Delete");
+
+		
+		
+		
+		////////////////////////////
+
+		
 		new TitleTibEntryRow(this);
 		new TitleSktEntryRow(this);
-
 		
 		
-		
-		
-		
-		btnSelect = new Button(this, SWT.NONE);
-		btnSelect.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
-			}
-		});
-		btnSelect.setText("<< Selection");
-		
-		btnWrite = new Button(this, SWT.NONE);
-		btnWrite.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ctlr.write();
-			}
-		});
-		btnWrite.setText("Write");
-		
-		btnValidate = new Button(this, SWT.NONE);
-		btnValidate.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ctlr.validate();
-			}
-		});
-		btnValidate.setText("Validate");
-
+		////////////////////////////
 		
 		
 /*		
