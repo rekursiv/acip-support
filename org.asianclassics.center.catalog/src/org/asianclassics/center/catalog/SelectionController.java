@@ -22,8 +22,6 @@ public class SelectionController {
 	private EventBus eb;
 	private EntryRepo repo;
 	private String workerId;
-	private int latestPoti;
-	private int latestSutra;
 
 	@Inject
 	public SelectionController(EventBus eb, EntryRepo repo) {
@@ -38,22 +36,21 @@ public class SelectionController {
 		System.out.println("worker="+workerId);
 	}
 	
-	
-	public void addSutra() {
-		System.out.println("addSutra:  lp="+latestPoti);
-		EntryModel entry = new EntryModel();
-		entry.potiIndex = latestPoti;
-		entry.sutraIndex = latestSutra+1;
-		entry.titleTibetan = "This is sutra # "+entry.sutraIndex+" in poti # "+entry.potiIndex;
-		repo.add(entry);
-		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.ENTRY));
-		eb.post(new EntryEditEvent(entry));
-		
+	public void doAction(int potiIndex, int sutraIndex, String id) {
+		if (potiIndex==-1) {
+			beginPoti();
+		}
+		else if (id==null) {
+			addSutra(potiIndex, sutraIndex);
+		}
+		else {
+			editSutra(id);
+		}
 	}
-
-	public void beginPoti() {
+	
+	private void beginPoti() {
 		int latestGlobalPoti = repo.getLatestPotiIndex();
-		System.out.println("beginPoti:  lp="+latestGlobalPoti);
+		System.out.println("beginPoti:  lgp="+latestGlobalPoti);
 		EntryModel entry = new EntryModel();
 		entry.inputBy = workerId;
 		entry.potiIndex = latestGlobalPoti+1;
@@ -64,67 +61,42 @@ public class SelectionController {
 		eb.post(new EntryEditEvent(entry));
 	}
 	
+	private void addSutra(int potiIndex, int sutraIndex) {
+		EntryModel entry = new EntryModel();
+		entry.submitDate = 2012;                       ///    TEST
+		entry.potiIndex = potiIndex;
+		entry.sutraIndex = sutraIndex;
+		entry.titleTibetan = "This is sutra # "+entry.sutraIndex+" in poti # "+entry.potiIndex;
+		repo.add(entry);
+		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.ENTRY));
+		eb.post(new EntryEditEvent(entry));
+		
+	}
+
+	private void editSutra(String id) {
+		EntryModel entry = repo.get(id);
+		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.ENTRY));
+		eb.post(new EntryEditEvent(entry));
+	}
+	
 	
 	public List<Row> getPotiList() {
-		List<Row> potiList = repo.getPotis(workerId, 100);
-//		potiList.add(index, element)
-		return potiList;
+		return repo.getPotis(workerId, 100);
 	}
 	
 	public List<Row> getSutraList(int potiIndex) {
 		return repo.getSutras(potiIndex, 100);
 	}
 	
-/*	
-	public List<EntryModel> _getPotiList() {
-		System.out.println("getPotiList");
-		List<EntryModel> potiList = repo.getPotis(workerId, 100);
-		if (!potiList.isEmpty()) latestPoti = potiList.get(0).potiIndex;
-		return potiList;
-	}
-	*/
+
 	
-/*	
-	public List<EntryModel> getSutraList(int potiIndex) {
-		System.out.println("getSutraList from poti # "+potiIndex);
-		List<EntryModel> sutraList = repo.getSutras(potiIndex, 100);
-		if (!sutraList.isEmpty()) latestSutra = sutraList.get(0).sutraIndex;
-		return sutraList;
-	}
-	*/
+	
 	
 	
 	
 	public void test() {
-		
-		List<Row> sl = getSutraList(1);
-		
-		System.out.println(sl.get(0).getValueAsNode().get("titleTibetan"));
-		
-		/*
-		
-//		List<EntryModel> el = repo.getPotis("test", 100);
-		
-//		WritableList test = new WritableList(el, EntryModel.class);
-		
-//		tableViewer.setContentProvider();
-		
-		for (EntryModel e : el) {
-			System.out.println("inputby: "+e.inputBy);
-			System.out.println("potiIndex: "+e.potiIndex);
-			System.out.println("sutraIndex: "+e.sutraIndex);
-			System.out.println("titleTibetan: "+e.titleTibetan);
-		}
-		
-//		repo.test();
-//		int latestPoti = repo.getLatestPotiIndex();
-//		System.out.println("test:  lp="+latestPoti);
- * 
- * *
- */
+		List<Row> sutraList = repo.getSutras(1, 100);
+		System.out.println(sutraList.get(0).getValueAsNode().toString());
 	}
-	
-	
-	
 	
 }

@@ -3,6 +3,9 @@ package org.asianclassics.center.catalog;
 import java.util.List;
 
 import org.asianclassics.center.catalog.entry.model.EntryModel;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
+import org.asianclassics.center.event.LogoutEvent;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.IntNode;
@@ -26,6 +29,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.ektorp.ViewResult.Row;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -34,80 +38,62 @@ public class SelectionView extends Composite {
 
 	private EventBus eb;
 	private Button btnTest;
-	private Group grpAddNewSutra;
-	private Button btnAddSutra;
-	private Button btnBeginPoti;
+	private Button btnAction;
+	private Button btnUpdate;
 	private Table potiTable;
 	private TableViewer potiTableViewer;
 	private SelectionController ctlr;
-	private Group grpEditASutra;
 	private Table sutraTable;
 	private TableViewer sutraTableViewer;
 	private TableViewerColumn sutraCol;
 	private TableViewerColumn titleCol;
-	private boolean isNewPotiSelected;
 	private int sutraIndex;
 	private int potiIndex;
+	private boolean doingUpdate;
+	private String idOfEntryToEdit;
+	private TableViewerColumn dateCol;
 
 	public SelectionView(Composite parent, int style, Injector injector) {
 		super(parent, style);
-		setLayout(new FormLayout());
+		setLayout(null);
 		
-		grpAddNewSutra = new Group(this, SWT.NONE);
-		FormData fd_grpAddNewSutra = new FormData();
-		fd_grpAddNewSutra.bottom = new FormAttachment(0, 130);
-		fd_grpAddNewSutra.right = new FormAttachment(0, 292);
-		fd_grpAddNewSutra.top = new FormAttachment(0, 10);
-		fd_grpAddNewSutra.left = new FormAttachment(0, 10);
-		grpAddNewSutra.setLayoutData(fd_grpAddNewSutra);
-		grpAddNewSutra.setText("Add a new sutra");
+		doingUpdate = false;
+		idOfEntryToEdit = null;
 		
-		btnAddSutra = new Button(grpAddNewSutra, SWT.NONE);
-		btnAddSutra.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ctlr.addSutra();
-			}
-		});
-		btnAddSutra.setBounds(10, 27, 75, 25);
-		btnAddSutra.setText("Add sutra");
-		
-		btnBeginPoti = new Button(grpAddNewSutra, SWT.NONE);
-		btnBeginPoti.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ctlr.beginPoti();
-			}
-		});
-		btnBeginPoti.setBounds(10, 63, 75, 25);
-		btnBeginPoti.setText("Begin poti");
-		
-		btnTest = new Button(grpAddNewSutra, SWT.NONE);
-		btnTest.setBounds(172, 27, 75, 25);
+		btnTest = new Button(this, SWT.NONE);
+		btnTest.setBounds(425, 5, 34, 25);
 		btnTest.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				ctlr.test();
-//				updateTables();
 			}
-
-
 		});
 		btnTest.setText("Test");
 		
-		grpEditASutra = new Group(this, SWT.NONE);
-		grpEditASutra.setText("Edit a sutra you have worked on before");
-		FormData fd_grpEditASutra = new FormData();
-		fd_grpEditASutra.bottom = new FormAttachment(0, 520);
-		fd_grpEditASutra.right = new FormAttachment(0, 530);
-		fd_grpEditASutra.top = new FormAttachment(grpAddNewSutra, 6);
-		fd_grpEditASutra.left = new FormAttachment(grpAddNewSutra, 0, SWT.LEFT);
-		grpEditASutra.setLayoutData(fd_grpEditASutra);
+		btnAction = new Button(this, SWT.NONE);
+		btnAction.setBounds(12, 5, 252, 25);
+		btnAction.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				doAction();
+			}
+		});
+		btnAction.setText("<action>");
 		
-		potiTableViewer = new TableViewer(grpEditASutra, SWT.BORDER | SWT.FULL_SELECTION);
+		btnUpdate = new Button(this, SWT.NONE);
+		btnUpdate.setBounds(476, 5, 66, 25);
+		btnUpdate.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateTables();
+			}
+		});
+		btnUpdate.setText("Update");
+		
+		potiTableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		potiTableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		potiTable = potiTableViewer.getTable();
-		potiTable.setBounds(10, 25, 101, 175);
+		potiTable.setBounds(12, 36, 101, 432);
 		potiTable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -118,19 +104,20 @@ public class SelectionView extends Composite {
 		potiTable.setHeaderVisible(true);
 		
 		TableViewerColumn potiCol = new TableViewerColumn(potiTableViewer, SWT.NONE);
-		potiCol.getColumn().setText("Poti");
+		potiCol.getColumn().setText("Poti #");
 		potiCol.getColumn().setWidth(80);
 		potiCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (isString(element)) return (String)element;
-				return ((Row)element).getValue();
+				if (isInt(element)) return "<Begin poti>";
+				else return ((Row)element).getValue();
 			}
 		});
 		
-		sutraTableViewer = new TableViewer(grpEditASutra, SWT.BORDER | SWT.FULL_SELECTION);
+		sutraTableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		sutraTableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		sutraTable = sutraTableViewer.getTable();
+		sutraTable.setBounds(119, 36, 619, 432);
 		sutraTable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -139,11 +126,10 @@ public class SelectionView extends Composite {
 		});
 		sutraTable.setLinesVisible(true);
 		sutraTable.setHeaderVisible(true);
-		sutraTable.setBounds(117, 25, 368, 175);
 		
 		sutraCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);
-		sutraCol.getColumn().setWidth(100);
-		sutraCol.getColumn().setText("Sutra");
+		sutraCol.getColumn().setWidth(60);
+		sutraCol.getColumn().setText("Sutra #");
 		sutraCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -152,8 +138,23 @@ public class SelectionView extends Composite {
 			}
 		});
 		
+		dateCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);
+		dateCol.getColumn().setWidth(106);
+		dateCol.getColumn().setText("Date Submitted");
+		dateCol.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (isInt(element))	return "";
+				else {
+					JsonNode date = ((Row)element).getValueAsNode().get("submitDate");
+					if (date==null) return "null";
+					else return date.asText();   ///   TODO:  decode date
+				}
+			}
+		});
+		
 		titleCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);
-		titleCol.getColumn().setWidth(256);
+		titleCol.getColumn().setWidth(427);
 		titleCol.getColumn().setText("Tibetan Title");
 		titleCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -176,31 +177,52 @@ public class SelectionView extends Composite {
 
 	@Inject
 	public void inject(EventBus eb, SelectionController ctlr) {
-		this.eb = eb;
+		this.eb = eb;      ///  FIXME:  not used
 		this.ctlr = ctlr;
-		
-		updateTables();   ///   FIXME
-		
-		potiTableViewer.getTable().setSelection(1);  // does NOT fire a select event
-		onPotiSelect(potiTableViewer.getTable().getItem(1).getData());  // FIXME
+
+		updateTables();
+	}
+	
+	@Subscribe
+	public void onMakeTop(CatalogTaskMakeTopEvent evt) {   //  NOTE:  won't be fired on first "lazy load"
+		if (evt.getViewType()==CatalogTaskViewType.SELECTION) {
+			System.out.println("onMakeTop");
+			if (idOfEntryToEdit==null) updateTables();
+		}
+	}
+	
+	@Subscribe
+	public void onLogout(LogoutEvent evt) {
+		System.out.println("onLogout");
+		idOfEntryToEdit=null;
 	}
 	
 
 	private void updateTables() {
+		System.out.println("update");
+		doingUpdate = true;
+		updatePotiTable();
+		int initSelect = 1;
+		if (potiTableViewer.getTable().getItemCount()==1) initSelect = 0;
+		potiTableViewer.getTable().setSelection(initSelect);  // does NOT fire a select event
+		onPotiSelect(potiTableViewer.getTable().getItem(initSelect).getData());
+		doingUpdate = false;
+	}
+	
+	private void updatePotiTable() {
 		potiTableViewer.setInput(ctlr.getPotiList());
 		potiTableViewer.refresh();
-		potiTableViewer.insert("<Add poti>", 0);   ///   FIXME
+		potiTableViewer.insert(0, 0);
 	}
 	
 	private void onPotiSelect(Object data) {
-		if (isString(data)) {
+		if (isInt(data)) {
 			potiIndex = -1;
-			sutraIndex = -1;
+			sutraIndex = 1;
 			sutraTableViewer.setInput(null);
 			sutraTableViewer.refresh();
-//			sutraTableViewer.insert("sutra #1 will be added", 0);
-			isNewPotiSelected = true;
-			updateAction(true);
+			idOfEntryToEdit = null;
+			updateAction();
 		} else {
 			potiIndex = ((Row)data).getValueAsInt();
 			List<Row> sutraList = ctlr.getSutraList(potiIndex);
@@ -208,36 +230,50 @@ public class SelectionView extends Composite {
 			sutraTableViewer.setInput(sutraList);
 			sutraTableViewer.refresh();
 			sutraTableViewer.insert(nextSutra, 0);
-			
-			
-			sutraTableViewer.getTable().setSelection(1);  // does NOT fire a select event
-			onSutraSelect(sutraTableViewer.getTable().getItem(1).getData());
+			int initSelect = 1;
+			if (doingUpdate) initSelect = 0;
+			sutraTableViewer.getTable().setSelection(initSelect);  // does NOT fire a select event
+			onSutraSelect(sutraTableViewer.getTable().getItem(initSelect).getData());
 		}
 	}
 	
 	private void onSutraSelect(Object data) {
 		if (isInt(data)) {
 			sutraIndex = (int)data;
-			updateAction(true);
+			idOfEntryToEdit = null;
+			updateAction();
 		}
 		else {
 			sutraIndex = ((Row)data).getValueAsNode().get("sutraIndex").asInt();
-			updateAction(false);
+			idOfEntryToEdit = ((Row)data).getValueAsNode().get("_id").asText();
+			System.out.println("id="+idOfEntryToEdit);
+			updateAction();
 		}
 	}
 	
-	private void updateAction(boolean isNew) {
-		System.out.println("poti="+potiIndex+"   sutra="+sutraIndex+"   new="+isNew);
+	private void updateAction() {
+		System.out.println("updateAction()    poti="+potiIndex+"   sutra="+sutraIndex+"   id="+idOfEntryToEdit);
+		String action;
+		if (potiIndex==-1) {
+			action = "Begin new poti";
+		}
+		else if (idOfEntryToEdit==null) {
+			action = "Add new sutra "+sutraIndex+" to poti "+potiIndex;
+		}
+		else {
+			action = "Edit sutra "+sutraIndex+" in poti "+potiIndex;
+		}
+		btnAction.setText(action);
+	}
+	
+	private void doAction() {
+		System.out.println("doAction()   poti="+potiIndex+"   sutra="+sutraIndex+"   id="+idOfEntryToEdit);
+		ctlr.doAction(potiIndex, sutraIndex, idOfEntryToEdit);
 	}
 	
 	
 	protected boolean isInt(Object obj) {
 		return obj.getClass().isAssignableFrom(Integer.class);
-	}
-
-
-	private boolean isString(Object obj) {
-		return obj.getClass().isAssignableFrom(String.class);
 	}
 	
 	@Override

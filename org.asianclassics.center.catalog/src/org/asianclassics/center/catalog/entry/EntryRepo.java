@@ -29,7 +29,6 @@ public class EntryRepo extends CouchDbRepositorySupport<EntryModel> {
 		if (r.isEmpty()) return 0;  // TODO:  throw exception??
 		return r.getRows().get(0).getValueAsInt();
 	}
-
 	
 	@View(name="getPotis", map="function(doc) {if (doc.sutraIndex===1) emit([doc.inputBy, doc.potiIndex], doc.potiIndex)}")
 	public List<Row> getPotis(String worker, int limit) {
@@ -39,7 +38,7 @@ public class EntryRepo extends CouchDbRepositorySupport<EntryModel> {
 		return db.queryView(q).getRows();
 	}
 	
-	@View(name="getSutras", map="function(doc) {emit([doc.potiIndex, doc.sutraIndex], {sutraIndex:doc.sutraIndex, titleTibetan:doc.titleTibetan})}")
+	@View(name="getSutras", map="function(doc) {emit([doc.potiIndex, doc.sutraIndex], {_id:doc._id, submitDate:doc.submitDate, sutraIndex:doc.sutraIndex, titleTibetan:doc.titleTibetan})}")
 	public List<Row> getSutras(int potiIndex, int limit) {
 		ComplexKey endKey = ComplexKey.of(potiIndex);
 		ComplexKey startKey = ComplexKey.of(potiIndex, ComplexKey.emptyObject());
@@ -47,14 +46,4 @@ public class EntryRepo extends CouchDbRepositorySupport<EntryModel> {
 		return db.queryView(q).getRows();
 	}
 	
-	
-	/*	
-	@View(name="getAssignedTasks", map="function(doc) {if (doc.type === 'InputTask' && doc.active && doc.worker) emit([doc.worker, doc.taskPriority, doc.projectPriority, doc.collectionIndex, doc.volumeIndex, doc.pageIndex], null)}")
-	public List<EntryModel> getAssignedTasks(String worker, int limit) {
-		ComplexKey startKey = ComplexKey.of(worker);
-		ComplexKey endKey = ComplexKey.of(worker, ComplexKey.emptyObject());
-		ViewQuery q = createQuery("getAssignedTasks").limit(limit).includeDocs(true).startKey(startKey).endKey(endKey);
-		return db.queryView(q, type);
-	}
-*/	
 }
