@@ -66,7 +66,7 @@ public class TextEntryRow extends EntryRow {
 	@Subscribe
 	public void onModelPostRead(EntryModelPostReadEvent evt) {
 		String data = getModelData();
-		if (data==null) data="";
+		if (data==null||data.isEmpty()) data="N";
 		text.setText(data);
 	}
 	
@@ -77,7 +77,9 @@ public class TextEntryRow extends EntryRow {
 	
 	@Subscribe
 	public void onModelPreWrite(EntryModelPreWriteEvent evt) {
-		setModelData(text.getText());
+		String data = text.getText();
+		if (data.isEmpty()||data.compareToIgnoreCase("N")==0) data=null;
+		setModelData(data);
 	}
 	
 	protected void setModelData(String data) {  // overrride me

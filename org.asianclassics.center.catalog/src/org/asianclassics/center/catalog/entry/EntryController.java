@@ -54,6 +54,7 @@ public class EntryController {
 	@Subscribe
 	public void onEdit(EntryEditEvent evt) {
 		model = evt.getEntry();
+		if (model==null) model = repo.get("13aac4d64950076f5a9");					////////////////////   TEST    //  13aac4d64950076f5a9=test,  13aac4d646d007481b0
 		eb.post(new EntryModelPostReadEvent());
 		isModified = false;
 	}
@@ -63,7 +64,7 @@ public class EntryController {
 		model.isValid = isValid;
 		if (isValid) {
 			if (model.dateTimeFirstSubmitted==null) {
-				model.dateTimeFirstSubmitted = new DateTime(ISOChronology.getInstanceUTC());
+				model.dateTimeFirstSubmitted = new DateTime();
 			}
 			write();
 			eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
@@ -105,9 +106,7 @@ public class EntryController {
 		if (model!=null) {
 			System.out.println("isModified="+isModified);
 			eb.post(new EntryModelPreWriteEvent());
-//			model.dateTimeLastEdited = DateTimeStamp.gen();
-			// TODO:  editDate ???
-
+			model.dateTimeLastEdited = new DateTime();
 			repo.update(model);
 		}
 	}

@@ -17,7 +17,7 @@ public class ComboBoxEntryRow extends EntryRow {
 //		this(parent, rowLabel, dbField, false);
 //	}
 	
-	public ComboBoxEntryRow(final Composite parent, String rowLabel, String dbField, boolean isReadOnly) {
+	public ComboBoxEntryRow(final Composite parent, String rowLabel, boolean isReadOnly) {
 		super(parent, rowLabel);
 		
 		combo = new Combo(this, isReadOnly?SWT.READ_ONLY:SWT.NONE);

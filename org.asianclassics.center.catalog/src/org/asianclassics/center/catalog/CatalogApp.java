@@ -7,7 +7,7 @@ import org.asianclassics.center.CenterShell;
 import org.asianclassics.center.TaskView;
 import org.asianclassics.center.catalog.entry.EntryScroller;
 import org.asianclassics.center.catalog.entry.EntryView;
-import org.asianclassics.center.catalog.scratch.Test;
+import org.asianclassics.center.catalog.scratch.TestComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 

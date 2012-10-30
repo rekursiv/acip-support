@@ -1,8 +1,13 @@
 package org.asianclassics.center.catalog.entry;
 
+import org.asianclassics.center.catalog.entry.row.ExtraLangEntryRow;
+import org.asianclassics.center.catalog.entry.row.InfoEntryRow;
+import org.asianclassics.center.catalog.entry.row.LibraryNumEntryRow;
+import org.asianclassics.center.catalog.entry.row.StampsEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleSktEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleTibEntryRow;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
+import org.asianclassics.center.catalog.event.EntryEditEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -52,7 +57,7 @@ public class EntryView extends Composite {
 		btnDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ctlr.delete();
+				ctlr.test();
 			}
 		});
 		btnDelete.setText("Delete");
@@ -62,9 +67,12 @@ public class EntryView extends Composite {
 		
 		////////////////////////////
 
-		
+		new InfoEntryRow(this);
+		new LibraryNumEntryRow(this);
+		new StampsEntryRow(this);
 		new TitleTibEntryRow(this);
 		new TitleSktEntryRow(this);
+		new ExtraLangEntryRow(this);
 		
 		
 		////////////////////////////
@@ -88,6 +96,7 @@ public class EntryView extends Composite {
 	public void inject(EventBus eb, EntryController ctlr) {
 		this.eb = eb;
 		this.ctlr = ctlr;
+		eb.post(new EntryEditEvent(null));   ////////////////////   TEST 
 	}
 
 	public Injector getInjector() {
