@@ -1,20 +1,12 @@
 package org.asianclassics.center.catalog.entry.row;
 
-import org.asianclassics.center.catalog.entry.TextEntryRow;
-import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
-import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
-import org.asianclassics.center.catalog.event.EntryValidateEvent;
-import org.eclipse.swt.widgets.Composite;
-
-import com.google.common.eventbus.Subscribe;
-import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.SWT;
+import org.asianclassics.center.catalog.entry.cell.TextEntryCell;
 
 
-public class TitleTibEntryRow extends TextEntryRow {
+public class TitleTibEntryRow extends TextEntryCell {
 
-	public TitleTibEntryRow(Composite parent) {
-		super(parent, "Tibetan Title", BoxType.STANDARD);
+	public TitleTibEntryRow() {
+		super("Tibetan Title");
 	}
 	
 	@Override

@@ -6,9 +6,8 @@ import org.asianclassics.center.catalog.entry.row.LibraryNumEntryRow;
 import org.asianclassics.center.catalog.entry.row.StampsEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleSktEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleTibEntryRow;
-import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.EntryEditEvent;
-import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
+import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -17,9 +16,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.eclipse.swt.widgets.Label;
 
 public class EntryView extends Composite {
 
@@ -29,9 +28,13 @@ public class EntryView extends Composite {
 	private EntryController ctlr;
 	private Button btnSaveAsDraft;
 	private Button btnDelete;
+	
+	private static EntryView instance;
 
 	public EntryView(Composite parent, int style, Injector injector) {
 		super(parent, SWT.NONE);
+		instance = this;
+		
 		this.injector = injector;
 		setLayout(new GridLayout(1, false));
 
@@ -63,29 +66,26 @@ public class EntryView extends Composite {
 		btnDelete.setText("Delete");
 
 		
-		
+
+	
+
 		
 		////////////////////////////
 
-		new InfoEntryRow(this);
-		new LibraryNumEntryRow(this);
-		new StampsEntryRow(this);
-		new TitleTibEntryRow(this);
-		new TitleSktEntryRow(this);
+		new InfoEntryRow();
+		new LibraryNumEntryRow();
+		new StampsEntryRow();
+		new TitleTibEntryRow();
+		new TitleSktEntryRow();
+		
+		/////
+		
 		new ExtraLangEntryRow(this);
 		
 		
 		////////////////////////////
+
 		
-		
-/*		
-		
-		new TextEntryRow(this, "Standard", null, BoxType.STANDARD);
-		new ComboBoxEntryRow(this, "Any Color", null);
-		new TextEntryRow(this, "Simple", null, BoxType.SIMPLE);
-		new ComboBoxEntryRow(this, "Colors", null, true);
-		new TextEntryRow(this, "Wide", null, BoxType.WIDE);
-*/
 
 		
 		if (injector!=null) injector.injectMembers(this);
@@ -98,7 +98,16 @@ public class EntryView extends Composite {
 		this.ctlr = ctlr;
 		eb.post(new EntryEditEvent(null));   ////////////////////   TEST 
 	}
+	
+	@Subscribe
+	public void onAdaptSize(ParentAdaptSizeEvent evt) {
+		pack();
+	}
 
+	public static EntryView getInstance() {
+		return instance;
+	}
+	
 	public Injector getInjector() {
 		return injector;
 	}

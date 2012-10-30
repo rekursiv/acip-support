@@ -1,8 +1,7 @@
-package org.asianclassics.center.catalog.entry;
+package org.asianclassics.center.catalog.entry.model;
 
 import java.util.List;
 
-import org.asianclassics.center.catalog.entry.model.EntryModel;
 import org.asianclassics.center.link.LinkManager;
 import org.ektorp.ComplexKey;
 import org.ektorp.ViewQuery;

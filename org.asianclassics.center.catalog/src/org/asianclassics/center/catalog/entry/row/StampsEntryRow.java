@@ -5,9 +5,8 @@ import org.eclipse.swt.widgets.Composite;
 
 public class StampsEntryRow extends NyiEntryRow {
 
-	public StampsEntryRow(Composite parent) {
-		super(parent, "Stamps");
+	public StampsEntryRow() {
+		super("Stamps");
 	}
 	
-
 }

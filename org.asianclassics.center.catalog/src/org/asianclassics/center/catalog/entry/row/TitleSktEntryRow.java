@@ -1,18 +1,12 @@
 package org.asianclassics.center.catalog.entry.row;
 
-import org.asianclassics.center.catalog.entry.TextEntryRow;
-import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
-import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
-import org.asianclassics.center.catalog.event.EntryValidateEvent;
-import org.eclipse.swt.widgets.Composite;
-
-import com.google.common.eventbus.Subscribe;
+import org.asianclassics.center.catalog.entry.cell.TextEntryCell;
 
 
-public class TitleSktEntryRow extends TextEntryRow {
+public class TitleSktEntryRow extends TextEntryCell {
 
-	public TitleSktEntryRow(Composite parent) {
-		super(parent, "Sanskrit Title", BoxType.STANDARD);
+	public TitleSktEntryRow() {
+		super("Sanskrit Title");
 	}
 	
 	@Override

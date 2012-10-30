@@ -10,7 +10,7 @@ import org.eclipse.swt.events.ModifyEvent;
 
 public class ComboBoxEntryRow extends EntryRow {
 	protected static final int boxWidth = 300;
-	private Combo combo;
+	protected Combo combo;
 
 
 //	public ComboBoxEntryRow(final Composite parent, String rowLabel, String dbField) {
@@ -35,9 +35,9 @@ public class ComboBoxEntryRow extends EntryRow {
 		
 		//////
 		
-		combo.add("Red");
-		combo.add("Green");
-		combo.add("Blue");
+//		combo.add("Red");
+//		combo.add("Green");
+//		combo.add("Blue");
 	}
 
 	@Override

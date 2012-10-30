@@ -2,8 +2,8 @@ package org.asianclassics.center.catalog;
 
 import java.util.List;
 
-import org.asianclassics.center.catalog.entry.EntryRepo;
 import org.asianclassics.center.catalog.entry.model.EntryModel;
+import org.asianclassics.center.catalog.entry.model.EntryRepo;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.EntryEditEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;

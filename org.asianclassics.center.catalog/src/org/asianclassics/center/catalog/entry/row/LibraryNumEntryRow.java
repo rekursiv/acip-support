@@ -1,6 +1,7 @@
 package org.asianclassics.center.catalog.entry.row;
 
 import org.asianclassics.center.catalog.entry.TextEntryRow;
+import org.asianclassics.center.catalog.entry.cell.TextEntryCell;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
@@ -11,10 +12,10 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.SWT;
 
 
-public class LibraryNumEntryRow extends TextEntryRow {
+public class LibraryNumEntryRow extends TextEntryCell {
 
-	public LibraryNumEntryRow(Composite parent) {
-		super(parent, "Library #", BoxType.STANDARD);
+	public LibraryNumEntryRow() {
+		super("Library #");
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package org.asianclassics.center.catalog.entry.row;
 
 import org.asianclassics.center.catalog.entry.EntryRow;
+import org.asianclassics.center.catalog.entry.cell.EntryCell;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.eclipse.swt.widgets.Composite;
 
@@ -12,7 +13,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
-public class InfoEntryRow extends EntryRow {
+public class InfoEntryRow extends EntryCell {
 	private Label lblSerialTitle;
 	private Label lblSerial;
 	private Label lblSubDateTitle;
@@ -20,13 +21,26 @@ public class InfoEntryRow extends EntryRow {
 	private Label lblEditDateTitle;
 	private Label lblEditDate;
 
+	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public InfoEntryRow(Composite parent) {
-		super(parent, "Info");
+		super(parent);
+	}
+	
+	public InfoEntryRow() {
+		super("Info");
+	}
+
+	@Override
+	protected void buildGui() {
+		super.buildGui();
 		
 		lblSerialTitle = new Label(this, SWT.NONE);
 		FormData fd_lblSerialTitle = new FormData();
-		fd_lblSerialTitle.top = new FormAttachment(lblRow, 0, SWT.TOP);
-		fd_lblSerialTitle.left = new FormAttachment(lblRow, 6);
+		fd_lblSerialTitle.top = new FormAttachment(lblTitle, 0, SWT.TOP);
+		fd_lblSerialTitle.left = new FormAttachment(lblTitle, 6);
 		lblSerialTitle.setLayoutData(fd_lblSerialTitle);
 		lblSerialTitle.setText("Serial #:");
 		
@@ -40,7 +54,7 @@ public class InfoEntryRow extends EntryRow {
 		lblSubDateTitle = new Label(this, SWT.NONE);
 		FormData fd_lblSubDateTitle = new FormData();
 		fd_lblSubDateTitle.bottom = new FormAttachment(0, 45);
-		fd_lblSubDateTitle.left = new FormAttachment(lblRow, 6);
+		fd_lblSubDateTitle.left = new FormAttachment(lblTitle, 6);
 		fd_lblSubDateTitle.top = new FormAttachment(0, 30);
 		lblSubDateTitle.setLayoutData(fd_lblSubDateTitle);
 		lblSubDateTitle.setText("First submitted on:");
@@ -66,9 +80,10 @@ public class InfoEntryRow extends EntryRow {
 		fd_lblEditDate.right = new FormAttachment(0, 547);
 		fd_lblEditDate.top = new FormAttachment(lblSubDate, 6);
 		fd_lblEditDate.left = new FormAttachment(lblSubDateTitle, 6);
-		lblEditDate.setLayoutData(fd_lblEditDate);
+		lblEditDate.setLayoutData(fd_lblEditDate);		
 	}
-
+	
+	
 	@Subscribe
 	public void onModelPostRead(EntryModelPostReadEvent evt) {
 		lblSerial.setText(buildSerial());
