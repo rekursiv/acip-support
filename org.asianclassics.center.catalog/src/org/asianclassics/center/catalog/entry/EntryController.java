@@ -5,15 +5,13 @@ import java.util.List;
 import org.asianclassics.center.catalog.entry.model.EntryModel;
 import org.asianclassics.center.catalog.entry.model.EntryRepo;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.asianclassics.center.catalog.event.EntryEditEvent;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
-import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
-import org.asianclassics.database.DateTimeStamp;
 import org.ektorp.ViewResult.Row;
 import org.joda.time.DateTime;
-import org.joda.time.chrono.ISOChronology;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -56,6 +54,7 @@ public class EntryController {
 	public void onEdit(EntryEditEvent evt) {
 		model = evt.getEntry();
 		if (model==null) model = repo.get("13aac4d64950076f5a9");					////////////////////   TEST    //  13aac4d64950076f5a9=test,  13aac4d646d007481b0
+
 		eb.post(new EntryModelPostReadEvent());
 		isModified = false;
 	}
@@ -100,7 +99,6 @@ public class EntryController {
 			}
 		}
 	}
-	
 	
 	
 	private void write() {

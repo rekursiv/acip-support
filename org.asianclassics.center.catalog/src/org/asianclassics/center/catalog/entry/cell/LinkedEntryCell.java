@@ -1,7 +1,5 @@
 package org.asianclassics.center.catalog.entry.cell;
 
-import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
-import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
 import org.eclipse.swt.widgets.Composite;
 
@@ -24,28 +22,21 @@ public abstract class LinkedEntryCell extends EntryCell {
 	
 
 	
-	@Subscribe
-	public void onPostReadEvent(EntryModelPostReadEvent evt) {
-		getModelData();
-		formatDataForGui();
-		setGuiData();
-	}
 	
 	@Subscribe
-	public void onPreWriteEvent(EntryModelPreWriteEvent evt) {
-		getGuiData();
-		formatDataForModel();
-		setModelData();
-	}
-	
-	@Subscribe
-	public void onValidateEvent(EntryValidateEvent evt) {
+	public void onValidateEvent(EntryValidateEvent evt) {   //   ????
 		onValidate();
 	}
 	
 	
 	
 	// model -> GUI
+	public void onModelToView() {
+		System.out.println("LinkedEntryCell#onModelToView");
+		getModelData();
+		formatDataForGui();
+		setGuiData();
+	}
 	protected void getModelData() {
 	}
 	protected void formatDataForGui() {
@@ -56,6 +47,11 @@ public abstract class LinkedEntryCell extends EntryCell {
 	
 
 	// GUI -> model
+	public void onViewToModel() {
+		getGuiData();
+		formatDataForModel();
+		setModelData();
+	}
 	protected void getGuiData() {
 	}
 	protected void formatDataForModel() {

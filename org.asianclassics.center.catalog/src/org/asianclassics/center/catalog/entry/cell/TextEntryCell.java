@@ -51,7 +51,7 @@ public class TextEntryCell extends StringEntryCell {
 		FormData fd_text = new FormData();
 
 		if (boxType==BoxType.SIMPLE) {
-			System.out.println("boxType==BoxType.SIMPLE");   /// /// / /
+//			System.out.println("boxType==BoxType.SIMPLE");   /// /// / /
 			adaptBoxHeight = false;
 			text = new StyledText(this, SWT.BORDER|SWT.SINGLE);
 			fd_text.right = new FormAttachment(0, simpleBoxWidth);
