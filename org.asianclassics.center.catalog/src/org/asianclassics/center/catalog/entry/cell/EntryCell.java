@@ -14,40 +14,26 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 
 public class EntryCell extends Composite {
-	public enum HiliteMode {
-		NONE, COPIED, INVALID
-	}
 
 	public static final int defaultTitleWidth = 100;
 	protected int titleWidth = defaultTitleWidth;
-	protected String title = "Default";
+	protected String titleString = "Default";
 	protected Label lblTitle;
 	protected EntryController ctlr;
 	protected EventBus eb;
 
-	/**
-	 * @wbp.parser.constructor
-	 */
-	public EntryCell(Composite parent) {
+
+	
+	public EntryCell(Composite parent, String title) {
+		this(parent, title, defaultTitleWidth);
+	}
+	
+	public EntryCell(Composite parent, String title, int titleWidth) {
 		super(parent, SWT.NONE);
-		buildGui();
-	}
-	
-	public EntryCell(String title) {
-		this(title, defaultTitleWidth);
-	}
-	
-	public EntryCell(String title, int titleWidth) {
-		super(EntryView.getInstance(), SWT.NONE);
-		this.title = title;
+		this.titleString = title;
 		this.titleWidth = titleWidth;
-	
-		buildGui();
-		EntryView.getInstance().getInjector().injectMembers(this);
-	}
-	
-	
-	protected void buildGui() {
+		if (EntryView.getInstance()!=null) EntryView.getInstance().getInjector().injectMembers(this);
+		
 		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		setLayout(new FormLayout());
 		
@@ -57,8 +43,10 @@ public class EntryCell extends Composite {
 		fd_lblRow.top = new FormAttachment(0, 10);
 		fd_lblRow.left = new FormAttachment(0, 12);
 		lblTitle.setLayoutData(fd_lblRow);
-		lblTitle.setText(title+":");		
+		lblTitle.setText(titleString+":");
+		
 	}
+	
 	
 	@Inject
 	public void inject(EventBus eb, EntryController ctlr) {
@@ -66,13 +54,7 @@ public class EntryCell extends Composite {
 		this.ctlr = ctlr;
 	}
 	
-	protected void onModify() {
-		if (ctlr!=null) ctlr.onModify();
-		setHilite(HiliteMode.NONE);
-	}
-	
-	protected void setHilite(HiliteMode mode) {
-	}
+
 	
 	@Override
 	protected void checkSubclass() {

@@ -3,30 +3,39 @@ package org.asianclassics.center.catalog.entry.cell;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
+import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.eventbus.Subscribe;
 
 
 public abstract class LinkedEntryCell extends EntryCell {
 	
-	public LinkedEntryCell(String title) {
-		super(title);
+	public enum HiliteMode {
+		NONE, COPIED, INVALID
 	}
 	
-	public LinkedEntryCell(String title, int titleWidth) {
-		super(title, titleWidth);
+	public LinkedEntryCell(Composite parent, String title) {
+		super(parent, title);
+	}
+	
+	public LinkedEntryCell(Composite parent, String title, int titleWidth) {
+		super(parent, title, titleWidth);
 	}
 	
 
 	
 	@Subscribe
 	public void onPostReadEvent(EntryModelPostReadEvent evt) {
-		onPostRead();
+		getModelData();
+		formatDataForGui();
+		setGuiData();
 	}
 	
 	@Subscribe
 	public void onPreWriteEvent(EntryModelPreWriteEvent evt) {
-		onPreWrite();
+		getGuiData();
+		formatDataForModel();
+		setModelData();
 	}
 	
 	@Subscribe
@@ -36,23 +45,42 @@ public abstract class LinkedEntryCell extends EntryCell {
 	
 	
 	
-	
-	protected void onPostRead() {
+	// model -> GUI
+	protected void getModelData() {
 	}
-	
-	protected String getModelData() {
-		return null;
+	protected void formatDataForGui() {
 	}
-	
-	protected void onPreWrite() {
-	}	
-	
-	protected void setModelData(String data) {
+	protected void setGuiData() {
 	}
+
+	
+
+	// GUI -> model
+	protected void getGuiData() {
+	}
+	protected void formatDataForModel() {
+	}
+	protected void setModelData() {
+	}
+
+	
+	
 	
 	protected void onValidate() {
 	}	
 
 
+	protected void onModify() {
+		if (ctlr!=null) ctlr.onModify();
+		setHilite(HiliteMode.NONE);
+	}
+	
+	protected void setHilite(HiliteMode mode) {
+	}
+	
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
+	}
 	
 }

@@ -3,7 +3,9 @@ package org.asianclassics.center.catalog.entry;
 import org.asianclassics.center.catalog.entry.row.ExtraLangEntryRow;
 import org.asianclassics.center.catalog.entry.row.InfoEntryRow;
 import org.asianclassics.center.catalog.entry.row.LibraryNumEntryRow;
-import org.asianclassics.center.catalog.entry.row.StampsEntryRow;
+import org.asianclassics.center.catalog.entry.row.MissingPageEntryRow;
+import org.asianclassics.center.catalog.entry.row.StampEntryRow;
+import org.asianclassics.center.catalog.entry.row.SutraPageEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleSktEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleTibEntryRow;
 import org.asianclassics.center.catalog.event.EntryEditEvent;
@@ -72,16 +74,18 @@ public class EntryView extends Composite {
 		
 		////////////////////////////
 
-		new InfoEntryRow();
-		new LibraryNumEntryRow();
-		new StampsEntryRow();
-		new TitleTibEntryRow();
-		new TitleSktEntryRow();
-		
+		new InfoEntryRow(this);
+		new LibraryNumEntryRow(this);
+		new StampEntryRow(this);
+		new TitleTibEntryRow(this);
+		new TitleSktEntryRow(this);
+		new ExtraLangEntryRow(this);
+
 		/////
 		
-		new ExtraLangEntryRow(this);
+		new SutraPageEntryRow(this);
 		
+		new MissingPageEntryRow(this);
 		
 		////////////////////////////
 

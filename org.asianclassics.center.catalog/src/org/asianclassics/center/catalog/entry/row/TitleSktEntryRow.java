@@ -1,21 +1,22 @@
 package org.asianclassics.center.catalog.entry.row;
 
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell;
+import org.eclipse.swt.widgets.Composite;
 
 
 public class TitleSktEntryRow extends TextEntryCell {
 
-	public TitleSktEntryRow() {
-		super("Sanskrit Title");
+	public TitleSktEntryRow(Composite parent) {
+		super(parent, "Sanskrit Title");
 	}
 	
 	@Override
-	protected String getModelData() {
-		return ctlr.getModel().titleSanskrit;
+	protected void getModelData() {
+		data = ctlr.getModel().titleSanskrit;
 	}
 	
 	@Override
-	protected void setModelData(String data) {
+	protected void setModelData() {
 		ctlr.getModel().titleSanskrit = data;
 	}
 }

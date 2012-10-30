@@ -8,48 +8,50 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 
 
-public class TextEntryCell extends LinkedEntryCell {
+public class TextEntryCell extends StringEntryCell {
 
 	public enum BoxType {
 		SIMPLE, STANDARD, WIDE
 	}
 	
-	protected static final int simpleBoxWidth = 300;
+	protected static final int defaultSimpleBoxWidth = 300;
 	protected static final BoxType defaultBoxType = BoxType.STANDARD;
 
 	protected StyledText text;
 	protected boolean adaptBoxHeight;
+	protected int simpleBoxWidth;
 	protected BoxType boxType;
 	
-	public TextEntryCell(String title) {
-		super(title);
+	public TextEntryCell(Composite parent, String title) {
+		this(parent, title, defaultTitleWidth, defaultBoxType);
 	}
 	
-	public TextEntryCell(String title, int titleWidth) {
-		super(title, titleWidth);
+	public TextEntryCell(Composite parent, String title, int titleWidth) {
+		this(parent, title, titleWidth, defaultBoxType);
 	}
 	
-	public TextEntryCell(String title, BoxType boxType) {
-		super(title);
+	public TextEntryCell(Composite parent, String title, BoxType boxType) {
+		this(parent, title, defaultTitleWidth, boxType);
+	}
+	
+	public TextEntryCell(Composite parent, String title, int titleWidth, BoxType boxType) {
+		this(parent, title, defaultTitleWidth, boxType, defaultSimpleBoxWidth);
+	}
+	
+	public TextEntryCell(Composite parent, String title, int titleWidth, BoxType boxType, int simpleBoxWidth) {
+		
+		super(parent, title, titleWidth);
 		this.boxType = boxType;
-	}
-	
-	public TextEntryCell(String title, int titleWidth, BoxType boxType) {
-		super(title, titleWidth);
-		this.boxType = boxType;
-	}
-	
-	@Override
-	protected void buildGui() {
-		super.buildGui();
 		
 		FormData fd_text = new FormData();
 
 		if (boxType==BoxType.SIMPLE) {
+			System.out.println("boxType==BoxType.SIMPLE");   /// /// / /
 			adaptBoxHeight = false;
 			text = new StyledText(this, SWT.BORDER|SWT.SINGLE);
 			fd_text.right = new FormAttachment(0, simpleBoxWidth);
@@ -83,27 +85,17 @@ public class TextEntryCell extends LinkedEntryCell {
 	
 	
 	@Override
-	protected void onPostRead() {
-		String data = getModelData();
-		if (data==null||data.isEmpty()) data="N";
+	protected void setGuiData() {
 		text.setText(data);
 	}
 	
-	@Override
-	protected String getModelData() {
-		return null;
-	}
 	
 	@Override
-	protected void onPreWrite() {
-		String data = text.getText();
-		if (data.isEmpty()||data.compareToIgnoreCase("N")==0) data=null;
-		setModelData(data);
-	}	
-	
-	@Override
-	protected void setModelData(String data) {
+	protected void getGuiData() {
+		data = text.getText();
 	}
+	
+
 	
 	@Override
 	protected void onValidate() {
@@ -127,6 +119,9 @@ public class TextEntryCell extends LinkedEntryCell {
 		else if (mode==HiliteMode.COPIED) text.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
 	}
 
-
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
+	}
 	
 }

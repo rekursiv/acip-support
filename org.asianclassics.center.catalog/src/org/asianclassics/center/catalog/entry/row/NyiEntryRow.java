@@ -10,20 +10,9 @@ import org.eclipse.swt.widgets.Label;
 public class NyiEntryRow extends EntryCell {
 	private Label lblNotYet;
 	
-	/**
-	 * @wbp.parser.constructor
-	 */
-	public NyiEntryRow(Composite parent) {
-		super(parent);
-	}
 	
-	public NyiEntryRow(String rowLabel) {
-		super(rowLabel);
-	}
-
-	@Override
-	protected void buildGui() {
-		super.buildGui();
+	public NyiEntryRow(Composite parent, String rowLabel) {
+		super(parent, rowLabel);
 		
 		lblNotYet = new Label(this, SWT.NONE);
 		FormData fd_lblNotYet = new FormData();

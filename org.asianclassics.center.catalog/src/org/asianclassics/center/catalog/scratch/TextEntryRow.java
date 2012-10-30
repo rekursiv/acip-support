@@ -1,10 +1,10 @@
-package org.asianclassics.center.catalog.entry;
+package org.asianclassics.center.catalog.scratch;
 
-import org.asianclassics.center.catalog.entry.EntryRow.HiliteMode;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
 import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
+import org.asianclassics.center.catalog.scratch.EntryRow.HiliteMode;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;

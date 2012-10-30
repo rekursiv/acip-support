@@ -1,5 +1,7 @@
-package org.asianclassics.center.catalog.entry;
+package org.asianclassics.center.catalog.scratch;
 
+import org.asianclassics.center.catalog.entry.EntryController;
+import org.asianclassics.center.catalog.entry.EntryView;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Label;

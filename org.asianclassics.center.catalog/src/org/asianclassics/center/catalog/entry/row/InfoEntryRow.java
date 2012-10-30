@@ -1,8 +1,8 @@
 package org.asianclassics.center.catalog.entry.row;
 
-import org.asianclassics.center.catalog.entry.EntryRow;
 import org.asianclassics.center.catalog.entry.cell.EntryCell;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
+import org.asianclassics.center.catalog.scratch.EntryRow;
 import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.eventbus.Subscribe;
@@ -22,20 +22,8 @@ public class InfoEntryRow extends EntryCell {
 	private Label lblEditDate;
 
 	
-	/**
-	 * @wbp.parser.constructor
-	 */
 	public InfoEntryRow(Composite parent) {
-		super(parent);
-	}
-	
-	public InfoEntryRow() {
-		super("Info");
-	}
-
-	@Override
-	protected void buildGui() {
-		super.buildGui();
+		super(parent, "Info");
 		
 		lblSerialTitle = new Label(this, SWT.NONE);
 		FormData fd_lblSerialTitle = new FormData();

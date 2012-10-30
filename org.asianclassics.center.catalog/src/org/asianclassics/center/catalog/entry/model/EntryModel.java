@@ -25,7 +25,12 @@ public class EntryModel extends Entity {
 	public List<Integer> stamps;
 	public String titleTibetan;
 	public String titleSanskrit;
+	
+	
 	public ExtraLanguageModel extraLanguage;
+	public String extraLanguage2;                //////////////    FIXME
+	
+	
 	public String format;
 	public String titleTibetanBrief;
 	public String author;
