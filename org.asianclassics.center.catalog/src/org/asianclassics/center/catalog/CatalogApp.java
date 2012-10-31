@@ -18,6 +18,8 @@ import com.google.inject.Injector;
 
 public class CatalogApp {
 
+	public static final boolean debugMode = false;
+	
 	/**
 	 * Entry point
 	 * @param args

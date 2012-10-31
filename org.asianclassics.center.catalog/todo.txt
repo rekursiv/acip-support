@@ -1,7 +1,7 @@
 
 
 *** convert DB
-  find the lastest version
+  find the latest version
   
 
 DB lock/sync

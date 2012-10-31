@@ -1,5 +1,6 @@
 package org.asianclassics.center.catalog.entry;
 
+import org.asianclassics.center.catalog.CatalogApp;
 import org.asianclassics.center.catalog.entry.row.AuthorEntryRow;
 import org.asianclassics.center.catalog.entry.row.ColophonEntryRow;
 import org.asianclassics.center.catalog.entry.row.DrawingEntryRow;
@@ -38,6 +39,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.layout.GridData;
 
 public class EntryView extends Composite {
 
@@ -49,6 +52,7 @@ public class EntryView extends Composite {
 	private Button btnDelete;
 	
 	private static EntryView instance;
+	private Composite controlPanel;
 
 	public EntryView(Composite parent, int style, Injector injector) {
 		super(parent, SWT.NONE);
@@ -56,8 +60,15 @@ public class EntryView extends Composite {
 		
 		this.injector = injector;
 		setLayout(new GridLayout(1, false));
+		
+		controlPanel = new Composite(this, SWT.NONE);
+		GridData gd_controlPanel = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_controlPanel.widthHint = 566;
+		controlPanel.setLayoutData(gd_controlPanel);
+		controlPanel.setLayout(null);
 
-		btnSubmit = new Button(this, SWT.NONE);
+		btnSubmit = new Button(controlPanel, SWT.NONE);
+		btnSubmit.setBounds(10, 0, 50, 25);
 		btnSubmit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -66,7 +77,8 @@ public class EntryView extends Composite {
 		});
 		btnSubmit.setText("Submit");
 		
-		btnSaveAsDraft = new Button(this, SWT.NONE);
+		btnSaveAsDraft = new Button(controlPanel, SWT.NONE);
+		btnSaveAsDraft.setBounds(387, 0, 78, 25);
 		btnSaveAsDraft.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -75,7 +87,8 @@ public class EntryView extends Composite {
 		});
 		btnSaveAsDraft.setText("Save as draft");
 		
-		btnDelete = new Button(this, SWT.NONE);
+		btnDelete = new Button(controlPanel, SWT.NONE);
+		btnDelete.setBounds(471, 0, 45, 25);
 		btnDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -84,16 +97,20 @@ public class EntryView extends Composite {
 		});
 		btnDelete.setText("Delete");
 		
-		Button btnTest = new Button(this, SWT.NONE);
-		btnTest.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				eb.post(new TestEvent());
-			}
-		});
-		btnTest.setText("Test");
-
 		
+		if (CatalogApp.debugMode) {
+			
+			Button btnTest = new Button(controlPanel, SWT.NONE);
+			btnTest.setBounds(522, 0, 34, 25);
+			btnTest.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					eb.post(new TestEvent());
+				}
+			});
+			btnTest.setText("Test");
+
+		}		
 
 		
 		////////////////////////////
@@ -135,7 +152,7 @@ public class EntryView extends Composite {
 	public void inject(EventBus eb, EntryController ctlr) {
 		this.eb = eb;
 		this.ctlr = ctlr;
-		eb.post(new EntryEditEvent(null));   ////////////////////   TEST 
+		if (CatalogApp.debugMode) eb.post(new EntryEditEvent(null));   ////////////////////   TEST 
 	}
 	
 	@Subscribe

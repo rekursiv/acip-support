@@ -60,15 +60,29 @@ public class SelectionView extends Composite {
 		doingUpdate = false;
 		idOfEntryToEdit = null;
 		
-		btnTest = new Button(this, SWT.NONE);
-		btnTest.setBounds(425, 5, 34, 25);
-		btnTest.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ctlr.test();
-			}
-		});
-		btnTest.setText("Test");
+		if (CatalogApp.debugMode) {
+		
+			btnTest = new Button(this, SWT.NONE);
+			btnTest.setBounds(425, 5, 34, 25);
+			btnTest.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					ctlr.test();
+				}
+			});
+			btnTest.setText("Test");
+			
+			btnUpdate = new Button(this, SWT.NONE);
+			btnUpdate.setBounds(476, 5, 66, 25);
+			btnUpdate.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					updateTables();
+				}
+			});
+			btnUpdate.setText("Update");
+		
+		}
 		
 		btnAction = new Button(this, SWT.NONE);
 		btnAction.setBounds(12, 5, 252, 25);
@@ -80,15 +94,7 @@ public class SelectionView extends Composite {
 		});
 		btnAction.setText("<action>");
 		
-		btnUpdate = new Button(this, SWT.NONE);
-		btnUpdate.setBounds(476, 5, 66, 25);
-		btnUpdate.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				updateTables();
-			}
-		});
-		btnUpdate.setText("Update");
+		
 		
 		potiTableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		potiTableViewer.setContentProvider(ArrayContentProvider.getInstance());

@@ -2,6 +2,7 @@ package org.asianclassics.center.catalog.entry;
 
 import java.util.List;
 
+import org.asianclassics.center.catalog.CatalogApp;
 import org.asianclassics.center.catalog.entry.model.EntryModel;
 import org.asianclassics.center.catalog.entry.model.EntryRepo;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
@@ -53,8 +54,9 @@ public class EntryController {
 	@Subscribe
 	public void onEdit(EntryEditEvent evt) {
 		model = evt.getEntry();
-		if (model==null) model = repo.get("13ab5cf538d00003fe0");					////////////////////   TEST  
-
+		if (CatalogApp.debugMode) {
+			if (model==null) model = repo.get("13ab5cf538d00003fe0");					////////////////////   TEST  
+		}
 		eb.post(new EntryModelPostReadEvent());
 		isModified = false;
 	}
