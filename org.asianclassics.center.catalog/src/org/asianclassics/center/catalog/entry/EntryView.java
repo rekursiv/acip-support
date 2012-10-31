@@ -79,8 +79,9 @@ public class EntryView extends Composite {
 		btnTest.setText("Test");
 
 		
+		new MissingPageEntryRow(this);
 
-		
+/*		
 		////////////////////////////
 
 		new InfoEntryRow(this);
@@ -100,7 +101,7 @@ public class EntryView extends Composite {
 		new DrawingEntryRow(this);
 		
 		////////////////////////////
-
+*/
 		
 
 		

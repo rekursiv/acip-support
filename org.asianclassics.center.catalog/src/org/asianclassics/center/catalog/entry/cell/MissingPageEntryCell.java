@@ -102,10 +102,10 @@ public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldin
 	}
 	
 	@Override
-	public void dispose() {     ///  FIXME
-//		eb.unregister(tecBegin);
-//		eb.unregister(tecEnd);
-//		eb.unregister(this);
+	public void dispose() {
+		eb.unregister(tecBegin);
+		eb.unregister(tecEnd);
+		eb.unregister(this);
 		super.dispose();
 	}
 }

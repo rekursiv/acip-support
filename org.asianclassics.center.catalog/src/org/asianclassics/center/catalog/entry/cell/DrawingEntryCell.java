@@ -121,23 +121,45 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		eb.post(new EntryCellListDeleteElementEvent(this));
 	}
 	
+	
 	@Override
 	public void onModelToView() {
 		tecPage.setData(model.page);
 		tecPage.onModelToView();
+		setPositionString(model.position);
+		btnColors.setSelection(model.hasColors);
 		tecCaption.setData(model.caption);
 		tecCaption.onModelToView();
-		btnColors.setSelection(model.hasColors);
 	}
+	
+	private void setPositionString(String pos) {
+		if (pos.equalsIgnoreCase("left")) btnLeft.setSelection(true);
+		else if (pos.equalsIgnoreCase("center")) btnCenter.setSelection(true);
+		else if (pos.equalsIgnoreCase("right")) btnRight.setSelection(true);
+		else if (pos.equalsIgnoreCase("fullpage")) btnFullPage.setSelection(true);
+	}
+	
+	
 
 	@Override
 	public void onViewToModel() {
 		tecPage.onViewToModel();
 		model.page = tecPage.getData();
+		model.hasColors = btnColors.getSelection();
+		model.position = getPositionString();
 		tecCaption.onViewToModel();
 		model.caption = tecCaption.getData();
-		model.hasColors = btnColors.getSelection();
 	}
+	
+	private String getPositionString() {
+		if (btnLeft.getSelection()==true) return "left";
+		if (btnCenter.getSelection()==true) return "center";
+		if (btnRight.getSelection()==true) return "right";
+		if (btnFullPage.getSelection()==true) return "fullpage";
+		return "unselected";
+	}
+	
+
 	
 	@Override
 	public Model getModel() {
@@ -145,10 +167,10 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 	}
 	
 	@Override
-	public void dispose() {     ///  FIXME
-//		eb.unregister(tecPage);
-//		eb.unregister(tecCaption);
-//		eb.unregister(this);
+	public void dispose() {
+		eb.unregister(tecPage);
+		eb.unregister(tecCaption);
+		eb.unregister(this);
 		super.dispose();
 	}
 }

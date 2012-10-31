@@ -5,7 +5,7 @@ import java.util.List;
 import org.ektorp.support.Entity;
 import org.joda.time.DateTime;
 
-public class EntryModel extends Entity {
+public class EntryModel extends Entity implements Model {
 	private static final long serialVersionUID = -8518504850247837263L;
 
 	public boolean _deleted;
