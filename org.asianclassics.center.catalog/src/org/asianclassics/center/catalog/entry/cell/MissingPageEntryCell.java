@@ -1,6 +1,7 @@
 package org.asianclassics.center.catalog.entry.cell;
 
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell.BoxType;
+import org.asianclassics.center.catalog.entry.model.Model;
 import org.asianclassics.center.catalog.entry.model.PageModel;
 import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
 import org.eclipse.swt.SWT;
@@ -11,15 +12,15 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-public class MissingPageEntryCell extends LinkedEntryCell {
+public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldingEntryCell {
 
 	private TextEntryCell tecBegin;
 	private TextEntryCell tecEnd;
 	private Button btnBlank;
 	private Button btnDelete;
-	private PageModel model;
+	private Model model;
 
-	public MissingPageEntryCell(Composite parent, PageModel model) {
+	public MissingPageEntryCell(Composite parent, Model model) {
 		super(parent, null);
 		this.model = model;
 		
@@ -63,23 +64,26 @@ public class MissingPageEntryCell extends LinkedEntryCell {
 
 	@Override
 	public void onModelToView() {
-		tecBegin.setData(model.begin);
+		PageModel pm = (PageModel)model;
+		tecBegin.setData(pm.begin);
 		tecBegin.onModelToView();
-		tecEnd.setData(model.end);
+		tecEnd.setData(pm.end);
 		tecEnd.onModelToView();
-		btnBlank.setSelection(model.isBlank);
+		btnBlank.setSelection(pm.isBlank);
 	}
 
 	@Override
 	public void onViewToModel() {
+		PageModel pm = (PageModel)model;
 		tecBegin.onViewToModel();
-		model.begin = tecBegin.getData();
+		pm.begin = tecBegin.getData();
 		tecEnd.onViewToModel();
-		model.end = tecEnd.getData();
-		model.isBlank = btnBlank.getSelection();
+		pm.end = tecEnd.getData();
+		pm.isBlank = btnBlank.getSelection();
 	}
 	
-	public PageModel getModel() {
+	@Override
+	public Model getModel() {
 		return model;
 	}
 

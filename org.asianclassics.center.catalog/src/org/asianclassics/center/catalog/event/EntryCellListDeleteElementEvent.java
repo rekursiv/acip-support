@@ -1,19 +1,19 @@
 package org.asianclassics.center.catalog.event;
 
-import org.asianclassics.center.catalog.entry.cell.EntryCell;
+import org.asianclassics.center.catalog.entry.cell.ModelHoldingEntryCell;
 
 public class EntryCellListDeleteElementEvent {
-	private EntryCell cell;
+	private ModelHoldingEntryCell cell;
 
-	public EntryCellListDeleteElementEvent(EntryCell cell) {
+	public EntryCellListDeleteElementEvent(ModelHoldingEntryCell cell) {
 		this.cell = cell;
 	}
 	
-	public EntryCell getCell() {
+	public ModelHoldingEntryCell getCell() {
 		return cell;
 	}
 
-	public void setCell(EntryCell cell) {
+	public void setCell(ModelHoldingEntryCell cell) {
 		this.cell = cell;
 	}
 	
