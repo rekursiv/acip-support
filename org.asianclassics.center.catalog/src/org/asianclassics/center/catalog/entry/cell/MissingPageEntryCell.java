@@ -3,22 +3,13 @@ package org.asianclassics.center.catalog.entry.cell;
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell.BoxType;
 import org.asianclassics.center.catalog.entry.model.PageModel;
 import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
-import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
-import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
-
-import com.google.common.eventbus.Subscribe;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 
 public class MissingPageEntryCell extends LinkedEntryCell {
 
@@ -28,17 +19,18 @@ public class MissingPageEntryCell extends LinkedEntryCell {
 	private Button btnDelete;
 	private PageModel model;
 
-
 	public MissingPageEntryCell(Composite parent, PageModel model) {
 		super(parent, null);
 		this.model = model;
+		
+		addHorizSep();
 		
 		tecBegin = new TextEntryCell(this, "Begin", 50, BoxType.SIMPLE, 100);
 		FormData fd_tecBegin = new FormData();
 		tecBegin.setLayoutData(fd_tecBegin);
 
 		tecEnd = new TextEntryCell(this, "End", 40, BoxType.SIMPLE, 100);
-		fd_tecBegin.left = new FormAttachment(20, -55);
+		fd_tecBegin.left = new FormAttachment(0, 0);
 		FormData fd_tecEnd = new FormData();
 		fd_tecEnd.top = new FormAttachment(tecBegin, 0, SWT.TOP);
 		fd_tecEnd.left = new FormAttachment(tecBegin, 6);
@@ -59,24 +51,18 @@ public class MissingPageEntryCell extends LinkedEntryCell {
 				onDelete();
 			}
 		});
-		fd_btnBlank.right = new FormAttachment(0, 310);
 		FormData fd_btnDelete_1 = new FormData();
 		fd_btnDelete_1.left = new FormAttachment(btnBlank, 55);
 		fd_btnDelete_1.top = new FormAttachment(tecEnd, -25);
 		fd_btnDelete_1.bottom = new FormAttachment(tecEnd, 0, SWT.BOTTOM);
-		fd_btnDelete_1.right = new FormAttachment(0, 410);
 		btnDelete.setLayoutData(fd_btnDelete_1);
-		btnDelete.setText("Delete");
+		btnDelete.setText("Delete Missing or Blank Page");
 		
-		copyDataFromModel();
+		onModelToView();
 	}
-	
-	@Subscribe
-	public void onPreWrite(EntryModelPreWriteEvent evt) {
-		copyDataToModel();
-	}
-	
-	private void copyDataFromModel() {
+
+	@Override
+	public void onModelToView() {
 		tecBegin.setData(model.begin);
 		tecBegin.onModelToView();
 		tecEnd.setData(model.end);
@@ -84,7 +70,8 @@ public class MissingPageEntryCell extends LinkedEntryCell {
 		btnBlank.setSelection(model.isBlank);
 	}
 
-	public void copyDataToModel() {
+	@Override
+	public void onViewToModel() {
 		tecBegin.onViewToModel();
 		model.begin = tecBegin.getData();
 		tecEnd.onViewToModel();
@@ -107,5 +94,4 @@ public class MissingPageEntryCell extends LinkedEntryCell {
 		eb.unregister(this);
 		super.dispose();
 	}
-
 }

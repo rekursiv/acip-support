@@ -1,5 +1,6 @@
 package org.asianclassics.center.catalog.entry.cell;
 
+import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
 import org.eclipse.swt.widgets.Composite;
 
@@ -22,8 +23,13 @@ public abstract class LinkedEntryCell extends EntryCell {
 	
 	
 	@Subscribe
-	public void onValidateEvent(EntryValidateEvent evt) {   //   ????
+	public void onValidateEvent(EntryValidateEvent evt) {
 		onValidate();
+	}
+	
+	@Subscribe
+	public void onPreWrite(EntryModelPreWriteEvent evt) {
+		onViewToModel();
 	}
 	
 	// model -> GUI

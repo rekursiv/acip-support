@@ -33,6 +33,8 @@ public class MissingPageEntryRow extends EntryCell {
 	public MissingPageEntryRow(Composite parent) {
 		super(parent, "Missing Pages");
 		
+		addHorizSep();
+		
 		rootPanel = new Composite(this, SWT.NONE);
 		rootPanel.setLayout(new GridLayout(1, false));
 		
@@ -53,7 +55,7 @@ public class MissingPageEntryRow extends EntryCell {
 				onAddNewCell();
 			}
 		});
-		btnAdd.setText("Add");
+		btnAdd.setText("Add Missing or Blank Page");
 
 	}
 
@@ -106,6 +108,9 @@ public class MissingPageEntryRow extends EntryCell {
 	}
 	
 
+	
+	
+	
 	@Subscribe
 	public void onTest(TestEvent evt) {
 		if (cellList==null) System.out.println("NULL");

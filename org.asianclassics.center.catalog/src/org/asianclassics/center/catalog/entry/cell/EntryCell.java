@@ -55,6 +55,15 @@ public class EntryCell extends Composite {
 	}
 	
 
+	public void addHorizSep() {
+		Label horizSep = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
+		FormData fd_horizSep = new FormData();
+		fd_horizSep.top = new FormAttachment(0, 0);
+		fd_horizSep.bottom = new FormAttachment(0, 5);
+		fd_horizSep.right = new FormAttachment(100, 0);
+		fd_horizSep.left = new FormAttachment(0, 0);
+		horizSep.setLayoutData(fd_horizSep);
+	}
 	
 	@Override
 	protected void checkSubclass() {
