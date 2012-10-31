@@ -1,6 +1,9 @@
 package org.asianclassics.center.catalog.entry.cell;
 
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell.BoxType;
+import org.asianclassics.center.catalog.entry.model.PageModel;
+import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
+import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -15,16 +18,20 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
 
+import com.google.common.eventbus.Subscribe;
+
 public class MissingPageEntryCell extends LinkedEntryCell {
 
 	private TextEntryCell tecBegin;
 	private TextEntryCell tecEnd;
 	private Button btnBlank;
 	private Button btnDelete;
+	private PageModel model;
 
 
-	public MissingPageEntryCell(Composite parent) {
+	public MissingPageEntryCell(Composite parent, PageModel model) {
 		super(parent, null);
+		this.model = model;
 		
 		tecBegin = new TextEntryCell(this, "Begin", 50, BoxType.SIMPLE, 100);
 		FormData fd_tecBegin = new FormData();
@@ -61,11 +68,44 @@ public class MissingPageEntryCell extends LinkedEntryCell {
 		btnDelete.setLayoutData(fd_btnDelete_1);
 		btnDelete.setText("Delete");
 		
+		copyDataFromModel();
+	}
+	
+	@Subscribe
+	public void onPreWrite(EntryModelPreWriteEvent evt) {
+		copyDataToModel();
+	}
+	
+	private void copyDataFromModel() {
+		tecBegin.setData(model.begin);
+		tecBegin.onModelToView();
+		tecEnd.setData(model.end);
+		tecEnd.onModelToView();
+		btnBlank.setSelection(model.isBlank);
 	}
 
-
-	protected void onDelete() {   //  FIXME
-		this.dispose();   // ??
-		eb.post(new ParentAdaptSizeEvent());
+	public void copyDataToModel() {
+		tecBegin.onViewToModel();
+		model.begin = tecBegin.getData();
+		tecEnd.onViewToModel();
+		model.end = tecEnd.getData();
+		model.isBlank = btnBlank.getSelection();
 	}
+	
+	public PageModel getModel() {
+		return model;
+	}
+
+	protected void onDelete() {
+		eb.post(new EntryCellListDeleteElementEvent(this));
+	}
+	
+	@Override
+	public void dispose() {
+		eb.unregister(tecBegin);
+		eb.unregister(tecEnd);
+		eb.unregister(this);
+		super.dispose();
+	}
+
 }

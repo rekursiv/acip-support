@@ -16,14 +16,11 @@ import com.google.inject.Inject;
 public class EntryCell extends Composite {
 
 	public static final int defaultTitleWidth = 100;
-//	protected int titleWidth = defaultTitleWidth;
 	protected String titleString = "Default";
 	protected Label lblTitle;
 	protected EntryController ctlr;
 	protected EventBus eb;
 
-
-	
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -34,11 +31,9 @@ public class EntryCell extends Composite {
 	public EntryCell(Composite parent, String title, int titleWidth) {
 		super(parent, SWT.NONE);
 		this.titleString = title;
-//		this.titleWidth = titleWidth;
 		if (EntryView.getInstance()!=null) EntryView.getInstance().getInjector().injectMembers(this);
-		System.out.println("EntryCell has called injectMembers()");
 		
-		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));   ///  ???
+		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		setLayout(new FormLayout());
 		
 		if (title!=null) {

@@ -9,6 +9,7 @@ import org.asianclassics.center.catalog.entry.row.SutraPageEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleSktEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleTibEntryRow;
 import org.asianclassics.center.catalog.event.EntryEditEvent;
+import org.asianclassics.center.catalog.event.TestEvent;
 import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -66,6 +67,15 @@ public class EntryView extends Composite {
 			}
 		});
 		btnDelete.setText("Delete");
+		
+		Button btnTest = new Button(this, SWT.NONE);
+		btnTest.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				eb.post(new TestEvent());
+			}
+		});
+		btnTest.setText("Test");
 
 		
 

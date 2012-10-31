@@ -20,19 +20,14 @@ public abstract class LinkedEntryCell extends EntryCell {
 		super(parent, title, titleWidth);
 	}
 	
-
-	
 	
 	@Subscribe
 	public void onValidateEvent(EntryValidateEvent evt) {   //   ????
 		onValidate();
 	}
 	
-	
-	
 	// model -> GUI
 	public void onModelToView() {
-		System.out.println("LinkedEntryCell#onModelToView");
 		getModelData();
 		formatDataForGui();
 		setGuiData();

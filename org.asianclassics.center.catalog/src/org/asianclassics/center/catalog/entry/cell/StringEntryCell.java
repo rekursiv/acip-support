@@ -6,6 +6,14 @@ public class StringEntryCell extends LinkedEntryCell {
 
 	protected String data = "";
 	
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
 	public StringEntryCell(Composite parent, String title) {
 		super(parent, title);
 	}
