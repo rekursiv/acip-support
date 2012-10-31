@@ -8,6 +8,10 @@ import org.asianclassics.center.catalog.entry.row.FormatEntryRow;
 import org.asianclassics.center.catalog.entry.row.InfoEntryRow;
 import org.asianclassics.center.catalog.entry.row.InkColorEntryRow;
 import org.asianclassics.center.catalog.entry.row.LibraryNumberEntryRow;
+import org.asianclassics.center.catalog.entry.row.LineCountEntryRow;
+import org.asianclassics.center.catalog.entry.row.LocationEntryRow;
+import org.asianclassics.center.catalog.entry.row.PageSizeEntryRow;
+import org.asianclassics.center.catalog.entry.row.PrintedAreaSizeEntryRow;
 import org.asianclassics.center.catalog.entry.row.VolumeEntryRow;
 import org.asianclassics.center.catalog.entry.row.MissingPageEntryRow;
 import org.asianclassics.center.catalog.entry.row.PaperColorEntryRow;
@@ -112,14 +116,14 @@ public class EntryView extends Composite {
 		new VolumeEntryRow(this);
 		new SutraPageEntryRow(this);
 		new MissingPageEntryRow(this);
-		
-		/////
-		
+		new LineCountEntryRow(this);
+		new PageSizeEntryRow(this);
+		new PrintedAreaSizeEntryRow(this);
+		new LocationEntryRow(this);
 		new DrawingEntryRow(this);
 		new ColophonEntryRow(this);
 		
 		////////////////////////////
-
 		
 
 		

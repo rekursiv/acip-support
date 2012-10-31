@@ -19,7 +19,7 @@ public class SutraPageEntryRow extends EntryCell {
 		super(parent, "Sutra Pages");
 		addHorizSep();
 
-		TextEntryCell begin = new TextEntryCell(this, "Begin", 50, BoxType.SIMPLE, 100) {
+		TextEntryCell begin = new TextEntryCell(this, "Begin", 40, BoxType.SIMPLE, 100) {
 			
 			@Subscribe
 			public void onPostRead(EntryModelPostReadEvent evt) {
@@ -44,7 +44,7 @@ public class SutraPageEntryRow extends EntryCell {
 		begin.setLayoutData(fd_begin);
 
 		
-		TextEntryCell end = new TextEntryCell(this, "End", 40, BoxType.SIMPLE, 100) {
+		TextEntryCell end = new TextEntryCell(this, "End", 30, BoxType.SIMPLE, 100) {
 			
 			@Subscribe
 			public void onPostRead(EntryModelPostReadEvent evt) {
@@ -65,7 +65,7 @@ public class SutraPageEntryRow extends EntryCell {
 		};
 		FormData fd_end = new FormData();
 		fd_end.top = new FormAttachment(begin, 0, SWT.TOP);
-		fd_end.left = new FormAttachment(begin, 0, SWT.RIGHT);
+		fd_end.left = new FormAttachment(begin, 15, SWT.RIGHT);
 		end.setLayoutData(fd_end);
 
 	}

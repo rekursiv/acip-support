@@ -25,25 +25,19 @@ public class EntryModel extends Entity implements Model {
 	public List<Integer> stamps;
 	public String titleTibetan;
 	public String titleSanskrit;
-	
-	
-	public String extraLanguage;
-	
+	public String extraLanguage;	
 	public String format;
 	public String titleTibetanBrief;
 	public String author;
 	public String originDate;
 	public String inkColor;
-	
-	public String paperColor;   ///
-	
+	public String paperColor;
 	public String paperSource;
 	public String paperGrade;
 	public String readability;
 	public String volume;
 	public SutraPageModel sutraPages;
 	public List<MissingPageModel> missingPages;
-
 	public int linesPerPage;
 	public SizeModel pageSize;
 	public SizeModel printedAreaSize;

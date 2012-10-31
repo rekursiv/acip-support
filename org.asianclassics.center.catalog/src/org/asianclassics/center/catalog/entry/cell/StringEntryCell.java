@@ -24,7 +24,10 @@ public class StringEntryCell extends LinkedEntryCell {
 
 	@Override
 	protected void formatDataForGui() {
-		if (data==null||data.isEmpty()) data="N";
+		if (data==null||data.isEmpty()) {
+			if (ctlr.getModel().isValid) data="N";
+			else data = "";
+		}
 	}
 	
 	@Override

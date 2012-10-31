@@ -6,6 +6,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
@@ -51,7 +53,6 @@ public class TextEntryCell extends StringEntryCell {
 		FormData fd_text = new FormData();
 
 		if (boxType==BoxType.SIMPLE) {
-//			System.out.println("boxType==BoxType.SIMPLE");   /// /// / /
 			adaptBoxHeight = false;
 			text = new StyledText(this, SWT.BORDER|SWT.SINGLE);
 			fd_text.right = new FormAttachment(0, simpleBoxWidth);
@@ -78,6 +79,14 @@ public class TextEntryCell extends StringEntryCell {
 					eb.post(new ParentAdaptSizeEvent());
 				}
 			}
+		});
+		
+		text.addTraverseListener(new TraverseListener() {
+		    public void keyTraversed(TraverseEvent e) {
+		        if (e.detail == SWT.TRAVERSE_TAB_NEXT || e.detail == SWT.TRAVERSE_TAB_PREVIOUS) {
+		            e.doit = true;
+		        }
+		    }
 		});
 
 		text.setLayoutData(fd_text);

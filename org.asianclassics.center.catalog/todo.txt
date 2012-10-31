@@ -1,6 +1,8 @@
 
 
-fix tabs
+*** convert DB
+  find the lastest version
+  
 
 DB lock/sync
 
@@ -11,10 +13,8 @@ SelectionView:
 EntryView:
  hide "advanced" btns
  
- Drawing/MissingPage lists:
-   bypass the "N" entry on "Add"
 
-
+fix mouse wheel  (test on linux)
 
 
 =======

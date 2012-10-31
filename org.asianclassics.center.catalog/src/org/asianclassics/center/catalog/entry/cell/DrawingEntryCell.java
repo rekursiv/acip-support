@@ -133,6 +133,7 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 	}
 	
 	private void setPositionString(String pos) {
+		if (pos==null) return;
 		if (pos.equalsIgnoreCase("left")) btnLeft.setSelection(true);
 		else if (pos.equalsIgnoreCase("center")) btnCenter.setSelection(true);
 		else if (pos.equalsIgnoreCase("right")) btnRight.setSelection(true);
