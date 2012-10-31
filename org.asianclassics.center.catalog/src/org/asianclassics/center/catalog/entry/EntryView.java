@@ -1,5 +1,6 @@
 package org.asianclassics.center.catalog.entry;
 
+import org.asianclassics.center.catalog.entry.row.DrawingEntryRow;
 import org.asianclassics.center.catalog.entry.row.ExtraLangEntryRow;
 import org.asianclassics.center.catalog.entry.row.InfoEntryRow;
 import org.asianclassics.center.catalog.entry.row.LibraryNumEntryRow;
@@ -96,6 +97,7 @@ public class EntryView extends Composite {
 		new SutraPageEntryRow(this);
 	*/	
 		new MissingPageEntryRow(this);
+		new DrawingEntryRow(this);
 		
 		////////////////////////////
 

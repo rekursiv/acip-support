@@ -3,6 +3,7 @@ package org.asianclassics.center.catalog.entry.row;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.asianclassics.center.catalog.entry.cell.DrawingEntryCell;
 import org.asianclassics.center.catalog.entry.cell.EntryCell;
 import org.asianclassics.center.catalog.entry.cell.ListEntryCell;
 import org.asianclassics.center.catalog.entry.cell.MissingPageEntryCell;
@@ -28,38 +29,36 @@ import org.eclipse.swt.layout.GridLayout;
 
 import com.google.common.eventbus.Subscribe;
 
-public class MissingPageEntryRow extends ListEntryCell {
+public class DrawingEntryRow extends ListEntryCell {
 
-	public MissingPageEntryRow(Composite parent) {
-		super(parent, "Missing Pages", "Add Missing or Blank Page");
+	public DrawingEntryRow(Composite parent) {
+		super(parent, "Drawings", "Add Drawing");
 	}
 
 	@Override
 	protected void createNewModelListIfNeeded() {
-		if (ctlr.getModel().missingPages==null) ctlr.getModel().missingPages = new LinkedList<PageModel>();
+		if (ctlr.getModel().drawings==null) ctlr.getModel().drawings = new LinkedList<DrawingModel>();
 	}
 	
 	@Override
 	protected Model createNewModel() {
-		PageModel pm = new PageModel();
-		ctlr.getModel().missingPages.add(pm);
-		return pm;
+		DrawingModel model = new DrawingModel();
+		ctlr.getModel().drawings.add(model);
+		return model;
 	}
 	
 	@Override
 	protected ModelHoldingEntryCell createNewView(Model model) {
-		return new MissingPageEntryCell(cellListPanel, model);
+		return new DrawingEntryCell(cellListPanel, model);
 	}
 	
 	@Override
 	protected void copyModelToView() {
-		List<PageModel> pages = ctlr.getModel().missingPages;
-		if (pages==null) return;
-		for (PageModel page : pages) {
-			addCellFromModel(page);
+		List<DrawingModel> drawings = ctlr.getModel().drawings;
+		if (drawings==null) return;
+		for (DrawingModel drawing : drawings) {
+			addCellFromModel(drawing);
 		}
 	}
-
-
 
 }

@@ -18,11 +18,12 @@ public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldin
 	private TextEntryCell tecEnd;
 	private Button btnBlank;
 	private Button btnDelete;
-	private Model model;
+	private PageModel model;
+
 
 	public MissingPageEntryCell(Composite parent, Model model) {
 		super(parent, null);
-		this.model = model;
+		this.model = (PageModel) model;
 		
 		addHorizSep();
 		
@@ -62,40 +63,38 @@ public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldin
 		onModelToView();
 	}
 
-	@Override
-	public void onModelToView() {
-		PageModel pm = (PageModel)model;
-		tecBegin.setData(pm.begin);
-		tecBegin.onModelToView();
-		tecEnd.setData(pm.end);
-		tecEnd.onModelToView();
-		btnBlank.setSelection(pm.isBlank);
-	}
-
-	@Override
-	public void onViewToModel() {
-		PageModel pm = (PageModel)model;
-		tecBegin.onViewToModel();
-		pm.begin = tecBegin.getData();
-		tecEnd.onViewToModel();
-		pm.end = tecEnd.getData();
-		pm.isBlank = btnBlank.getSelection();
-	}
-	
-	@Override
-	public Model getModel() {
-		return model;
-	}
-
 	protected void onDelete() {
 		eb.post(new EntryCellListDeleteElementEvent(this));
 	}
 	
 	@Override
-	public void dispose() {
-		eb.unregister(tecBegin);
-		eb.unregister(tecEnd);
-		eb.unregister(this);
+	public void onModelToView() {
+		tecBegin.setData(model.begin);
+		tecBegin.onModelToView();
+		tecEnd.setData(model.end);
+		tecEnd.onModelToView();
+		btnBlank.setSelection(model.isBlank);
+	}
+
+	@Override
+	public void onViewToModel() {
+		tecBegin.onViewToModel();
+		model.begin = tecBegin.getData();
+		tecEnd.onViewToModel();
+		model.end = tecEnd.getData();
+		model.isBlank = btnBlank.getSelection();
+	}
+	
+	@Override
+	public Model getModel() {
+		return (Model)model;
+	}
+	
+	@Override
+	public void dispose() {     ///  FIXME
+//		eb.unregister(tecBegin);
+//		eb.unregister(tecEnd);
+//		eb.unregister(this);
 		super.dispose();
 	}
 }

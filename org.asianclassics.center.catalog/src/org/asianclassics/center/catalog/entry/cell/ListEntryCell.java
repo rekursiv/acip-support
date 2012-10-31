@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.eventbus.Subscribe;
 
-public class ListEntryCell extends EntryCell {
+public abstract class ListEntryCell extends EntryCell {
 	protected Composite rootPanel;
 	protected Composite cellListPanel;
 	protected Button btnAdd;
@@ -35,10 +35,9 @@ public class ListEntryCell extends EntryCell {
 		
 		FormData fd_composite = new FormData();
 		fd_composite.right = new FormAttachment(100, -12);
-		fd_composite.top = new FormAttachment(0, 12);
+		fd_composite.top = new FormAttachment(0, 0);
 		fd_composite.left = new FormAttachment(lblTitle);
 		rootPanel.setLayoutData(fd_composite);
-
 		
 		cellListPanel = new Composite(rootPanel, SWT.NONE);
 		cellListPanel.setLayout(new GridLayout(1, false));
@@ -57,6 +56,10 @@ public class ListEntryCell extends EntryCell {
 	}
 	
 	protected Model createNewModel() {
+		return null;
+	}
+	
+	protected ModelHoldingEntryCell createNewView(Model model) {
 		return null;
 	}
 	
@@ -81,7 +84,7 @@ public class ListEntryCell extends EntryCell {
 	
 	protected void addCellFromModel(Model model) {
 		if (cellList==null) cellList = new LinkedList<ModelHoldingEntryCell>();
-		cellList.add(new MissingPageEntryCell(cellListPanel, model));
+		cellList.add(createNewView(model));
 	}
 	
 	protected void deleteAllViews() {
