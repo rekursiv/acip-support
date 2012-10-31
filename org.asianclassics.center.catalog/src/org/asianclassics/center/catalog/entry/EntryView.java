@@ -80,11 +80,9 @@ public class EntryView extends Composite {
 
 		
 
-		new LibraryNumEntryRow(this);  ////////////////
-
 		
 		////////////////////////////
-/*
+
 		new InfoEntryRow(this);
 		new LibraryNumEntryRow(this);
 		new StampEntryRow(this);
@@ -95,8 +93,10 @@ public class EntryView extends Composite {
 		/////
 		
 		new SutraPageEntryRow(this);
-	*/	
 		new MissingPageEntryRow(this);
+		
+		/////
+		
 		new DrawingEntryRow(this);
 		
 		////////////////////////////

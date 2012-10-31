@@ -7,6 +7,7 @@ public class StampEntryRow extends NyiEntryRow {
 
 	public StampEntryRow(Composite parent) {
 		super(parent, "Stamps");
+		addHorizSep();
 	}
 	
 }

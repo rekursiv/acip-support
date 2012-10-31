@@ -31,7 +31,7 @@ import com.google.common.eventbus.Subscribe;
 public class MissingPageEntryRow extends ListEntryCell {
 
 	public MissingPageEntryRow(Composite parent) {
-		super(parent, "Missing Pages", "Add Missing or Blank Page");
+		super(parent, "Missing Pages", "Add Page");
 	}
 
 	@Override

@@ -3,18 +3,28 @@ package org.asianclassics.center.catalog.entry.row;
 import org.asianclassics.center.catalog.entry.cell.EntryCell;
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell;
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell.BoxType;
+import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
+
+import com.google.common.eventbus.Subscribe;
 
 public class SutraPageEntryRow extends EntryCell {
 
 
 	public SutraPageEntryRow(Composite parent) {
 		super(parent, "Sutra Pages");
+		addHorizSep();
 
 		TextEntryCell begin = new TextEntryCell(this, "Begin", 50, BoxType.SIMPLE, 100) {
+			
+			@Subscribe
+			public void onPostRead(EntryModelPostReadEvent evt) {
+				onModelToView();
+			}
+			
 			@Override
 			protected void getModelData() {
 				data = ctlr.getModel().sutraPages.begin;
@@ -32,6 +42,12 @@ public class SutraPageEntryRow extends EntryCell {
 
 		
 		TextEntryCell end = new TextEntryCell(this, "End", 40, BoxType.SIMPLE, 100) {
+			
+			@Subscribe
+			public void onPostRead(EntryModelPostReadEvent evt) {
+				onModelToView();
+			}
+			
 			@Override
 			protected void getModelData() {
 				data = ctlr.getModel().sutraPages.end;

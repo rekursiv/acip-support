@@ -28,19 +28,15 @@ public class TextEntryCell extends StringEntryCell {
 	protected BoxType boxType;
 	
 	public TextEntryCell(Composite parent, String title) {
-		this(parent, title, defaultTitleWidth, defaultBoxType);
+		this(parent, title, defaultTitleWidth, defaultBoxType, defaultSimpleBoxWidth);
 	}
 	
 	public TextEntryCell(Composite parent, String title, int titleWidth) {
-		this(parent, title, titleWidth, defaultBoxType);
-	}
-	
-	public TextEntryCell(Composite parent, String title, BoxType boxType) {
-		this(parent, title, defaultTitleWidth, boxType);
+		this(parent, title, titleWidth, defaultBoxType, defaultSimpleBoxWidth);
 	}
 	
 	public TextEntryCell(Composite parent, String title, int titleWidth, BoxType boxType) {
-		this(parent, title, defaultTitleWidth, boxType, defaultSimpleBoxWidth);
+		this(parent, title, titleWidth, boxType, defaultSimpleBoxWidth);
 	}
 	
 	public TextEntryCell(Composite parent, String title, int titleWidth, BoxType boxType, int simpleBoxWidth) {

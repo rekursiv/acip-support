@@ -41,7 +41,7 @@ public class EntryCell extends Composite {
 			FormData fd_lblRow = new FormData();
 			fd_lblRow.right = new FormAttachment(0, titleWidth);
 			fd_lblRow.top = new FormAttachment(0, 10);
-			fd_lblRow.left = new FormAttachment(0, 12);
+			fd_lblRow.left = new FormAttachment(0, 0);
 			lblTitle.setLayoutData(fd_lblRow);
 			lblTitle.setText(titleString+":");
 		}		
@@ -59,7 +59,6 @@ public class EntryCell extends Composite {
 		Label horizSep = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
 		FormData fd_horizSep = new FormData();
 		fd_horizSep.top = new FormAttachment(0, 0);
-		fd_horizSep.bottom = new FormAttachment(0, 5);
 		fd_horizSep.right = new FormAttachment(100, 0);
 		fd_horizSep.left = new FormAttachment(0, 0);
 		horizSep.setLayoutData(fd_horizSep);

@@ -28,6 +28,7 @@ public abstract class ListEntryCell extends EntryCell {
 
 	public ListEntryCell(Composite parent, String title, String btnText) {
 		super(parent, title);
+		
 		addHorizSep();
 		
 		rootPanel = new Composite(this, SWT.NONE);

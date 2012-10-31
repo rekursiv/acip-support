@@ -25,6 +25,8 @@ public class InfoEntryRow extends EntryCell {
 	public InfoEntryRow(Composite parent) {
 		super(parent, "Info");
 		
+		addHorizSep();
+		
 		lblSerialTitle = new Label(this, SWT.NONE);
 		FormData fd_lblSerialTitle = new FormData();
 		fd_lblSerialTitle.top = new FormAttachment(lblTitle, 0, SWT.TOP);

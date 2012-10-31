@@ -11,6 +11,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldingEntryCell {
 
@@ -24,8 +25,6 @@ public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldin
 	public MissingPageEntryCell(Composite parent, Model model) {
 		super(parent, null);
 		this.model = (PageModel) model;
-		
-		addHorizSep();
 		
 		tecBegin = new TextEntryCell(this, "Begin", 50, BoxType.SIMPLE, 100);
 		FormData fd_tecBegin = new FormData();
@@ -54,13 +53,25 @@ public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldin
 			}
 		});
 		FormData fd_btnDelete_1 = new FormData();
-		fd_btnDelete_1.left = new FormAttachment(btnBlank, 55);
+		fd_btnDelete_1.left = new FormAttachment(btnBlank, 50);
 		fd_btnDelete_1.top = new FormAttachment(tecEnd, -25);
 		fd_btnDelete_1.bottom = new FormAttachment(tecEnd, 0, SWT.BOTTOM);
 		btnDelete.setLayoutData(fd_btnDelete_1);
-		btnDelete.setText("Delete Missing or Blank Page");
+		btnDelete.setText("Delete Page");
+
+		addHorizSep();
 		
 		onModelToView();
+	}
+	
+	@Override
+	public void addHorizSep() {
+		Label horizSep = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
+		FormData fd_horizSep = new FormData();
+		fd_horizSep.top = new FormAttachment(btnDelete, 10);
+		fd_horizSep.right = new FormAttachment(100, 0);
+		fd_horizSep.left = new FormAttachment(0, 0);
+		horizSep.setLayoutData(fd_horizSep);
 	}
 
 	protected void onDelete() {

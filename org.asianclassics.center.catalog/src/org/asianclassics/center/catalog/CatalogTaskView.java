@@ -63,8 +63,8 @@ public class CatalogTaskView extends TaskView {
 		
 		stack = new CatalogTaskStackView(this, SWT.NONE, injector);
 		FormData fd_composite = new FormData();
-		fd_composite.bottom = new FormAttachment(100, -12);
-		fd_composite.right = new FormAttachment(100, -12);
+		fd_composite.bottom = new FormAttachment(100, 0);
+		fd_composite.right = new FormAttachment(100, 0);
 		fd_composite.top = new FormAttachment(btnLogout, 6);
 		fd_composite.left = new FormAttachment(0, 12);
 		stack.setLayoutData(fd_composite);

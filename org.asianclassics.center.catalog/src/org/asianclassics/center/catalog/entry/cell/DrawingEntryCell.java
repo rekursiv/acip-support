@@ -12,6 +12,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEntryCell {
 
@@ -20,49 +21,100 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 	private Button btnColors;
 	private Button btnDelete;
 	private DrawingModel model;
+	private Label lblPosition;
+	private Button btnLeft;
+	private Button btnCenter;
+	private Button btnRight;
+	private Button btnFullPage;
 
 
 	public DrawingEntryCell(Composite parent, Model model) {
 		super(parent, null);
 		this.model = (DrawingModel) model;
 		
-		addHorizSep();
-		
 		tecPage = new TextEntryCell(this, "Page", 50, BoxType.SIMPLE, 100);
-		FormData fd_tecBegin = new FormData();
-		tecPage.setLayoutData(fd_tecBegin);
+		FormData fd_tecPage = new FormData();
+		fd_tecPage.left = new FormAttachment(0, 0);
+		tecPage.setLayoutData(fd_tecPage);
 
-		tecCaption = new TextEntryCell(this, "Caption", 80);
-		fd_tecBegin.left = new FormAttachment(0, 0);
-		FormData fd_tecEnd = new FormData();
-		fd_tecEnd.top = new FormAttachment(tecPage, 0, SWT.TOP);
-		fd_tecEnd.left = new FormAttachment(tecPage, 6);
-		tecCaption.setLayoutData(fd_tecEnd);
+		tecCaption = new TextEntryCell(this, "Caption", 70);
+		FormData fd_tecCaption = new FormData();
+		fd_tecCaption.left = new FormAttachment(0);
+		fd_tecCaption.top = new FormAttachment(0, 37);
+		tecCaption.setLayoutData(fd_tecCaption);
 
 		btnColors = new Button(this, SWT.CHECK);
 		FormData fd_btnColors = new FormData();
-		fd_btnColors.left = new FormAttachment(tecCaption, 19);
-		fd_btnColors.top = new FormAttachment(0, 10);
-		fd_btnColors.bottom = new FormAttachment(0, 26);
 		btnColors.setLayoutData(fd_btnColors);
 		btnColors.setText("Has Colors");
 		
 		btnDelete = new Button(this, SWT.NONE);
+		fd_tecCaption.right = new FormAttachment(100);
 		btnDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				onDelete();
 			}
 		});
-		FormData fd_btnDelete_1 = new FormData();
-		fd_btnDelete_1.left = new FormAttachment(tecPage, 341);
-		fd_btnDelete_1.right = new FormAttachment(80);
-		fd_btnDelete_1.bottom = new FormAttachment(btnColors, 25);
-		fd_btnDelete_1.top = new FormAttachment(btnColors, 0, SWT.TOP);
-		btnDelete.setLayoutData(fd_btnDelete_1);
+		FormData fd_btnDelete = new FormData();
+		fd_btnDelete.left = new FormAttachment(btnColors, 50);
+		fd_btnDelete.top = new FormAttachment(0, 10);
+		btnDelete.setLayoutData(fd_btnDelete);
 		btnDelete.setText("Delete Drawing");
 		
+		lblPosition = new Label(this, SWT.NONE);
+		fd_btnColors.bottom = new FormAttachment(lblPosition, 16);
+		fd_btnColors.top = new FormAttachment(lblPosition, 0, SWT.TOP);
+		FormData fd_lblPosition = new FormData();
+		fd_lblPosition.top = new FormAttachment(0, 12);
+		fd_lblPosition.bottom = new FormAttachment(0, 27);
+		fd_lblPosition.right = new FormAttachment(0, 166);
+		fd_lblPosition.left = new FormAttachment(0, 120);
+		lblPosition.setLayoutData(fd_lblPosition);
+		lblPosition.setText("Position:");
+		
+		btnLeft = new Button(this, SWT.RADIO);
+		FormData fd_btnLeft = new FormData();
+		fd_btnLeft.top = new FormAttachment(lblPosition, 0, SWT.TOP);
+		fd_btnLeft.left = new FormAttachment(lblPosition, 6);
+		btnLeft.setLayoutData(fd_btnLeft);
+		btnLeft.setText("Left");
+		
+		btnCenter = new Button(this, SWT.RADIO);
+		FormData fd_btnCenter = new FormData();
+		fd_btnCenter.left = new FormAttachment(btnLeft);
+		fd_btnCenter.top = new FormAttachment(btnLeft, 0, SWT.TOP);
+		btnCenter.setLayoutData(fd_btnCenter);
+		btnCenter.setText("Center");
+		
+		btnRight = new Button(this, SWT.RADIO);
+		FormData fd_btnRight = new FormData();
+		fd_btnRight.top = new FormAttachment(btnCenter, 0, SWT.TOP);
+		fd_btnRight.left = new FormAttachment(btnCenter);
+		btnRight.setLayoutData(fd_btnRight);
+		btnRight.setText("Right");
+		
+		btnFullPage = new Button(this, SWT.RADIO);
+		fd_btnColors.left = new FormAttachment(btnFullPage, 24);
+		FormData fd_btnFullPage = new FormData();
+		fd_btnFullPage.top = new FormAttachment(btnRight, 0, SWT.TOP);
+		fd_btnFullPage.left = new FormAttachment(btnRight, 6);
+		btnFullPage.setLayoutData(fd_btnFullPage);
+		btnFullPage.setText("Full Page");
+	
+		addHorizSep();
+
 		onModelToView();
+	}
+	
+	@Override
+	public void addHorizSep() {
+		Label horizSep = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
+		FormData fd_horizSep = new FormData();
+		fd_horizSep.top = new FormAttachment(tecCaption, 10);
+		fd_horizSep.right = new FormAttachment(100, 0);
+		fd_horizSep.left = new FormAttachment(0, 0);
+		horizSep.setLayoutData(fd_horizSep);
 	}
 
 	protected void onDelete() {
