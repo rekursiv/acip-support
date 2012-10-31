@@ -3,6 +3,7 @@ package org.asianclassics.center.catalog.entry.row;
 import org.asianclassics.center.catalog.entry.cell.EntryCell;
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell;
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell.BoxType;
+import org.asianclassics.center.catalog.entry.model.SutraPageModel;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -27,11 +28,13 @@ public class SutraPageEntryRow extends EntryCell {
 			
 			@Override
 			protected void getModelData() {
-				data = ctlr.getModel().sutraPages.begin;
+				if (ctlr.getModel().sutraPages==null) data = null;   // FIXME:  this should be done in the model
+				else data = ctlr.getModel().sutraPages.begin;
 			}
 			
 			@Override
 			protected void setModelData() {
+				if (ctlr.getModel().sutraPages==null) ctlr.getModel().sutraPages = new SutraPageModel();  // FIXME:  this should be done in the model
 				ctlr.getModel().sutraPages.begin = data;
 			}
 		};
@@ -50,11 +53,13 @@ public class SutraPageEntryRow extends EntryCell {
 			
 			@Override
 			protected void getModelData() {
-				data = ctlr.getModel().sutraPages.end;
+				if (ctlr.getModel().sutraPages==null) data = null;    // FIXME:  this should be done in the model
+				else data = ctlr.getModel().sutraPages.end;
 			}
 			
 			@Override
 			protected void setModelData() {
+				if (ctlr.getModel().sutraPages==null) ctlr.getModel().sutraPages = new SutraPageModel();  // FIXME:  this should be done in the model
 				ctlr.getModel().sutraPages.end = data;
 			}
 		};

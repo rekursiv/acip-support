@@ -6,15 +6,18 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.eventbus.Subscribe;
 
-public class ExtraLangEntryRow extends ComboBoxEntryCell {
+public class InkColorEntryRow extends ComboBoxEntryCell {
 
-	public ExtraLangEntryRow(Composite parent) {
-		super(parent, "Extra Language");
+	public InkColorEntryRow(Composite parent) {
+		super(parent, "Color of Ink");
 		addHorizSep();
-		combo.add("Lanycha script, Title page only");
-		combo.add("Lanycha script, Whole sutra");
-		combo.add("Mongolian script, Title page only");
-		combo.add("Mongolian script, Whole sutra");
+		combo.add("Black");
+		combo.add("Red");
+		combo.add("Silver");
+		combo.add("Gold");
+		combo.add("3 colors");
+		combo.add("5 colors");
+		combo.add("7 colors");
 	}
 	
 	@Subscribe
@@ -24,12 +27,12 @@ public class ExtraLangEntryRow extends ComboBoxEntryCell {
 	
 	@Override
 	protected void getModelData() {
-		data = ctlr.getModel().extraLanguage;
+		data = ctlr.getModel().inkColor;
 	}
 	
 	@Override
 	protected void setModelData() {
-		ctlr.getModel().extraLanguage = data;
+		ctlr.getModel().inkColor = data;
 	}
 
 }

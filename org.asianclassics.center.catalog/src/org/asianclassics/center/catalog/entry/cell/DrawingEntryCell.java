@@ -3,7 +3,7 @@ package org.asianclassics.center.catalog.entry.cell;
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell.BoxType;
 import org.asianclassics.center.catalog.entry.model.DrawingModel;
 import org.asianclassics.center.catalog.entry.model.Model;
-import org.asianclassics.center.catalog.entry.model.PageModel;
+import org.asianclassics.center.catalog.entry.model.MissingPageModel;
 import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

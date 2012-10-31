@@ -27,29 +27,29 @@ public class EntryModel extends Entity implements Model {
 	public String titleSanskrit;
 	
 	
-	public ExtraLanguageModel extraLanguage;
-	public String extraLanguage2;                //////////////    FIXME
-	
+	public String extraLanguage;
 	
 	public String format;
 	public String titleTibetanBrief;
 	public String author;
 	public String originDate;
 	public String inkColor;
-	public PaperColorModel paperColor;
+	
+	public String paperColor;   ///
+	
 	public String paperSource;
 	public String paperGrade;
 	public String readability;
 	public String volume;
-	public PageModel sutraPages;
-	public List<PageModel> missingPages;
+	public SutraPageModel sutraPages;
+	public List<MissingPageModel> missingPages;
+
 	public int linesPerPage;
 	public SizeModel pageSize;
 	public SizeModel printedAreaSize;
 	public String location;
 	public List<DrawingModel> drawings;
 	public String colophon;
-	
 	
 	
 }

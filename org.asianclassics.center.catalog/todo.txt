@@ -1,5 +1,7 @@
 
 
+fix tabs
+
 DB lock/sync
 
 SelectionView:
@@ -12,3 +14,10 @@ EntryView:
  Drawing/MissingPage lists:
    bypass the "N" entry on "Add"
 
+
+
+
+=======
+
+
+//@JsonIgnoreProperties(ignoreUnknown = true)

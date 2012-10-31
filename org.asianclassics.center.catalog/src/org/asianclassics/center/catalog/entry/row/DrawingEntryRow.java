@@ -11,7 +11,7 @@ import org.asianclassics.center.catalog.entry.cell.ModelHoldingEntryCell;
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell;
 import org.asianclassics.center.catalog.entry.model.DrawingModel;
 import org.asianclassics.center.catalog.entry.model.Model;
-import org.asianclassics.center.catalog.entry.model.PageModel;
+import org.asianclassics.center.catalog.entry.model.MissingPageModel;
 import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;

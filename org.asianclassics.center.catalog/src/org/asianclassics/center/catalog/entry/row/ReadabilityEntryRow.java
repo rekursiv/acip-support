@@ -6,15 +6,14 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.eventbus.Subscribe;
 
-public class ExtraLangEntryRow extends ComboBoxEntryCell {
+public class ReadabilityEntryRow extends ComboBoxEntryCell {
 
-	public ExtraLangEntryRow(Composite parent) {
-		super(parent, "Extra Language");
+	public ReadabilityEntryRow(Composite parent) {
+		super(parent, "Readablilty", true);
 		addHorizSep();
-		combo.add("Lanycha script, Title page only");
-		combo.add("Lanycha script, Whole sutra");
-		combo.add("Mongolian script, Title page only");
-		combo.add("Mongolian script, Whole sutra");
+		combo.add("Good");
+		combo.add("Medium");
+		combo.add("Bad");
 	}
 	
 	@Subscribe
@@ -24,12 +23,12 @@ public class ExtraLangEntryRow extends ComboBoxEntryCell {
 	
 	@Override
 	protected void getModelData() {
-		data = ctlr.getModel().extraLanguage;
+		data = ctlr.getModel().readability;
 	}
 	
 	@Override
 	protected void setModelData() {
-		ctlr.getModel().extraLanguage = data;
+		ctlr.getModel().readability = data;
 	}
 
 }

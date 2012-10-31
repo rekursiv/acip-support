@@ -53,7 +53,7 @@ public class EntryController {
 	@Subscribe
 	public void onEdit(EntryEditEvent evt) {
 		model = evt.getEntry();
-		if (model==null) model = repo.get("13aac4d64950076f5a9");					////////////////////   TEST    //  13aac4d64950076f5a9=test,  13aac4d646d007481b0
+		if (model==null) model = repo.get("13ab5cf538d00003fe0");					////////////////////   TEST  
 
 		eb.post(new EntryModelPostReadEvent());
 		isModified = false;

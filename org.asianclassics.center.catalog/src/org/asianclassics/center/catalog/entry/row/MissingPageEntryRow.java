@@ -10,7 +10,7 @@ import org.asianclassics.center.catalog.entry.cell.ModelHoldingEntryCell;
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell;
 import org.asianclassics.center.catalog.entry.model.DrawingModel;
 import org.asianclassics.center.catalog.entry.model.Model;
-import org.asianclassics.center.catalog.entry.model.PageModel;
+import org.asianclassics.center.catalog.entry.model.MissingPageModel;
 import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
@@ -36,12 +36,12 @@ public class MissingPageEntryRow extends ListEntryCell {
 
 	@Override
 	protected void createNewModelListIfNeeded() {
-		if (ctlr.getModel().missingPages==null) ctlr.getModel().missingPages = new LinkedList<PageModel>();
+		if (ctlr.getModel().missingPages==null) ctlr.getModel().missingPages = new LinkedList<MissingPageModel>();
 	}
 	
 	@Override
 	protected Model createNewModel() {
-		PageModel pm = new PageModel();
+		MissingPageModel pm = new MissingPageModel();
 		ctlr.getModel().missingPages.add(pm);
 		return pm;
 	}
@@ -53,9 +53,9 @@ public class MissingPageEntryRow extends ListEntryCell {
 	
 	@Override
 	protected void copyModelToView() {
-		List<PageModel> pages = ctlr.getModel().missingPages;
+		List<MissingPageModel> pages = ctlr.getModel().missingPages;
 		if (pages==null) return;
-		for (PageModel page : pages) {
+		for (MissingPageModel page : pages) {
 			addCellFromModel(page);
 		}
 	}

@@ -1,14 +1,25 @@
 package org.asianclassics.center.catalog.entry;
 
+import org.asianclassics.center.catalog.entry.row.AuthorEntryRow;
+import org.asianclassics.center.catalog.entry.row.ColophonEntryRow;
 import org.asianclassics.center.catalog.entry.row.DrawingEntryRow;
 import org.asianclassics.center.catalog.entry.row.ExtraLangEntryRow;
+import org.asianclassics.center.catalog.entry.row.FormatEntryRow;
 import org.asianclassics.center.catalog.entry.row.InfoEntryRow;
-import org.asianclassics.center.catalog.entry.row.LibraryNumEntryRow;
+import org.asianclassics.center.catalog.entry.row.InkColorEntryRow;
+import org.asianclassics.center.catalog.entry.row.LibraryNumberEntryRow;
+import org.asianclassics.center.catalog.entry.row.VolumeEntryRow;
 import org.asianclassics.center.catalog.entry.row.MissingPageEntryRow;
+import org.asianclassics.center.catalog.entry.row.PaperColorEntryRow;
+import org.asianclassics.center.catalog.entry.row.PaperGradeEntryRow;
+import org.asianclassics.center.catalog.entry.row.PaperSourceEntryRow;
+import org.asianclassics.center.catalog.entry.row.ReadabilityEntryRow;
 import org.asianclassics.center.catalog.entry.row.StampEntryRow;
 import org.asianclassics.center.catalog.entry.row.SutraPageEntryRow;
+import org.asianclassics.center.catalog.entry.row.TitleBriefEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleSktEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleTibEntryRow;
+import org.asianclassics.center.catalog.entry.row.YearEntryRow;
 import org.asianclassics.center.catalog.event.EntryEditEvent;
 import org.asianclassics.center.catalog.event.TestEvent;
 import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
@@ -79,29 +90,36 @@ public class EntryView extends Composite {
 		btnTest.setText("Test");
 
 		
-		new MissingPageEntryRow(this);
 
-/*		
+		
 		////////////////////////////
 
 		new InfoEntryRow(this);
-		new LibraryNumEntryRow(this);
+		new LibraryNumberEntryRow(this);
 		new StampEntryRow(this);
 		new TitleTibEntryRow(this);
 		new TitleSktEntryRow(this);
 		new ExtraLangEntryRow(this);
-
-		/////
-		
+		new FormatEntryRow(this);
+		new TitleBriefEntryRow(this);
+		new AuthorEntryRow(this);
+		new YearEntryRow(this);
+		new InkColorEntryRow(this);
+		new PaperColorEntryRow(this);
+		new PaperSourceEntryRow(this);
+		new PaperGradeEntryRow(this);
+		new ReadabilityEntryRow(this);
+		new VolumeEntryRow(this);
 		new SutraPageEntryRow(this);
 		new MissingPageEntryRow(this);
 		
 		/////
 		
 		new DrawingEntryRow(this);
+		new ColophonEntryRow(this);
 		
 		////////////////////////////
-*/
+
 		
 
 		
