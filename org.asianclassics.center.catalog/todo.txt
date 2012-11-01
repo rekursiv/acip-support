@@ -14,8 +14,6 @@ EntryView:
  hide "advanced" btns
  
 
-fix mouse wheel  (test on linux)
-
 
 =======
 

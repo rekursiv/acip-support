@@ -41,6 +41,9 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormAttachment;
 
 public class EntryView extends Composite {
 
@@ -62,13 +65,16 @@ public class EntryView extends Composite {
 		setLayout(new GridLayout(1, false));
 		
 		controlPanel = new Composite(this, SWT.NONE);
+		controlPanel.setLayout(new FormLayout());
 		GridData gd_controlPanel = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_controlPanel.widthHint = 566;
 		controlPanel.setLayoutData(gd_controlPanel);
-		controlPanel.setLayout(null);
 
 		btnSubmit = new Button(controlPanel, SWT.NONE);
-		btnSubmit.setBounds(10, 0, 50, 25);
+		FormData fd_btnSubmit = new FormData();
+		fd_btnSubmit.top = new FormAttachment(0);
+		fd_btnSubmit.left = new FormAttachment(0, 10);
+		btnSubmit.setLayoutData(fd_btnSubmit);
 		btnSubmit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -78,7 +84,10 @@ public class EntryView extends Composite {
 		btnSubmit.setText("Submit");
 		
 		btnSaveAsDraft = new Button(controlPanel, SWT.NONE);
-		btnSaveAsDraft.setBounds(387, 0, 78, 25);
+		FormData fd_btnSaveAsDraft = new FormData();
+		fd_btnSaveAsDraft.top = new FormAttachment(0);
+		fd_btnSaveAsDraft.left = new FormAttachment(0, 387);
+		btnSaveAsDraft.setLayoutData(fd_btnSaveAsDraft);
 		btnSaveAsDraft.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -88,7 +97,10 @@ public class EntryView extends Composite {
 		btnSaveAsDraft.setText("Save as draft");
 		
 		btnDelete = new Button(controlPanel, SWT.NONE);
-		btnDelete.setBounds(471, 0, 45, 25);
+		FormData fd_btnDelete = new FormData();
+		fd_btnDelete.top = new FormAttachment(0);
+		fd_btnDelete.left = new FormAttachment(0, 471);
+		btnDelete.setLayoutData(fd_btnDelete);
 		btnDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -101,6 +113,10 @@ public class EntryView extends Composite {
 		if (CatalogApp.debugMode) {
 			
 			Button btnTest = new Button(controlPanel, SWT.NONE);
+			FormData fd_btnTest = new FormData();
+			fd_btnTest.bottom = new FormAttachment(btnDelete, 0, SWT.BOTTOM);
+			fd_btnTest.left = new FormAttachment(0, 530);
+			btnTest.setLayoutData(fd_btnTest);
 			btnTest.setBounds(522, 0, 34, 25);
 			btnTest.addSelectionListener(new SelectionAdapter() {
 				@Override

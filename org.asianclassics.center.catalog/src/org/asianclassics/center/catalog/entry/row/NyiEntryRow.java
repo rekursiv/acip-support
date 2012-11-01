@@ -17,7 +17,7 @@ public class NyiEntryRow extends EntryCell {
 		lblNotYet = new Label(this, SWT.NONE);
 		FormData fd_lblNotYet = new FormData();
 		fd_lblNotYet.top = new FormAttachment(lblTitle, 0, SWT.TOP);
-		fd_lblNotYet.left = new FormAttachment(0, 115);
+		fd_lblNotYet.left = new FormAttachment(lblTitle, 20);
 		lblNotYet.setLayoutData(fd_lblNotYet);
 		lblNotYet.setText("( Not Yet Implemented )");
 	}

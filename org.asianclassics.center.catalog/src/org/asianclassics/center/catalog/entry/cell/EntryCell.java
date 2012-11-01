@@ -15,7 +15,7 @@ import com.google.inject.Inject;
 
 public class EntryCell extends Composite {
 
-	public static final int defaultTitleWidth = 100;
+	public static final int defaultTitleWidth = 130;
 	protected String titleString = "Default";
 	protected Label lblTitle;
 	protected EntryController ctlr;

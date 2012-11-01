@@ -21,7 +21,7 @@ public class PageSizeEntryRow extends EntryCell {
 		super(parent, "Page Size");
 		addHorizSep();
 
-		TextEntryCell width = new TextEntryCell(this, "Width", 40, BoxType.SIMPLE, 100) {
+		TextEntryCell width = new TextEntryCell(this, "Width", 50, BoxType.SIMPLE, 100) {
 			
 			@Subscribe
 			public void onPostRead(EntryModelPostReadEvent evt) {
@@ -52,7 +52,7 @@ public class PageSizeEntryRow extends EntryCell {
 		lblWmm.setText("mm");
 		lblWmm.setLayoutData(fd_lblWmm);
 		
-		TextEntryCell height = new TextEntryCell(this, "Height", 40, BoxType.SIMPLE, 100) {
+		TextEntryCell height = new TextEntryCell(this, "Height", 50, BoxType.SIMPLE, 100) {
 			
 			@Subscribe
 			public void onPostRead(EntryModelPostReadEvent evt) {

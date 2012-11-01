@@ -10,8 +10,10 @@ import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.IntNode;
 import org.codehaus.jackson.node.TextNode;
+import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -55,7 +57,6 @@ public class SelectionView extends Composite {
 
 	public SelectionView(Composite parent, int style, Injector injector) {
 		super(parent, style);
-		setLayout(null);
 		
 		doingUpdate = false;
 		idOfEntryToEdit = null;
@@ -83,9 +84,14 @@ public class SelectionView extends Composite {
 			btnUpdate.setText("Update");
 		
 		}
+		setLayout(new FormLayout());
 		
 		btnAction = new Button(this, SWT.NONE);
-		btnAction.setBounds(12, 5, 252, 25);
+		FormData fd_btnAction = new FormData();
+		fd_btnAction.right = new FormAttachment(0, 264);
+		fd_btnAction.top = new FormAttachment(0, 5);
+		fd_btnAction.left = new FormAttachment(0, 12);
+		btnAction.setLayoutData(fd_btnAction);
 		btnAction.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -99,7 +105,11 @@ public class SelectionView extends Composite {
 		potiTableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		potiTableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		potiTable = potiTableViewer.getTable();
-		potiTable.setBounds(12, 36, 101, 432);
+		FormData fd_potiTable = new FormData();
+		fd_potiTable.bottom = new FormAttachment(100, 0);
+		fd_potiTable.top = new FormAttachment(0, 36);
+		fd_potiTable.left = new FormAttachment(0, 0);
+		potiTable.setLayoutData(fd_potiTable);
 		potiTable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -110,6 +120,7 @@ public class SelectionView extends Composite {
 		potiTable.setHeaderVisible(true);
 		
 		TableViewerColumn potiCol = new TableViewerColumn(potiTableViewer, SWT.NONE);
+		potiCol.getColumn().setResizable(false);
 		potiCol.getColumn().setText("Poti #");
 		potiCol.getColumn().setWidth(80);
 		potiCol.setLabelProvider(new ColumnLabelProvider() {
@@ -120,10 +131,22 @@ public class SelectionView extends Composite {
 			}
 		});
 		
+		
+		
+//		Composite sutraTableContainer = new Composite(this, SWT.NONE);
+//		sutraTableViewer = new TableViewer(sutraTableContainer, SWT.BORDER | SWT.FULL_SELECTION);
 		sutraTableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		sutraTableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		sutraTable = sutraTableViewer.getTable();
-		sutraTable.setBounds(119, 36, 619, 432);
+		FormData fd_sutraTable = new FormData();
+		fd_sutraTable.bottom = new FormAttachment(100, 0);
+		fd_sutraTable.right = new FormAttachment(100, 0);
+		fd_sutraTable.top = new FormAttachment(0, 36);
+		fd_sutraTable.left = new FormAttachment(0, 119);
+//		sutraTableContainer.setLayoutData(fd_sutraTable);
+		sutraTable.setLayoutData(fd_sutraTable);
+//		sutraTable.setL
+		
 		sutraTable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -134,7 +157,8 @@ public class SelectionView extends Composite {
 		sutraTable.setHeaderVisible(true);
 		
 		sutraCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);
-		sutraCol.getColumn().setWidth(80);
+		sutraCol.getColumn().setResizable(false);
+		sutraCol.getColumn().setWidth(100);
 		sutraCol.getColumn().setText("Sutra #");
 		sutraCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -145,7 +169,8 @@ public class SelectionView extends Composite {
 		});
 		
 		dateCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);
-		dateCol.getColumn().setWidth(100);
+		dateCol.getColumn().setResizable(false);
+		dateCol.getColumn().setWidth(120);
 		dateCol.getColumn().setText("Date Submitted");
 		dateCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -160,7 +185,8 @@ public class SelectionView extends Composite {
 		});
 		
 		titleCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);
-		titleCol.getColumn().setWidth(416);
+		titleCol.getColumn().setResizable(false);
+		titleCol.getColumn().setWidth(200);
 		titleCol.getColumn().setText("Tibetan Title");
 		titleCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -179,6 +205,8 @@ public class SelectionView extends Composite {
 	}
 	
 
+
+	
 
 
 	@Inject
@@ -220,6 +248,7 @@ public class SelectionView extends Composite {
 		potiTableViewer.setInput(ctlr.getPotiList());
 		potiTableViewer.refresh();
 		potiTableViewer.insert(0, 0);
+		potiTableViewer.getTable().pack();   ///  ???
 	}
 	
 	private void onPotiSelect(Object data) {
@@ -242,6 +271,7 @@ public class SelectionView extends Composite {
 			sutraTableViewer.getTable().setSelection(initSelect);  // does NOT fire a select event
 			onSutraSelect(sutraTableViewer.getTable().getItem(initSelect).getData());
 		}
+		titleCol.getColumn().pack();
 	}
 	
 	private void onSutraSelect(Object data) {

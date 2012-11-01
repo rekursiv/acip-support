@@ -58,7 +58,7 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		});
 		FormData fd_btnDelete = new FormData();
 		fd_btnDelete.left = new FormAttachment(btnColors, 50);
-		fd_btnDelete.top = new FormAttachment(0, 10);
+		fd_btnDelete.top = new FormAttachment(0, 0);
 		btnDelete.setLayoutData(fd_btnDelete);
 		btnDelete.setText("Delete Drawing");
 		
@@ -66,23 +66,23 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		fd_btnColors.bottom = new FormAttachment(lblPosition, 16);
 		fd_btnColors.top = new FormAttachment(lblPosition, 0, SWT.TOP);
 		FormData fd_lblPosition = new FormData();
-		fd_lblPosition.top = new FormAttachment(0, 12);
-		fd_lblPosition.bottom = new FormAttachment(0, 27);
-		fd_lblPosition.right = new FormAttachment(0, 166);
+		fd_lblPosition.top = new FormAttachment(0, 10);
+//		fd_lblPosition.bottom = new FormAttachment(0, 27);
+//		fd_lblPosition.right = new FormAttachment(0, 166);
 		fd_lblPosition.left = new FormAttachment(0, 120);
 		lblPosition.setLayoutData(fd_lblPosition);
 		lblPosition.setText("Position:");
 		
 		btnLeft = new Button(this, SWT.RADIO);
 		FormData fd_btnLeft = new FormData();
-		fd_btnLeft.top = new FormAttachment(lblPosition, 0, SWT.TOP);
-		fd_btnLeft.left = new FormAttachment(lblPosition, 6);
+		fd_btnLeft.top = new FormAttachment(lblPosition, -2, SWT.TOP);
+		fd_btnLeft.left = new FormAttachment(lblPosition, 12);
 		btnLeft.setLayoutData(fd_btnLeft);
 		btnLeft.setText("Left");
 		
 		btnCenter = new Button(this, SWT.RADIO);
 		FormData fd_btnCenter = new FormData();
-		fd_btnCenter.left = new FormAttachment(btnLeft);
+		fd_btnCenter.left = new FormAttachment(btnLeft, 8);
 		fd_btnCenter.top = new FormAttachment(btnLeft, 0, SWT.TOP);
 		btnCenter.setLayoutData(fd_btnCenter);
 		btnCenter.setText("Center");
@@ -90,15 +90,15 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		btnRight = new Button(this, SWT.RADIO);
 		FormData fd_btnRight = new FormData();
 		fd_btnRight.top = new FormAttachment(btnCenter, 0, SWT.TOP);
-		fd_btnRight.left = new FormAttachment(btnCenter);
+		fd_btnRight.left = new FormAttachment(btnCenter, 8);
 		btnRight.setLayoutData(fd_btnRight);
 		btnRight.setText("Right");
 		
 		btnFullPage = new Button(this, SWT.RADIO);
-		fd_btnColors.left = new FormAttachment(btnFullPage, 24);
+		fd_btnColors.left = new FormAttachment(btnFullPage, 32);
 		FormData fd_btnFullPage = new FormData();
 		fd_btnFullPage.top = new FormAttachment(btnRight, 0, SWT.TOP);
-		fd_btnFullPage.left = new FormAttachment(btnRight, 6);
+		fd_btnFullPage.left = new FormAttachment(btnRight, 8);
 		btnFullPage.setLayoutData(fd_btnFullPage);
 		btnFullPage.setText("Full Page");
 	
