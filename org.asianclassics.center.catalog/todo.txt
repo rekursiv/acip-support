@@ -1,18 +1,28 @@
 
 
-*** convert DB
+build auto-deploy
+
+**  fix slowness
+
+
+fix numeric input
+  mm -> cm
+  catch all number format ex
+
+
+convert DB
   find the latest version
   
 
 DB lock/sync
 
+prevent multi-logins
+
 SelectionView:
  add "valid" field to Sutra list:  yes/no
  in list: mark invalid sutras in red
 
-EntryView:
- hide "advanced" btns
- 
+
 
 
 =======

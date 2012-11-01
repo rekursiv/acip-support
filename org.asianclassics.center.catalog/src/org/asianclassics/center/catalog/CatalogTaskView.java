@@ -29,13 +29,6 @@ public class CatalogTaskView extends TaskView {
 	private Group group;
 
 	
-	public CatalogTaskView(Composite parent, int style) {
-		super(parent, style);
-	}
-	
-	/**
-	 * @wbp.parser.constructor
-	 */
 	public CatalogTaskView(Composite parent, int style, Injector injector) {
 		super(parent, style);
 		setLayout(new FormLayout());
@@ -78,9 +71,7 @@ public class CatalogTaskView extends TaskView {
 		fd_lblWorkerId.bottom = new FormAttachment(btnLogout, 25);
 		fd_lblWorkerId.top = new FormAttachment(btnLogout, 0, SWT.TOP);
 		lblWorkerId.setLayoutData(fd_lblWorkerId);
-		fd_composite.top = new FormAttachment(group, 6);
-		
-
+		fd_composite.top = new FormAttachment(group, 0);
 
 		if (injector!=null) injector.injectMembers(this);
 	}

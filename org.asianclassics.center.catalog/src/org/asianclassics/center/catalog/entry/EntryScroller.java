@@ -24,23 +24,15 @@ public class EntryScroller extends Composite {
 		scroller.setContent(entryView);
 		
 		onAdaptSize(null);
-//		pack(); ///
 		
 		if (injector!=null) injector.injectMembers(this);
 	}
 	
 	@Subscribe
 	public void onAdaptSize(ParentAdaptSizeEvent evt) {
-//		System.out.println("EntryScroller#onAdaptSize");
 		scroller.setMinSize(entryView.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
-/*	
-	@Override
-	public void pack() {   															//  TODO:   maybe use the event bus instead???
-		System.out.println("EntryScroller#pack");
-		scroller.setMinSize(entryView.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-	}
-*/
+
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components

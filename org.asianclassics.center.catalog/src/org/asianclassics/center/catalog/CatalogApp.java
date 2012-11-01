@@ -5,9 +5,6 @@ import org.asianclassics.center.CenterModule;
 import org.asianclassics.center.CenterPanel;
 import org.asianclassics.center.CenterShell;
 import org.asianclassics.center.TaskView;
-import org.asianclassics.center.catalog.entry.EntryScroller;
-import org.asianclassics.center.catalog.entry.EntryView;
-import org.asianclassics.center.catalog.scratch.TestComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 
@@ -42,16 +39,6 @@ public class CatalogApp {
 		TaskView taskView = new CatalogTaskView(cp.getMainStackView(), SWT.NONE, injector);
 		cp.getMainStackView().setTaskView(taskView);
 
-		
-		
-		
-//		new EntryView(cs, SWT.NONE);
-//		new EntryScroller(cs, SWT.NONE);
-//		new Test(cs, SWT.NONE, injector);
-		
-		
-		
-		
 		cs.init(injector);
 				
 	}

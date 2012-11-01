@@ -48,14 +48,9 @@ import org.eclipse.swt.layout.FormAttachment;
 public class EntryView extends Composite {
 
 	private EventBus eb;
-	private Button btnSubmit;
-	private Injector injector;
 	private EntryController ctlr;
-	private Button btnSaveAsDraft;
-	private Button btnDelete;
-	
+	private Injector injector;
 	private static EntryView instance;
-	private Composite controlPanel;
 
 	public EntryView(Composite parent, int style, Injector injector) {
 		super(parent, SWT.NONE);
@@ -63,73 +58,6 @@ public class EntryView extends Composite {
 		
 		this.injector = injector;
 		setLayout(new GridLayout(1, false));
-		
-		controlPanel = new Composite(this, SWT.NONE);
-		controlPanel.setLayout(new FormLayout());
-		GridData gd_controlPanel = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_controlPanel.widthHint = 566;
-		controlPanel.setLayoutData(gd_controlPanel);
-
-		btnSubmit = new Button(controlPanel, SWT.NONE);
-		FormData fd_btnSubmit = new FormData();
-		fd_btnSubmit.top = new FormAttachment(0);
-		fd_btnSubmit.left = new FormAttachment(0, 10);
-		btnSubmit.setLayoutData(fd_btnSubmit);
-		btnSubmit.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ctlr.submit();
-			}
-		});
-		btnSubmit.setText("Submit");
-		
-		btnSaveAsDraft = new Button(controlPanel, SWT.NONE);
-		FormData fd_btnSaveAsDraft = new FormData();
-		fd_btnSaveAsDraft.top = new FormAttachment(0);
-		fd_btnSaveAsDraft.left = new FormAttachment(0, 387);
-		btnSaveAsDraft.setLayoutData(fd_btnSaveAsDraft);
-		btnSaveAsDraft.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ctlr.saveAsDraft();
-			}
-		});
-		btnSaveAsDraft.setText("Save as draft");
-		
-		btnDelete = new Button(controlPanel, SWT.NONE);
-		FormData fd_btnDelete = new FormData();
-		fd_btnDelete.top = new FormAttachment(0);
-		fd_btnDelete.left = new FormAttachment(0, 471);
-		btnDelete.setLayoutData(fd_btnDelete);
-		btnDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ctlr.test();
-			}
-		});
-		btnDelete.setText("Delete");
-		
-		
-		if (CatalogApp.debugMode) {
-			
-			Button btnTest = new Button(controlPanel, SWT.NONE);
-			FormData fd_btnTest = new FormData();
-			fd_btnTest.bottom = new FormAttachment(btnDelete, 0, SWT.BOTTOM);
-			fd_btnTest.left = new FormAttachment(0, 530);
-			btnTest.setLayoutData(fd_btnTest);
-			btnTest.setBounds(522, 0, 34, 25);
-			btnTest.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					eb.post(new TestEvent());
-				}
-			});
-			btnTest.setText("Test");
-
-		}		
-
-		
-		////////////////////////////
 
 		new InfoEntryRow(this);
 		new LibraryNumberEntryRow(this);
@@ -156,9 +84,6 @@ public class EntryView extends Composite {
 		new DrawingEntryRow(this);
 		new ColophonEntryRow(this);
 		
-		////////////////////////////
-		
-
 		
 		if (injector!=null) injector.injectMembers(this);
 		
@@ -183,9 +108,6 @@ public class EntryView extends Composite {
 	public Injector getInjector() {
 		return injector;
 	}
-	
-	
-	
 	
 	@Override
 	protected void checkSubclass() {

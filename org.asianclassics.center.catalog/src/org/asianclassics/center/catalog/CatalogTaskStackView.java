@@ -2,7 +2,7 @@ package org.asianclassics.center.catalog;
 
 
 import org.asianclassics.center.catalog.entry.EntryController;
-import org.asianclassics.center.catalog.entry.EntryScroller;
+import org.asianclassics.center.catalog.entry.EntryRootPanel;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.asianclassics.center.event.LinkReadyEvent;
@@ -16,7 +16,7 @@ import com.google.inject.Injector;
 public class CatalogTaskStackView extends Composite {
 
 	private StackLayout stack;
-	private EntryScroller entry;
+	private EntryRootPanel entry;
 	private SelectionView selection;
 	private Injector injector;
 	
@@ -38,7 +38,6 @@ public class CatalogTaskStackView extends Composite {
 		injector.getInstance(EntryController.class);
 	}
 	
-	
 	@Subscribe
 	public void onMakeTop(CatalogTaskMakeTopEvent evt) {
 		if (evt.getViewType()==CatalogTaskViewType.SELECTION) {
@@ -46,7 +45,8 @@ public class CatalogTaskStackView extends Composite {
 			stack.topControl = selection;
 		}
 		else if (evt.getViewType()==CatalogTaskViewType.ENTRY) {
-			if (entry==null) entry = new EntryScroller(this, SWT.NONE, injector);
+			if (entry==null) entry = new EntryRootPanel(this, SWT.NONE, injector);
+			else entry.reset();
 			stack.topControl = entry;
 		}
 		layout();

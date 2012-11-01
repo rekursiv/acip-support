@@ -121,7 +121,7 @@ public class EntryController {
 	
 	
 	public void test() {                       ////////////////////   TEST
-
+		System.out.println("TEST   isModified="+isModified);
 	}
 
 }
