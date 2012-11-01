@@ -2,8 +2,6 @@
 
 build auto-deploy
 
-**  fix slowness
-
 
 fix numeric input
   mm -> cm

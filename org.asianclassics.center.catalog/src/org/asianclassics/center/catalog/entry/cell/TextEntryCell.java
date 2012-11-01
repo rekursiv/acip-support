@@ -25,6 +25,7 @@ public class TextEntryCell extends StringEntryCell {
 	protected static final BoxType defaultBoxType = BoxType.STANDARD;
 
 	protected StyledText text;
+	protected int prevLineCount = 1;
 	protected boolean adaptBoxHeight;
 	protected int simpleBoxWidth;
 	protected BoxType boxType;
@@ -76,7 +77,9 @@ public class TextEntryCell extends StringEntryCell {
 			public void modifyText(ModifyEvent evt) {
 				onModify();
 				if (adaptBoxHeight) {
-					eb.post(new ParentAdaptSizeEvent());
+					System.out.println(prevLineCount+":"+text.getLineCount());
+					if (text.getLineCount()!=prevLineCount) eb.post(new ParentAdaptSizeEvent());
+					prevLineCount=text.getLineCount();
 				}
 			}
 		});
@@ -95,6 +98,7 @@ public class TextEntryCell extends StringEntryCell {
 	
 	@Override
 	protected void setGuiData() {
+		prevLineCount = 1;
 		text.setText(data);
 	}
 	

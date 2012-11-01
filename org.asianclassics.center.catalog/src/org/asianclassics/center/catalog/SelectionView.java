@@ -60,10 +60,14 @@ public class SelectionView extends Composite {
 		
 		doingUpdate = false;
 		idOfEntryToEdit = null;
-		
+
 		if (CatalogApp.debugMode) {
 		
 			btnTest = new Button(this, SWT.NONE);
+			FormData fd_btnTest = new FormData();
+			fd_btnTest.top = new FormAttachment(1, 0);
+			fd_btnTest.right = new FormAttachment(100, -1);
+			btnTest.setLayoutData(fd_btnTest);
 			btnTest.setBounds(425, 5, 34, 25);
 			btnTest.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -74,6 +78,11 @@ public class SelectionView extends Composite {
 			btnTest.setText("Test");
 			
 			btnUpdate = new Button(this, SWT.NONE);
+			FormData fd_btnUpdate = new FormData();
+			fd_btnUpdate.bottom = new FormAttachment(btnTest, 0, SWT.BOTTOM);
+			fd_btnUpdate.right = new FormAttachment(btnTest, -6);
+
+			btnUpdate.setLayoutData(fd_btnUpdate);
 			btnUpdate.setBounds(476, 5, 66, 25);
 			btnUpdate.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -84,6 +93,7 @@ public class SelectionView extends Composite {
 			btnUpdate.setText("Update");
 		
 		}
+
 		setLayout(new FormLayout());
 		
 		btnAction = new Button(this, SWT.NONE);
@@ -122,7 +132,7 @@ public class SelectionView extends Composite {
 		TableViewerColumn potiCol = new TableViewerColumn(potiTableViewer, SWT.NONE);
 		potiCol.getColumn().setResizable(false);
 		potiCol.getColumn().setText("Poti #");
-		potiCol.getColumn().setWidth(80);
+		potiCol.getColumn().setWidth(100);
 		potiCol.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -132,20 +142,15 @@ public class SelectionView extends Composite {
 		});
 		
 		
-		
-//		Composite sutraTableContainer = new Composite(this, SWT.NONE);
-//		sutraTableViewer = new TableViewer(sutraTableContainer, SWT.BORDER | SWT.FULL_SELECTION);
 		sutraTableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		sutraTableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		sutraTable = sutraTableViewer.getTable();
 		FormData fd_sutraTable = new FormData();
+		fd_sutraTable.left = new FormAttachment(potiTable, 6);
 		fd_sutraTable.bottom = new FormAttachment(100, 0);
 		fd_sutraTable.right = new FormAttachment(100, 0);
 		fd_sutraTable.top = new FormAttachment(0, 36);
-		fd_sutraTable.left = new FormAttachment(0, 119);
-//		sutraTableContainer.setLayoutData(fd_sutraTable);
 		sutraTable.setLayoutData(fd_sutraTable);
-//		sutraTable.setL
 		
 		sutraTable.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -206,8 +211,6 @@ public class SelectionView extends Composite {
 	
 
 
-	
-
 
 	@Inject
 	public void inject(EventBus eb, SelectionController ctlr) {
@@ -248,7 +251,6 @@ public class SelectionView extends Composite {
 		potiTableViewer.setInput(ctlr.getPotiList());
 		potiTableViewer.refresh();
 		potiTableViewer.insert(0, 0);
-		potiTableViewer.getTable().pack();   ///  ???
 	}
 	
 	private void onPotiSelect(Object data) {

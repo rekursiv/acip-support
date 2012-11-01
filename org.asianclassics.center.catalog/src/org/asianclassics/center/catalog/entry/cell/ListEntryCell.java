@@ -80,7 +80,7 @@ public abstract class ListEntryCell extends EntryCell {
 	public void onPostRead(EntryModelPostReadEvent evt) {
 		deleteAllViews();
 		copyModelToView();
-		eb.post(new ParentAdaptSizeEvent());
+		eb.post(new ParentAdaptSizeEvent());   //  FIXME:  this could be optimized by only sending when necessary
 	}
 	
 	protected void addCellFromModel(Model model) {
