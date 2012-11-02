@@ -55,7 +55,7 @@ public class SelectionController {
 		entry.inputBy = workerId;
 		entry.potiIndex = latestGlobalPoti+1;
 		entry.sutraIndex = 1;
-		entry.titleTibetan = "This sutra begins poti # "+entry.potiIndex;
+//		entry.titleTibetan = "This sutra begins poti # "+entry.potiIndex;
 		repo.add(entry);
 		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.ENTRY));
 		eb.post(new EntryEditEvent(entry));
@@ -65,7 +65,7 @@ public class SelectionController {
 		EntryModel entry = new EntryModel();
 		entry.potiIndex = potiIndex;
 		entry.sutraIndex = sutraIndex;
-		entry.titleTibetan = "This is sutra # "+entry.sutraIndex+" in poti # "+entry.potiIndex;
+//		entry.titleTibetan = "This is sutra # "+entry.sutraIndex+" in poti # "+entry.potiIndex;
 		repo.add(entry);
 		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.ENTRY));
 		eb.post(new EntryEditEvent(entry));

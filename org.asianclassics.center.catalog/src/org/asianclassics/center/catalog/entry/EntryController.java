@@ -10,6 +10,7 @@ import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTas
 import org.asianclassics.center.catalog.event.EntryEditEvent;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
+import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
 import org.ektorp.ViewResult.Row;
 import org.joda.time.DateTime;
@@ -72,17 +73,19 @@ public class EntryController {
 			eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
 		} else {
 			write();
-			// TODO:  show msg to user
+			eb.post(new EntryUserMessageEvent("Please check your input and re-submit."));
 		}
 		
 	}
 	
+
 	public void saveAsDraft() {
 		write();
 		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
 	}
 	
-	public void delete() {
+	
+	public void requestDelete() {
 		if (model!=null) {
 			boolean okToDelete = true;
 			if (model.sutraIndex==1) {  //  deleting sutra #1 would make the entire poti invisible in the selection interface
@@ -92,14 +95,18 @@ public class EntryController {
 			}
 			// TODO:  get verification from user
 			if (okToDelete) {
-				model._deleted=true;
-				repo.update(model);
-				eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
+				delete();
 			} else {
 				System.out.println("NOT OK to delete!");
 				// TODO:  show msg to user
 			}
 		}
+	}
+	
+	private void delete() {
+		model._deleted=true;
+		repo.update(model);
+		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
 	}
 	
 	
@@ -123,5 +130,7 @@ public class EntryController {
 	public void test() {                       ////////////////////   TEST
 		System.out.println("TEST   isModified="+isModified);
 	}
+
+
 
 }

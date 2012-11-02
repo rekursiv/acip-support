@@ -1,8 +1,10 @@
 package org.asianclassics.center.catalog.entry;
 
+import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
 import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.swt.SWT;
@@ -51,9 +53,8 @@ public class EntryRootPanel extends Composite {
 		fd_composite.bottom = new FormAttachment(100, 0);
 		fd_composite.right = new FormAttachment(100, 0);
 		fd_composite.top = new FormAttachment(controlPanel, 6);
-		
 		lblUserMessage = new Label(controlPanel, SWT.NONE);
-		lblUserMessage.setText("This is the user message");
+		
 		FormData fd_lblUserMessage = new FormData();
 		fd_lblUserMessage.right = new FormAttachment(0, 280);
 		fd_lblUserMessage.top = new FormAttachment(8, -5);
@@ -111,7 +112,7 @@ public class EntryRootPanel extends Composite {
 		btnDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				ctlr.test();
+				ctlr.requestDelete();
 			}
 		});
 		FormData fd_btnAnotherButton = new FormData();
@@ -119,7 +120,6 @@ public class EntryRootPanel extends Composite {
 		fd_btnAnotherButton.left = new FormAttachment(btnSave, 6);
 		btnDelete.setLayoutData(fd_btnAnotherButton);
 		btnDelete.setText("Delete");
-
 
 		if (injector!=null) injector.injectMembers(this);
 	}
@@ -130,8 +130,14 @@ public class EntryRootPanel extends Composite {
 		this.ctlr = ctlr;
 	}
 	
+	@Subscribe
+	public void onUserMessage(EntryUserMessageEvent evt) {
+		lblUserMessage.setText(evt.getMessage());
+	}
+	
 	public void reset() {
 		xpndItem.setExpanded(false);
+		lblUserMessage.setText("");
 	}
 	
 	@Override

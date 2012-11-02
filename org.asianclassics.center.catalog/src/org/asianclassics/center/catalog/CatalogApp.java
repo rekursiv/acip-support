@@ -15,7 +15,7 @@ import com.google.inject.Injector;
 
 public class CatalogApp {
 
-	public static final boolean debugMode = true;
+	public static final boolean debugMode = false;
 	
 	/**
 	 * Entry point
