@@ -109,20 +109,12 @@ public class TextEntryCell extends StringEntryCell {
 	}
 	
 
-	
 	@Override
 	protected void onValidate() {
-		if (isValid()) {
-			// TODO:  
-		} else {
+		if (text.getText().isEmpty()) {
 			ctlr.invalidate();
 			setHilite(HiliteMode.INVALID);
 		}
-	}
-	
-	protected boolean isValid() {
-		if (text.getText().isEmpty()) return false;
-		else return true;
 	}
 	
 	@Override

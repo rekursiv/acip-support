@@ -2,16 +2,15 @@ package org.asianclassics.center.catalog.entry.row;
 
 import org.asianclassics.center.catalog.entry.cell.EntryCell;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
-import org.asianclassics.center.catalog.scratch.EntryRow;
-import org.eclipse.swt.widgets.Composite;
-
-import com.google.common.eventbus.Subscribe;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+
+import com.google.common.eventbus.Subscribe;
 
 public class InfoEntryRow extends EntryCell {
 	private Label lblSerialTitle;

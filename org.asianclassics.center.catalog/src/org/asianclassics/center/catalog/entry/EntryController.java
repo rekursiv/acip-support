@@ -70,7 +70,8 @@ public class EntryController {
 				model.dateTimeFirstSubmitted = new DateTime();
 			}
 			write();
-			eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
+//			eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));    ////////////////////   TEST  
+			eb.post(new EntryUserMessageEvent("All entries are valid."));        ////////////////////   TEST  
 		} else {
 			write();
 			eb.post(new EntryUserMessageEvent("Please check your input and re-submit."));

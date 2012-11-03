@@ -1,12 +1,15 @@
 
 
 
-fix numeric input
-  mm -> cm
-  catch all number format ex
+validate combo boxes
 
 autoscroll
 
+autosave
+
+save on logout/quit
+
+---
 
 convert DB
   find the latest version
