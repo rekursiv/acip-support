@@ -48,12 +48,12 @@ public class LoginView extends Composite {
 			}
 		});
 		FormData fd_btnLogin = new FormData();
-		fd_btnLogin.right = new FormAttachment(0, 232);
 		btnLogin.setLayoutData(fd_btnLogin);
 		btnLogin.setText("Login");
 		
 		txtWorkerId = new Text(this, SWT.BORDER);
-		fd_btnLogin.bottom = new FormAttachment(0, 143);
+		fd_btnLogin.top = new FormAttachment(txtWorkerId, -28);
+		fd_btnLogin.left = new FormAttachment(txtWorkerId, 26);
 		txtWorkerId.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -63,16 +63,13 @@ public class LoginView extends Composite {
 				}
 			}
 		});
-		fd_btnLogin.left = new FormAttachment(0, 176);
 		FormData fd_txtWorkerId = new FormData();
-		fd_txtWorkerId.left = new FormAttachment(0, 7);
-		fd_txtWorkerId.right = new FormAttachment(0, 170);
 		txtWorkerId.setLayoutData(fd_txtWorkerId);
 		
 		lblStatus = new Label(this, SWT.NONE);
-		fd_btnLogin.top = new FormAttachment(0, 115);
+		fd_txtWorkerId.right = new FormAttachment(0, 178);
+		fd_txtWorkerId.left = new FormAttachment(0, 15);
 		FormData fd_lblStatus = new FormData();
-		fd_lblStatus.bottom = new FormAttachment(txtWorkerId, 31, SWT.BOTTOM);
 		fd_lblStatus.top = new FormAttachment(txtWorkerId, 6);
 		fd_lblStatus.right = new FormAttachment(txtWorkerId, 348);
 		fd_lblStatus.left = new FormAttachment(txtWorkerId, 0, SWT.LEFT);
@@ -81,17 +78,20 @@ public class LoginView extends Composite {
 		lblStatus.setText("status");
 		
 		lblLogo = new Label(this, SWT.NONE);
-		fd_txtWorkerId.bottom = new FormAttachment(0, 144);
 		fd_txtWorkerId.top = new FormAttachment(lblLogo, 6);
 		lblLogo.setImage(SWTResourceManager.getImage(LoginView.class, "/org/asianclassics/center/logo_half.png"));
-		lblLogo.setLayoutData(new FormData());
+		FormData fd_lblLogo = new FormData();
+		fd_lblLogo.bottom = new FormAttachment(0, 124);
+		fd_lblLogo.top = new FormAttachment(0, 12);
+		fd_lblLogo.left = new FormAttachment(0, 11);
+		fd_lblLogo.right = new FormAttachment(0, 310);
+		lblLogo.setLayoutData(fd_lblLogo);
 		
 		lblServerHelpMessage = new Label(this, SWT.NONE);
 		FormData fd_lblServerHelpMessage = new FormData();
-		fd_lblServerHelpMessage.bottom = new FormAttachment(lblStatus, 25, SWT.BOTTOM);
-		fd_lblServerHelpMessage.top = new FormAttachment(lblStatus);
-		fd_lblServerHelpMessage.right = new FormAttachment(100, -12);
-		fd_lblServerHelpMessage.left = new FormAttachment(0, 7);
+		fd_lblServerHelpMessage.top = new FormAttachment(lblStatus, 6);
+		fd_lblServerHelpMessage.right = new FormAttachment(lblStatus, 471);
+		fd_lblServerHelpMessage.left = new FormAttachment(lblStatus, 0, SWT.LEFT);
 		lblServerHelpMessage.setLayoutData(fd_lblServerHelpMessage);
 		lblServerHelpMessage.setText("Please make sure that the server machine is powered on.");
 //		Image img = new Image(Display.getDefault(), App.class.getResourceAsStream("logo_half.png"));

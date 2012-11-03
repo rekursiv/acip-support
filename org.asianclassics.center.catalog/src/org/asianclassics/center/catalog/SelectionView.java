@@ -148,7 +148,7 @@ public class SelectionView extends Composite {
 		FormData fd_sutraTable = new FormData();
 		fd_sutraTable.left = new FormAttachment(potiTable, 6);
 		fd_sutraTable.bottom = new FormAttachment(100, 0);
-		fd_sutraTable.right = new FormAttachment(100, 0);
+		fd_sutraTable.right = new FormAttachment(100, -12);
 		fd_sutraTable.top = new FormAttachment(0, 36);
 		sutraTable.setLayoutData(fd_sutraTable);
 		

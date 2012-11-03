@@ -39,17 +39,17 @@ public class CatalogTaskView extends TaskView {
 		
 		stack = new CatalogTaskStackView(this, SWT.NONE, injector);
 		FormData fd_composite = new FormData();
-		fd_composite.bottom = new FormAttachment(100, 0);
+		fd_composite.bottom = new FormAttachment(100, -12);
 		fd_composite.right = new FormAttachment(100, 0);
-		fd_composite.left = new FormAttachment(0, 0);
 		stack.setLayoutData(fd_composite);
 		
 		group = new Group(this, SWT.NONE);
+		fd_composite.left = new FormAttachment(group, 0, SWT.LEFT);
 		FormData fd_group = new FormData();
 		fd_group.top = new FormAttachment(0, 0);
 		fd_group.bottom = new FormAttachment(0, 55);
-		fd_group.left = new FormAttachment(0, 0);
-		fd_group.right = new FormAttachment(100, 0);
+		fd_group.left = new FormAttachment(0, 12);
+		fd_group.right = new FormAttachment(100, -12);
 		group.setLayoutData(fd_group);
 		group.setLayout(new FormLayout());
 		

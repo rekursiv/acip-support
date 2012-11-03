@@ -17,21 +17,24 @@ public class EntryScroller extends Composite {
 	public EntryScroller(Composite parent, int style, Injector injector) {
 		super(parent, style);
 		setLayout(new FillLayout(SWT.HORIZONTAL));
-		scroller = new ScrolledComposite(this, SWT.V_SCROLL);
+		scroller = new ScrolledComposite(this, SWT.H_SCROLL|SWT.V_SCROLL);
 		scroller.setExpandHorizontal(true);
-		scroller.setExpandVertical(true);	
+//		scroller.setExpandVertical(true);	
 		entryView = new EntryView(scroller, SWT.NONE, injector);
 		scroller.setContent(entryView);
+		scroller.setShowFocusedControl(true);
+		scroller.setMinWidth(900);
 		
-		onAdaptSize(null);
+//		onAdaptSize(null);
+//		entryView.computeSize(SWT.DEFAULT, SWT.DEFAULT);  /////////////
 		
 		if (injector!=null) injector.injectMembers(this);
 	}
 	
-	@Subscribe
-	public void onAdaptSize(ParentAdaptSizeEvent evt) {
-		scroller.setMinSize(entryView.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-	}
+//	@Subscribe
+//	public void onAdaptSize(ParentAdaptSizeEvent evt) {
+//		scroller.setMinSize(entryView.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+//	}
 
 	@Override
 	protected void checkSubclass() {

@@ -52,9 +52,9 @@ public class CenterPanel extends Composite {
 		statusPanel.setLayoutData(fd_statusPanel);
 		
 		FormData fd_mainStackView = new FormData();
-		fd_mainStackView.left = new FormAttachment(0, 12);
-		fd_mainStackView.right = new FormAttachment(100, -12);
-		fd_mainStackView.bottom = new FormAttachment(100, -12);
+		fd_mainStackView.left = new FormAttachment(0, 0);
+		fd_mainStackView.right = new FormAttachment(100, 0);
+		fd_mainStackView.bottom = new FormAttachment(100, 0);
 		fd_mainStackView.top = new FormAttachment(statusPanel, 6);
 		mainStackView.setLayoutData(fd_mainStackView);
 		

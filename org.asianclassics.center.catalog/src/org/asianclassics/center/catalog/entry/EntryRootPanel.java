@@ -44,7 +44,7 @@ public class EntryRootPanel extends Composite {
 		controlPanel.setLayout(new FormLayout());
 		FormData fd_controlPanel = new FormData();
 		fd_controlPanel.bottom = new FormAttachment(0, 70);
-		fd_controlPanel.right = new FormAttachment(100, 0);
+		fd_controlPanel.right = new FormAttachment(100, -12);
 		fd_controlPanel.top = new FormAttachment(0, 0);
 		fd_controlPanel.left = new FormAttachment(0, 0);
 		controlPanel.setLayoutData(fd_controlPanel);
