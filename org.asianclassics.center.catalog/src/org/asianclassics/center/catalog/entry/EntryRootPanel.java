@@ -1,23 +1,24 @@
 package org.asianclassics.center.catalog.entry;
 
 import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ExpandBar;
+import org.eclipse.swt.widgets.ExpandItem;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.ExpandItem;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.ExpandBar;
 
 public class EntryRootPanel extends Composite {
 
@@ -120,6 +121,8 @@ public class EntryRootPanel extends Composite {
 		fd_btnAnotherButton.left = new FormAttachment(btnSave, 6);
 		btnDelete.setLayoutData(fd_btnAnotherButton);
 		btnDelete.setText("Delete");
+		
+		lblUserMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 
 		if (injector!=null) injector.injectMembers(this);
 	}

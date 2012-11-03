@@ -11,7 +11,6 @@ import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 
 
@@ -111,19 +110,12 @@ public class TextEntryCell extends StringEntryCell {
 
 	@Override
 	protected void onValidate() {
-		if (text.getText().isEmpty()) {
+		if (text.getText().trim().isEmpty()) {
 			ctlr.invalidate();
 			setHilite(HiliteMode.INVALID);
 		}
 	}
 	
-	@Override
-	protected void setHilite(HiliteMode mode) {
-		if (mode==HiliteMode.NONE) text.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		else if (mode==HiliteMode.INVALID) text.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		else if (mode==HiliteMode.COPIED) text.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
-	}
-
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components

@@ -3,7 +3,6 @@ package org.asianclassics.center.catalog.entry.cell;
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell.BoxType;
 import org.asianclassics.center.catalog.entry.model.DrawingModel;
 import org.asianclassics.center.catalog.entry.model.Model;
-import org.asianclassics.center.catalog.entry.model.MissingPageModel;
 import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -13,6 +12,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEntryCell {
 
@@ -74,6 +74,12 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		lblPosition.setText("Position:");
 		
 		btnLeft = new Button(this, SWT.RADIO);
+		btnLeft.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				onModify();
+			}
+		});
 		FormData fd_btnLeft = new FormData();
 		fd_btnLeft.top = new FormAttachment(lblPosition, -2, SWT.TOP);
 		fd_btnLeft.left = new FormAttachment(lblPosition, 12);
@@ -81,6 +87,12 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		btnLeft.setText("Left");
 		
 		btnCenter = new Button(this, SWT.RADIO);
+		btnCenter.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				onModify();
+			}
+		});
 		FormData fd_btnCenter = new FormData();
 		fd_btnCenter.left = new FormAttachment(btnLeft, 8);
 		fd_btnCenter.top = new FormAttachment(btnLeft, 0, SWT.TOP);
@@ -88,6 +100,12 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		btnCenter.setText("Center");
 		
 		btnRight = new Button(this, SWT.RADIO);
+		btnRight.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				onModify();
+			}
+		});
 		FormData fd_btnRight = new FormData();
 		fd_btnRight.top = new FormAttachment(btnCenter, 0, SWT.TOP);
 		fd_btnRight.left = new FormAttachment(btnCenter, 8);
@@ -95,6 +113,12 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		btnRight.setText("Right");
 		
 		btnFullPage = new Button(this, SWT.RADIO);
+		btnFullPage.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				onModify();
+			}
+		});
 		fd_btnColors.left = new FormAttachment(btnFullPage, 32);
 		FormData fd_btnFullPage = new FormData();
 		fd_btnFullPage.top = new FormAttachment(btnRight, 0, SWT.TOP);
@@ -160,7 +184,16 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		return "unselected";
 	}
 	
-
+	@Override
+	protected void onValidate() {
+		if (getPositionString().equals("unselected")) setHilite(HiliteMode.INVALID);
+	}	
+	
+	@Override
+	protected void setHilite(HiliteMode mode) {
+		if (mode==HiliteMode.NONE) lblPosition.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		else if (mode==HiliteMode.INVALID) lblPosition.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
+	}
 	
 	@Override
 	public Model getModel() {

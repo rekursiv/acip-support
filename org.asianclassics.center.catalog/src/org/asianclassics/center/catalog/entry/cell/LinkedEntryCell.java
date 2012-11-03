@@ -2,7 +2,9 @@ package org.asianclassics.center.catalog.entry.cell;
 
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -73,6 +75,9 @@ public abstract class LinkedEntryCell extends EntryCell {
 	}
 	
 	protected void setHilite(HiliteMode mode) {
+		if (mode==HiliteMode.NONE) lblTitle.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		else if (mode==HiliteMode.INVALID) lblTitle.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		else if (mode==HiliteMode.COPIED) lblTitle.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
 	}
 	
 	@Override
