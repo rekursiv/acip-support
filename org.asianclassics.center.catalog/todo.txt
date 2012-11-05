@@ -1,7 +1,6 @@
 
 
-
-save on logout/quit
+move logout btn to EntryRootPanel
 
 ----
 

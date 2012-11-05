@@ -24,6 +24,7 @@ public class LoginController {
 	private CouchDbConnector userDb;
 	private EventBus eb;
 	private LinkManager lm;
+	private boolean isUserLoggedIn = false;
 	
 	@Inject
 	public LoginController(Logger log, EventBus eb, LinkManager lm) {
@@ -51,6 +52,7 @@ public class LoginController {
 			if (user==null) {
 				eb.post(new LoginFailureEvent(id, "User '"+id+"' not found.  Please try again."));
 			} else {
+				isUserLoggedIn = true;
 				eb.post(new LoginSuccessEvent(id));
 				eb.post(new MainMakeTopEvent(MainViewType.TASK));
 			}
@@ -59,8 +61,12 @@ public class LoginController {
 	
 	@Subscribe
 	public void onLogout(LogoutEvent evt) {
+		isUserLoggedIn = false;
 		eb.post(new MainMakeTopEvent(MainViewType.LOGIN));
 	}
 	
+	public boolean isUserLoggedIn() {
+		return isUserLoggedIn;
+	}
 
 }

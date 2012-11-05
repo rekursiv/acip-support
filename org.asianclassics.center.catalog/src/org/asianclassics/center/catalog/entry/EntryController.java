@@ -63,20 +63,21 @@ public class EntryController {
 	}
 	
 	public void submit() {
-		validate();
-		model.isValid = isValid;
-		if (isValid) {
-			if (model.dateTimeFirstSubmitted==null) {
-				model.dateTimeFirstSubmitted = new DateTime();
+		if (model!=null) {
+			validate();
+			model.isValid = isValid;
+			if (isValid) {
+				if (model.dateTimeFirstSubmitted==null) {
+					model.dateTimeFirstSubmitted = new DateTime();
+				}
+				write();
+	//			eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));    ////////////////////   TEST  
+				eb.post(new EntryUserMessageEvent("All entries are valid."));        ////////////////////   TEST  
+			} else {
+				write();
+				eb.post(new EntryUserMessageEvent("Please check your input and re-submit."));
 			}
-			write();
-//			eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));    ////////////////////   TEST  
-			eb.post(new EntryUserMessageEvent("All entries are valid."));        ////////////////////   TEST  
-		} else {
-			write();
-			eb.post(new EntryUserMessageEvent("Please check your input and re-submit."));
 		}
-		
 	}
 	
 
@@ -105,9 +106,11 @@ public class EntryController {
 	}
 	
 	private void delete() {
-		model._deleted=true;
-		repo.update(model);
-		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
+		if (model!=null) {
+			model._deleted=true;
+			repo.update(model);
+			eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
+		}
 	}
 	
 	
@@ -125,6 +128,7 @@ public class EntryController {
 		eb.post(new EntryValidateEvent());
 		System.out.println("isValid="+isValid);
 	}
+	
 	
 	
 	
