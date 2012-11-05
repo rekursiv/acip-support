@@ -1,26 +1,28 @@
 
 
-tweak tab order
-
-autosave
 
 save on logout/quit
 
----
-
-convert DB
-  find the latest version
-  
+----
 
 DB lock/sync
 
 prevent multi-logins
 
+convert DB
+  find the latest version
+
+----
+
+autosave
+
 SelectionView:
  add "valid" field to Sutra list:  yes/no
  in list: mark invalid sutras in red
 
+-----------------
 
+re-evaluate ParentAdaptSizeEvent (no longer needed for scroller)
 
 
 =======

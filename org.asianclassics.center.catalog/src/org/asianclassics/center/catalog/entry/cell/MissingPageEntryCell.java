@@ -12,6 +12,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Control;
 
 public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldingEntryCell {
 
@@ -72,6 +73,7 @@ public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldin
 		fd_horizSep.right = new FormAttachment(100, 0);
 		fd_horizSep.left = new FormAttachment(0, 0);
 		horizSep.setLayoutData(fd_horizSep);
+		setTabList(new Control[]{tecBegin, tecEnd, btnBlank});
 	}
 
 	protected void onDelete() {

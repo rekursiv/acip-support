@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.Control;
 
 public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEntryCell {
 
@@ -37,34 +38,8 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		fd_tecPage.left = new FormAttachment(0, 0);
 		tecPage.setLayoutData(fd_tecPage);
 
-		tecCaption = new TextEntryCell(this, "Caption", 70);
-		FormData fd_tecCaption = new FormData();
-		fd_tecCaption.left = new FormAttachment(0);
-		fd_tecCaption.top = new FormAttachment(0, 37);
-		tecCaption.setLayoutData(fd_tecCaption);
-
-		btnColors = new Button(this, SWT.CHECK);
-		FormData fd_btnColors = new FormData();
-		btnColors.setLayoutData(fd_btnColors);
-		btnColors.setText("Has Colors");
-		
-		btnDelete = new Button(this, SWT.NONE);
-		fd_tecCaption.right = new FormAttachment(100);
-		btnDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				onDelete();
-			}
-		});
-		FormData fd_btnDelete = new FormData();
-		fd_btnDelete.left = new FormAttachment(btnColors, 50);
-		fd_btnDelete.top = new FormAttachment(0, 0);
-		btnDelete.setLayoutData(fd_btnDelete);
-		btnDelete.setText("Delete Drawing");
-		
 		lblPosition = new Label(this, SWT.NONE);
-		fd_btnColors.bottom = new FormAttachment(lblPosition, 16);
-		fd_btnColors.top = new FormAttachment(lblPosition, 0, SWT.TOP);
+
 		FormData fd_lblPosition = new FormData();
 		fd_lblPosition.top = new FormAttachment(0, 10);
 //		fd_lblPosition.bottom = new FormAttachment(0, 27);
@@ -119,13 +94,43 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 				onModify();
 			}
 		});
-		fd_btnColors.left = new FormAttachment(btnFullPage, 32);
 		FormData fd_btnFullPage = new FormData();
 		fd_btnFullPage.top = new FormAttachment(btnRight, 0, SWT.TOP);
 		fd_btnFullPage.left = new FormAttachment(btnRight, 8);
 		btnFullPage.setLayoutData(fd_btnFullPage);
 		btnFullPage.setText("Full Page");
-	
+
+		
+		btnColors = new Button(this, SWT.CHECK);
+		FormData fd_btnColors = new FormData();
+		btnColors.setLayoutData(fd_btnColors);
+		btnColors.setText("Has Colors");
+		fd_btnColors.left = new FormAttachment(btnFullPage, 32);
+		fd_btnColors.bottom = new FormAttachment(lblPosition, 16);
+		fd_btnColors.top = new FormAttachment(lblPosition, 0, SWT.TOP);
+		
+		
+		tecCaption = new TextEntryCell(this, "Caption", 70);
+		FormData fd_tecCaption = new FormData();
+		fd_tecCaption.left = new FormAttachment(0);
+		fd_tecCaption.top = new FormAttachment(0, 37);
+		fd_tecCaption.right = new FormAttachment(100);
+		tecCaption.setLayoutData(fd_tecCaption);
+		
+		
+		btnDelete = new Button(this, SWT.NONE);
+		btnDelete.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onDelete();
+			}
+		});
+		FormData fd_btnDelete = new FormData();
+		fd_btnDelete.left = new FormAttachment(btnColors, 50);
+		fd_btnDelete.top = new FormAttachment(0, 0);
+		btnDelete.setLayoutData(fd_btnDelete);
+		btnDelete.setText("Delete Drawing");
+		
 		addHorizSep();
 
 		onModelToView();
@@ -139,6 +144,7 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 		fd_horizSep.right = new FormAttachment(100, 0);
 		fd_horizSep.left = new FormAttachment(0, 0);
 		horizSep.setLayoutData(fd_horizSep);
+		setTabList(new Control[]{tecPage, btnLeft, btnCenter, btnRight, btnFullPage, btnColors, tecCaption});
 	}
 
 	protected void onDelete() {

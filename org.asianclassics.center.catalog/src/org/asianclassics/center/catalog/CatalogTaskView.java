@@ -20,6 +20,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Control;
 
 public class CatalogTaskView extends TaskView {
 	private Button btnLogout;
@@ -72,6 +73,7 @@ public class CatalogTaskView extends TaskView {
 		fd_lblWorkerId.top = new FormAttachment(btnLogout, 0, SWT.TOP);
 		lblWorkerId.setLayoutData(fd_lblWorkerId);
 		fd_composite.top = new FormAttachment(group, 0);
+		setTabList(new Control[]{stack});
 
 		if (injector!=null) injector.injectMembers(this);
 	}

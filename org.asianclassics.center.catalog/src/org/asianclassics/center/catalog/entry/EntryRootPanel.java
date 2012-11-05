@@ -19,6 +19,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.eclipse.swt.widgets.Control;
 
 public class EntryRootPanel extends Composite {
 
@@ -123,6 +124,7 @@ public class EntryRootPanel extends Composite {
 		btnDelete.setText("Delete");
 		
 		lblUserMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		controlPanel.setTabList(new Control[]{btnSubmit});
 
 		if (injector!=null) injector.injectMembers(this);
 	}
