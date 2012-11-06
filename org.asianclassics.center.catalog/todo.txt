@@ -1,8 +1,5 @@
 
 
-move logout btn to EntryRootPanel
-
-----
 
 DB lock/sync
 

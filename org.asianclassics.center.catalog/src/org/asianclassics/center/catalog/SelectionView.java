@@ -54,6 +54,7 @@ public class SelectionView extends Composite {
 	private boolean doingUpdate;
 	private String idOfEntryToEdit;
 	private TableViewerColumn dateCol;
+	private Button btnLogout;
 
 	public SelectionView(Composite parent, int style, Injector injector) {
 		super(parent, style);
@@ -204,6 +205,19 @@ public class SelectionView extends Composite {
 				}
 			}
 		});
+		
+		btnLogout = new Button(this, SWT.NONE);
+		btnLogout.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				eb.post(new LogoutEvent());
+			}
+		});
+		FormData fd_btnLogout = new FormData();
+		fd_btnLogout.top = new FormAttachment(btnAction, 0, SWT.TOP);
+		fd_btnLogout.left = new FormAttachment(btnAction, 6);
+		btnLogout.setLayoutData(fd_btnLogout);
+		btnLogout.setText("Logout");
 		
 		if (injector!=null) injector.injectMembers(this);
 		
