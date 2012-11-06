@@ -1,6 +1,8 @@
 package org.asianclassics.center.catalog.entry;
 
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -35,6 +37,8 @@ public class EntryRootPanel extends Composite {
 	private Composite xpndPanel;
 	private Button btnSave;
 	private Button btnDelete;
+	private Button btnBack;
+	private Button btnRaw;
 
 
 	public EntryRootPanel(Composite parent, int style, Injector injector) {
@@ -124,6 +128,32 @@ public class EntryRootPanel extends Composite {
 		btnDelete.setText("Delete");
 		
 		lblUserMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		
+		btnBack = new Button(controlPanel, SWT.NONE);
+		btnBack.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
+			}
+		});
+		FormData fd_btnBack = new FormData();
+		fd_btnBack.top = new FormAttachment(btnSubmit, 0, SWT.TOP);
+		fd_btnBack.left = new FormAttachment(btnSubmit, 6);
+		btnBack.setLayoutData(fd_btnBack);
+		btnBack.setText("<< Back");
+		
+		btnRaw = new Button(controlPanel, SWT.NONE);
+		btnRaw.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				ctlr.viewRawData();
+			}
+		});
+		FormData fd_btnRaw = new FormData();
+		fd_btnRaw.top = new FormAttachment(btnBack, 0, SWT.TOP);
+		fd_btnRaw.left = new FormAttachment(btnBack, 6);
+		btnRaw.setLayoutData(fd_btnRaw);
+		btnRaw.setText("Raw");
 		controlPanel.setTabList(new Control[]{btnSubmit});
 
 		if (injector!=null) injector.injectMembers(this);

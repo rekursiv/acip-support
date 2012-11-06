@@ -24,12 +24,12 @@ public class PaperSourceEntryRow extends ComboBoxEntryCell {
 	
 	@Override
 	protected void getModelData() {
-		data = ctlr.getModel().format;
+		data = ctlr.getModel().paperSource;
 	}
 	
 	@Override
 	protected void setModelData() {
-		ctlr.getModel().format = data;
+		ctlr.getModel().paperSource = data;
 	}
 
 }

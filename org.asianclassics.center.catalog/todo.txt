@@ -1,8 +1,6 @@
 
 
-
-convert DB
-  find the latest version
+make sure DB is latest version
 
 ----
 

@@ -39,16 +39,17 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	
 	private boolean testDirectLink = true;   // // // //
 
+	private static final String dbOrgPrefix = "acip-center-";
+	private String dbCenterPrefix;
 	private volatile boolean initInProgress = false;
 	private volatile boolean initInterrupt = false;
-	protected JChannel channel = null;
+	private JChannel channel = null;
 	private boolean isServer = false;
 	private String serverIp = null;
 	private String myIp = null;
 	private CouchDbInstance localLink;
 	private CouchDbInstance remoteLink;
 	private final Logger log;
-	private String dbPrefix;
 	private EventBus eb;
 	private LockService lockService;
 	private Lock lock;
@@ -144,7 +145,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	}
 	
 	private void checkLocalForServer() throws Exception {
-		if (localLink.checkIfDbExists(new DbPath("acip-center-bootstrap"))) {
+		if (localLink.checkIfDbExists(new DbPath(dbOrgPrefix+"bootstrap"))) {
 			log.info("DB server is local");
 			isServer = true;
 		} else {
@@ -228,7 +229,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		if (centerCode==null) {
 			throw new Exception("Error reading center code from settings in bootstrap");
 		} else {
-			dbPrefix = "acip-center-"+centerCode+"-";
+			dbCenterPrefix = dbOrgPrefix+centerCode+"-";
 			if (isServer) {
 				updateStatus("Linked with local database");
 			} else {
@@ -238,13 +239,12 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		}
 	}
 	
-	
-	
-	
-	
+	public String getDbPrefix() {
+		return dbCenterPrefix;
+	}
 	
 	public CouchDbConnector getDb(String suffix) {
-		return new CustomCouchDbConnector(dbPrefix+suffix, getServerLink());   ///  FIXME:  handle re-assignment of DB
+		return new CustomCouchDbConnector(dbCenterPrefix+suffix, getServerLink());   ///  FIXME:  handle re-assignment of DB
 	}
 	
 	public CouchDbInstance getServerLink() {

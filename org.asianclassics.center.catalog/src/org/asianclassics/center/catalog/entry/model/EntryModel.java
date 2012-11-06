@@ -11,7 +11,6 @@ public class EntryModel extends Entity implements Model {
 
 	public boolean _deleted;
 	
-	public String appId;
 	public boolean isValid;
 	public String inputBy;
 	

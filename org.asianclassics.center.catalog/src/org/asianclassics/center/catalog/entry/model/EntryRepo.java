@@ -17,11 +17,13 @@ import com.google.inject.Singleton;
 public class EntryRepo extends CouchDbRepositorySupport<EntryModel> {
 
 	private LinkManager lm;
+	private String dbName;
 
 	@Inject
 	public EntryRepo(LinkManager lm) {
 		super(EntryModel.class, lm.getDb("catalog"), true);
 		this.lm = lm;
+		dbName = lm.getDbPrefix()+"catalog";
 	}
 
 	@View(name="getLatestPotiIndex", map="function(doc) {emit(doc.potiIndex, doc.potiIndex)}")
@@ -54,6 +56,10 @@ public class EntryRepo extends CouchDbRepositorySupport<EntryModel> {
 	
 	public void unlock() {
 		lm.unlock();
+	}
+	
+	public String getDbName() {
+		return dbName;
 	}
 	
 }

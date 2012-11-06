@@ -1,6 +1,10 @@
 package org.asianclassics.center.catalog.entry;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.asianclassics.center.catalog.CatalogApp;
 import org.asianclassics.center.catalog.entry.model.EntryModel;
@@ -29,9 +33,11 @@ public class EntryController {
 	private boolean isModified;
 	private boolean isValid;
 	private EntryRepo repo;
+	private Logger log;
 	
 	@Inject
-	public EntryController(EventBus eb, EntryRepo repo) {
+	public EntryController(Logger log, EventBus eb, EntryRepo repo) {
+		this.log = log;
 		this.eb = eb;
 		this.repo = repo;
 	}
@@ -86,6 +92,21 @@ public class EntryController {
 		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
 	}
 	
+	
+	public void viewRawData() {
+		if (model!=null) {
+			StringBuilder url = new StringBuilder("http://127.0.0.1:5984/");
+			url.append(repo.getDbName());
+			url.append("/");
+			url.append(model.getId());
+			log.info(url.toString());
+			try {
+				java.awt.Desktop.getDesktop().browse(URI.create(url.toString()));
+			} catch (IOException e) {
+				log.log(Level.INFO, "", e);
+			}
+		}
+	}
 	
 	public void requestDelete() {
 		if (model!=null) {
