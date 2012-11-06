@@ -42,8 +42,6 @@ public class DummyTaskView extends TaskView {
 			}
 		});
 		FormData fd_btnLogout = new FormData();
-		fd_btnLogout.right = new FormAttachment(0, 210);
-		fd_btnLogout.bottom = new FormAttachment(0, 110);
 		fd_btnLogout.top = new FormAttachment(0, 80);
 		fd_btnLogout.left = new FormAttachment(0, 150);
 		btnLogout.setLayoutData(fd_btnLogout);
@@ -56,7 +54,21 @@ public class DummyTaskView extends TaskView {
 		fd_lblGenericTaskPanel.top = new FormAttachment(0, 35);
 		fd_lblGenericTaskPanel.left = new FormAttachment(0, 55);
 		lblGenericTaskPanel.setLayoutData(fd_lblGenericTaskPanel);
-
+		
+/*		
+		Button btnTest = new Button(this, SWT.NONE);
+		btnTest.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+			}
+		});
+		FormData fd_btnTest = new FormData();
+		fd_btnTest.top = new FormAttachment(btnLogout, 0, SWT.TOP);
+		fd_btnTest.left = new FormAttachment(btnLogout, 6);
+		btnTest.setLayoutData(fd_btnTest);
+		btnTest.setText("Test");
+*/
+		
 		if (injector!=null) injector.injectMembers(this);
 	}
 

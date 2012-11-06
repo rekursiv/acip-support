@@ -6,6 +6,8 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +26,7 @@ import org.jgroups.Address;
 import org.jgroups.JChannel;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
+import org.jgroups.blocks.locking.LockService;
 import org.jgroups.util.PayloadUUID;
 
 import com.google.common.eventbus.EventBus;
@@ -47,8 +50,10 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	private final Logger log;
 	private String dbPrefix;
 	private EventBus eb;
-	
-	
+	private LockService lockService;
+	private Lock lock;
+
+
 	@Inject
 	public LinkManager(Logger log, EventBus eb) {
 		this.log = log;
@@ -94,6 +99,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 				initInProgress = false;
 				return;
 			}
+			initLock();
 		}
 
 		if (initInterrupt) shutdown();
@@ -110,8 +116,21 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		else shutdown();
 	}
 	
+	public void lock() {
+		if (lock==null) return;
+//		log.info("Attempting lock...   ");
+		boolean gotLock = false;
+		try {
+			gotLock = lock.tryLock(3L, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+		}
+		if (!gotLock) log.severe("lock timeout");
+	}
 	
-	
+	public void unlock() {
+		if (lock==null) return;
+		lock.unlock();
+	}
 	
 	private void shutdown() {
 		log.info("Shutting down");
@@ -151,6 +170,11 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		channel.setReceiver(this);
 		channel.connect("acip");
 
+	}
+	
+	private void initLock() {
+		lockService = new LockService(channel);
+		lock = lockService.getLock("acip");
 	}
 	
 	private void updateStatusFull(final String message) {
@@ -270,63 +294,5 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	public void test() {
-		String ip = "";
-		try {
-			ip = InetAddress.getLocalHost().getHostAddress();
-			log.info(ip);
-			ifconfig();
-/*			
-			InetAddress ia = InetAddress.getByName(dbIp);
-			if (ia.isSiteLocalAddress()) log.info("isSiteLocalAddress");
-			if (ia.isLinkLocalAddress()) log.info("isLinkLocalAddress");
-			if (ia.isLoopbackAddress()) log.info("isLoopbackAddress");
-*/
-		} catch (Exception e) {
-			log.log(Level.SEVERE, "exception", e);
-		}
-	}
-
-	public void ifconfig() throws Exception {
-		Enumeration<NetworkInterface> ifList = NetworkInterface.getNetworkInterfaces();
-		NetworkInterface iface;
-		while (ifList.hasMoreElements()) {
-			iface = ifList.nextElement();
-			log.info(iface.getDisplayName());
-			log.info(iface.getName());
-			log.info(iface.getInetAddresses().toString());
-		}
-	}
-	
-	public void ifconfig2() throws Exception {
-	     Enumeration<NetworkInterface> theIntfList = NetworkInterface.getNetworkInterfaces();
-	     List<InterfaceAddress> theAddrList = null;
-	     NetworkInterface theIntf = null;
-	     InetAddress theAddr = null;
-	       theAddrList = theIntf.getInterfaceAddresses();
-	       log.info("     int addrs: " + theAddrList.size() + " total.");
-	        int addrindex = 0;
-	        for(InterfaceAddress intAddr : theAddrList)
-	        {
-	           addrindex++;
-	           theAddr = intAddr.getAddress();
-	           log.info("            " + addrindex + ").");
-	           log.info("            host: " + theAddr.getHostName());
-	           log.info("           class: " + theAddr.getClass().getSimpleName());
-	           log.info("              ip: " + theAddr.getHostAddress() + "/" + intAddr.getNetworkPrefixLength());
-	           log.info("           bcast: " + intAddr.getBroadcast().getHostAddress());
-//	           int maskInt = Integer.MIN_VALUE >> (intAddr.getNetworkPrefixLength()-1);
-//	           System.out.println("            mask: " + toIPAddrString(maskInt));
-	           log.info("           chost: " + theAddr.getCanonicalHostName());
-//	           System.out.println("        byteaddr: " + toMACAddrString(theAddr.getAddress()));
-	           log.info("      sitelocal?: " + theAddr.isSiteLocalAddress());
-	           log.info("");
-	        }
-	}
 
 }

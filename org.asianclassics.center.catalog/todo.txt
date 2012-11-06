@@ -1,14 +1,16 @@
 
 
 
-DB lock/sync
-
-prevent multi-logins
-
 convert DB
   find the latest version
 
 ----
+
+copy prev. sutra
+
+stamp interface
+
+prevent multi-logins
 
 autosave
 

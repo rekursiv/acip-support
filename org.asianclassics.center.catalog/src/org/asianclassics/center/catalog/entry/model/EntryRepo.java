@@ -16,9 +16,12 @@ import com.google.inject.Singleton;
 @Singleton
 public class EntryRepo extends CouchDbRepositorySupport<EntryModel> {
 
+	private LinkManager lm;
+
 	@Inject
 	public EntryRepo(LinkManager lm) {
 		super(EntryModel.class, lm.getDb("catalog"), true);
+		this.lm = lm;
 	}
 
 	@View(name="getLatestPotiIndex", map="function(doc) {emit(doc.potiIndex, doc.potiIndex)}")
@@ -43,6 +46,14 @@ public class EntryRepo extends CouchDbRepositorySupport<EntryModel> {
 		ComplexKey startKey = ComplexKey.of(potiIndex, ComplexKey.emptyObject());
 		ViewQuery q = createQuery("getSutras").descending(true).limit(limit).includeDocs(false).startKey(startKey).endKey(endKey);
 		return db.queryView(q).getRows();
+	}
+	
+	public void lock() {
+		lm.lock();
+	}
+	
+	public void unlock() {
+		lm.unlock();
 	}
 	
 }

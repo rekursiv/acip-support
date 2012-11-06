@@ -49,6 +49,7 @@ public class SelectionController {
 	}
 	
 	private void beginPoti() {
+		repo.lock();
 		int latestGlobalPoti = repo.getLatestPotiIndex();
 		System.out.println("beginPoti:  lgp="+latestGlobalPoti);
 		EntryModel entry = new EntryModel();
@@ -57,6 +58,7 @@ public class SelectionController {
 		entry.sutraIndex = 1;
 //		entry.titleTibetan = "This sutra begins poti # "+entry.potiIndex;
 		repo.add(entry);
+		repo.unlock();
 		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.ENTRY));
 		eb.post(new EntryEditEvent(entry));
 	}
