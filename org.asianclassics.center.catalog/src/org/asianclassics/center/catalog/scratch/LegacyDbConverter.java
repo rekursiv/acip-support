@@ -25,18 +25,27 @@ public class LegacyDbConverter {
 	private CustomCouchDbConnector dbInput;
 	private StdCouchDbConnector dbOutput;
 	private EntryModel entry;
-	ObjectMapper mapper;
+	private ObjectMapper mapper;
+	private JsonNode docInput;
 
 
 	public static void main(String[] args) {
-		instance = new LegacyDbConverter();
-		try {
-//			instance.convertDb();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		instance = new LegacyDbConverter();
+//		instance.runConversion();
 	}
 
+	public void runConversion() {
+		try {
+			convertDb();
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				debug(docInput);
+			} catch (Exception e1) {
+			}
+		}
+	}
+	
 	
 	public void convertDb() throws Exception {
 		
@@ -70,9 +79,8 @@ public class LegacyDbConverter {
 	public void convertDoc(String id) throws Exception {
 		if (id.startsWith("_")) return;  // don't try to convert design docs, etc
 		System.out.println("  "+id);
-		JsonNode doc = dbInput.get(JsonNode.class, id);
-//		debug(doc);
-		ObjectNode root = (ObjectNode) doc;
+		docInput = dbInput.get(JsonNode.class, id);
+		ObjectNode root = (ObjectNode) docInput;
 		String oldId = root.remove("_id").asText();
 		root.remove("_rev");
 		if (root.has("submitDate")) {
@@ -81,16 +89,22 @@ public class LegacyDbConverter {
 		}
 		root.remove("appVersion");
 		if (root.has("extraLanguage")) {
-			JsonNode el = root.remove("extraLanguage");
-			String script = el.get("script").asText();
-			String coverage = el.get("coverage").asText();
 			String out;
-			if (script.equals("lanycha")&&coverage.equals("titlePage")) out = "Lanycha script, Title page only";
-			else if (script.equals("lanycha")&&coverage.equals("all")) out = "Lanycha script, Whole sutra";
-			else {
-				System.out.println("!!! new extra language found:  "+script+":"+coverage);
-				debug(el);
-				throw new Exception();
+			JsonNode el = root.remove("extraLanguage");
+			if (el.has("other")) {
+				out = el.get("other").asText();
+			} else {
+				String script = el.get("script").asText();
+				String coverage = el.get("coverage").asText();
+				
+				if (script.equals("lanycha")&&coverage.equals("titlePage")) out = "Lanycha script, Title page only";
+				else if (script.equals("lanycha")&&coverage.equals("all")) out = "Lanycha script, Whole sutra";
+				else if (script.equals("mongolian")&&coverage.equals("titlePage")) out = "Mongolian script, Title page only";
+				else {
+					System.out.println("!!! new extra language found:  "+script+":"+coverage);
+					debug(el);
+					throw new Exception();
+				}
 			}
 			root.put("extraLanguage", out);
 		}
@@ -101,12 +115,22 @@ public class LegacyDbConverter {
 			String out;
 			if (paper.equals("white")&&edge.equals("white")) out = "White paper, White edge";
 			else if (paper.equals("white")&&edge.equals("yellow")) out = "White paper, Yellow edge";
+			else if (paper.equals("white")&&edge.equals("brown")) out = "White paper, Brown edge";
+			else if (paper.equals("white")&&edge.equals("red")) out = "White paper, Red edge";
 			else {
 				System.out.println("!!! new paper color found:  "+paper+":"+edge);
 				debug(pc);
 				throw new Exception();
 			}
 			root.put("paperColor", out);
+		}
+		if (root.has("format")&&root.get("format").isObject()) {
+			ObjectNode format = (ObjectNode) root.get("format");
+			if (format.has("other")) {
+				JsonNode other = format.remove("other");
+				root.remove("format");
+				root.put("format", other.asText());
+			}
 		}
 
 		entry = mapper.readValue(root, EntryModel.class);
@@ -142,6 +166,10 @@ public class LegacyDbConverter {
 
 	
 	private void debug(Object obj) throws Exception {
+		if (obj==null) {
+			System.out.println("!!!   NULL");
+			return;
+		}
 		System.out.println("--------------");
 		System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj));
 		System.out.println("^^^^^^^^^^^^^^");

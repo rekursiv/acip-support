@@ -1,20 +1,21 @@
 
 
-make sure DB is latest version
 
-----
+EntryView:
+ delete warning
+ copy prev. sutra
+ stamp interface
+ autosave
 
-copy prev. sutra
-
-stamp interface
-
-prevent multi-logins
-
-autosave
 
 SelectionView:
  add "valid" field to Sutra list:  yes/no
  in list: mark invalid sutras in red
+ preview pane?
+
+
+prevent multi-logins
+
 
 -----------------
 

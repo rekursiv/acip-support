@@ -62,7 +62,7 @@ public class EntryController {
 	public void onEdit(EntryEditEvent evt) {
 		model = evt.getEntry();
 		if (CatalogApp.debugMode) {
-			if (model==null) model = repo.get("13ab5cf538d00003fe0");					////////////////////   TEST  
+			if (model==null) model = repo.get("13ab5cf538d00003fe0");					////////////////////   TEST  FIXME
 		}
 		eb.post(new EntryModelPostReadEvent());
 		isModified = false;
@@ -137,7 +137,7 @@ public class EntryController {
 	
 	private void write() {
 		if (model!=null) {
-			System.out.println("isModified="+isModified);
+			System.out.println("EntryController#write() - isModified="+isModified);
 			eb.post(new EntryModelPreWriteEvent());
 			model.dateTimeLastEdited = new DateTime();
 			repo.update(model);

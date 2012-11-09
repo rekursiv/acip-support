@@ -35,7 +35,8 @@ public class ComboBoxEntryCell extends StringEntryCell {
 	
 	@Override
 	protected void setGuiData() {
-		combo.setText(data);
+		if (data.isEmpty()) combo.deselectAll();
+		else combo.setText(data);
 	}
 	
 	@Override
