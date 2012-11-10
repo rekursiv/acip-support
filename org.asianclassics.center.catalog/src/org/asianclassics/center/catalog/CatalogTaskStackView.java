@@ -5,6 +5,7 @@ import org.asianclassics.center.catalog.entry.EntryController;
 import org.asianclassics.center.catalog.entry.EntryRootPanel;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
+import org.asianclassics.center.catalog.scratch.TestPanel;
 import org.asianclassics.center.event.LinkReadyEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -43,11 +44,12 @@ public class CatalogTaskStackView extends Composite {
 		if (evt.getViewType()==CatalogTaskViewType.SELECTION) {
 			if (selection==null) selection = new SelectionView(this, SWT.NONE, injector);
 			stack.topControl = selection;
-		}
-		else if (evt.getViewType()==CatalogTaskViewType.ENTRY) {
+		} else if (evt.getViewType()==CatalogTaskViewType.ENTRY) {
 			if (entry==null) entry = new EntryRootPanel(this, SWT.NONE, injector);
 			else entry.reset();
 			stack.topControl = entry;
+		} else if (evt.getViewType()==CatalogTaskViewType.TEST) {
+			stack.topControl = new TestPanel(this, SWT.NONE, injector);
 		}
 		layout();
 	}

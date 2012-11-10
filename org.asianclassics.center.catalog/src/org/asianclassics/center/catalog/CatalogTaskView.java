@@ -51,7 +51,7 @@ public class CatalogTaskView extends TaskView {
 	@Subscribe
 	public void onLoginSuccess(LoginSuccessEvent evt) {
 //		lblWorkerId.setText("Worker ID:  "+evt.getWorkerId());
-		if (CatalogApp.debugMode) eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.ENTRY));      /// /// ///    ENTRY / SELECTION
+		if (CatalogApp.debugMode) eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.TEST));      /// /// ///    ENTRY / SELECTION / TEST
 		else eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION)); 
 	}
 	

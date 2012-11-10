@@ -27,7 +27,6 @@ public class SelectionController {
 	public SelectionController(EventBus eb, EntryRepo repo) {
 		this.eb = eb;
 		this.repo = repo;
-		repo.initStandardDesignDocument();    //  DEBUG
 	}
 	
 	@Subscribe

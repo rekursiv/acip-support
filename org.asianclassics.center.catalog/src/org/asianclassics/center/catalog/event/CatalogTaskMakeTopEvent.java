@@ -3,7 +3,7 @@ package org.asianclassics.center.catalog.event;
 
 public class CatalogTaskMakeTopEvent {
 	public enum CatalogTaskViewType {
-		SELECTION, ENTRY
+		SELECTION, ENTRY, TEST
 	}
 	private CatalogTaskViewType viewType;
 	
