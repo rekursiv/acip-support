@@ -11,11 +11,14 @@ import org.asianclassics.center.catalog.entry.model.EntryModel;
 import org.asianclassics.center.catalog.entry.model.EntryRepo;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
+import org.asianclassics.center.catalog.event.EntryDeleteAllowedEvent;
 import org.asianclassics.center.catalog.event.EntryEditEvent;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.ektorp.ViewResult.Row;
 import org.joda.time.DateTime;
 
@@ -64,8 +67,9 @@ public class EntryController {
 		if (CatalogApp.debugMode) {
 			if (model==null) model = repo.get("13ab5cf538d00003fe0");					////////////////////   TEST  FIXME
 		}
+		checkIfDeleteAllowed();
 		eb.post(new EntryModelPostReadEvent());
-		isModified = false;
+		isModified = false;		
 	}
 	
 	public void submit() {
@@ -108,32 +112,25 @@ public class EntryController {
 		}
 	}
 	
-	public void requestDelete() {
-		if (model!=null) {
-			boolean okToDelete = true;
-			if (model.sutraIndex==1) {  //  deleting sutra #1 would make the entire poti invisible in the selection interface
-				List<Row> sutraList = repo.getSutras(model.potiIndex, 2);
-				System.out.println("size="+sutraList.size());
-				if (sutraList.size()>1) okToDelete = false;  // so we prevent that from happening unless #1 is the only one
-			}
-			// TODO:  get verification from user
-			if (okToDelete) {
-				delete();
-			} else {
-				System.out.println("NOT OK to delete!");
-				// TODO:  show msg to user
-			}
-		}
-	}
-	
-	private void delete() {
+	public void delete() {
 		if (model!=null) {
 			model._deleted=true;
 			repo.update(model);
 			eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
 		}
 	}
-	
+
+	private void checkIfDeleteAllowed() {
+		if (model!=null) {
+			boolean deleteAllowed = true;
+			if (model.sutraIndex==1) {  //  deleting sutra #1 would make the entire poti invisible in the selection interface
+				List<Row> sutraList = repo.getSutras(model.potiIndex, 2);
+				System.out.println("size="+sutraList.size());
+				if (sutraList.size()>1) deleteAllowed = false;  // so we prevent that from happening unless #1 is the only one
+			}
+			if (deleteAllowed) eb.post(new EntryDeleteAllowedEvent());
+		}
+	}
 	
 	private void write() {
 		if (model!=null) {
@@ -157,6 +154,22 @@ public class EntryController {
 		System.out.println("TEST   isModified="+isModified);
 	}
 
-
+	public void requestDelete_OLD() {
+		if (model!=null) {
+			boolean okToDelete = true;
+			if (model.sutraIndex==1) {  //  deleting sutra #1 would make the entire poti invisible in the selection interface
+				List<Row> sutraList = repo.getSutras(model.potiIndex, 2);
+				System.out.println("size="+sutraList.size());
+				if (sutraList.size()>1) okToDelete = false;  // so we prevent that from happening unless #1 is the only one
+			}
+			// TODO:  get verification from user
+			if (okToDelete) {
+				delete();
+			} else {
+				System.out.println("NOT OK to delete!");
+				// TODO:  show msg to user
+			}
+		}
+	}
 
 }

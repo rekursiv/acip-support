@@ -1,6 +1,8 @@
 package org.asianclassics.center.catalog.entry;
 
+import org.asianclassics.center.catalog.CatalogApp;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
+import org.asianclassics.center.catalog.event.EntryDeleteAllowedEvent;
 import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.eclipse.swt.SWT;
@@ -15,6 +17,7 @@ import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.google.common.eventbus.EventBus;
@@ -118,7 +121,7 @@ public class EntryRootPanel extends Composite {
 		btnDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				ctlr.requestDelete();
+				requestDelete();
 			}
 		});
 		FormData fd_btnAnotherButton = new FormData();
@@ -126,35 +129,39 @@ public class EntryRootPanel extends Composite {
 		fd_btnAnotherButton.left = new FormAttachment(btnSave, 6);
 		btnDelete.setLayoutData(fd_btnAnotherButton);
 		btnDelete.setText("Delete");
-		
+		btnDelete.setEnabled(false);
+
 		lblUserMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		
-		btnBack = new Button(controlPanel, SWT.NONE);
-		btnBack.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
-			}
-		});
-		FormData fd_btnBack = new FormData();
-		fd_btnBack.top = new FormAttachment(btnSubmit, 0, SWT.TOP);
-		fd_btnBack.left = new FormAttachment(btnSubmit, 6);
-		btnBack.setLayoutData(fd_btnBack);
-		btnBack.setText("<< Back");
 		
-		btnRaw = new Button(controlPanel, SWT.NONE);
-		btnRaw.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				ctlr.viewRawData();
-			}
-		});
-		FormData fd_btnRaw = new FormData();
-		fd_btnRaw.top = new FormAttachment(btnBack, 0, SWT.TOP);
-		fd_btnRaw.left = new FormAttachment(btnBack, 6);
-		btnRaw.setLayoutData(fd_btnRaw);
-		btnRaw.setText("Raw");
-		controlPanel.setTabList(new Control[]{btnSubmit});
+		if (CatalogApp.debugMode) {
+			btnBack = new Button(controlPanel, SWT.NONE);
+			btnBack.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent arg0) {
+					eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
+				}
+			});
+			FormData fd_btnBack = new FormData();
+			fd_btnBack.top = new FormAttachment(btnSubmit, 0, SWT.TOP);
+			fd_btnBack.left = new FormAttachment(btnSubmit, 6);
+			btnBack.setLayoutData(fd_btnBack);
+			btnBack.setText("<< Back");
+			
+			btnRaw = new Button(controlPanel, SWT.NONE);
+			btnRaw.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent arg0) {
+					ctlr.viewRawData();
+				}
+			});
+			FormData fd_btnRaw = new FormData();
+			fd_btnRaw.top = new FormAttachment(btnBack, 0, SWT.TOP);
+			fd_btnRaw.left = new FormAttachment(btnBack, 6);
+			btnRaw.setLayoutData(fd_btnRaw);
+			btnRaw.setText("Raw");
+			controlPanel.setTabList(new Control[]{btnSubmit});
+		}
 
 		if (injector!=null) injector.injectMembers(this);
 	}
@@ -170,9 +177,24 @@ public class EntryRootPanel extends Composite {
 		lblUserMessage.setText(evt.getMessage());
 	}
 	
+	@Subscribe
+	public void onDeleteAllowed(EntryDeleteAllowedEvent evt) {
+		System.out.println("onDeleteAllowed");
+		btnDelete.setEnabled(true);
+	}
+	
+	public void requestDelete() {
+		MessageBox messageBox = new MessageBox(this.getShell(), SWT.APPLICATION_MODAL|SWT.YES|SWT.NO);
+        messageBox.setText("Delete Entry");
+        messageBox.setMessage("Really delete this entry?");
+        int userChoice = messageBox.open();
+        if (userChoice==SWT.YES) ctlr.delete();
+	}
+	
 	public void reset() {
 		xpndItem.setExpanded(false);
 		lblUserMessage.setText("");
+		btnDelete.setEnabled(false);
 	}
 	
 	@Override
