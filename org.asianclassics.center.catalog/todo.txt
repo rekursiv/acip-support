@@ -1,9 +1,9 @@
 
+@@ stamp interface
 
 
 EntryView:
  copy prev. sutra
- stamp interface
  autosave
 
 

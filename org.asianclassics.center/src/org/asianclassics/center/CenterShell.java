@@ -37,7 +37,7 @@ public class CenterShell extends Shell implements Listener {
 	}
 
 	public void init(Injector injector) {
-		addListener(SWT.Close, this);
+//		addListener(SWT.Close, this);////////////////////   TEST 
 		setupLogging();
 		
 		loginCtlr = injector.getInstance(LoginController.class);

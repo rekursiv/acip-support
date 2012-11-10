@@ -1,12 +1,13 @@
 package org.asianclassics.center.catalog.entry.model;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.ektorp.support.Entity;
 import org.joda.time.DateTime;
 
-public class EntryModel extends Entity implements Model {
+public class EntryModel extends Entity {
 	private static final long serialVersionUID = -8518504850247837263L;
 
 	public boolean _deleted;
@@ -22,7 +23,7 @@ public class EntryModel extends Entity implements Model {
 	
 
 	public String libraryNumber;
-	public List<Integer> stamps;
+	public List<AtomicInteger> stamps;
 	public String titleTibetan;
 	public String titleSanskrit;
 	public String extraLanguage;	

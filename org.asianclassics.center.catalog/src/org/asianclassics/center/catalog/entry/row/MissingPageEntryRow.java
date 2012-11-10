@@ -3,11 +3,10 @@ package org.asianclassics.center.catalog.entry.row;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.asianclassics.center.catalog.entry.cell.LinkedEntryCell;
 import org.asianclassics.center.catalog.entry.cell.ListEntryCell;
 import org.asianclassics.center.catalog.entry.cell.MissingPageEntryCell;
-import org.asianclassics.center.catalog.entry.cell.ModelHoldingEntryCell;
 import org.asianclassics.center.catalog.entry.model.MissingPageModel;
-import org.asianclassics.center.catalog.entry.model.Model;
 import org.eclipse.swt.widgets.Composite;
 
 public class MissingPageEntryRow extends ListEntryCell {
@@ -22,23 +21,23 @@ public class MissingPageEntryRow extends ListEntryCell {
 	}
 	
 	@Override
-	protected Model createNewModel() {
+	protected Object createNewObject() {
 		MissingPageModel pm = new MissingPageModel();
 		ctlr.getModel().missingPages.add(pm);
 		return pm;
 	}
 	
 	@Override
-	protected ModelHoldingEntryCell createNewView(Model model) {
-		return new MissingPageEntryCell(cellListPanel, model);
+	protected LinkedEntryCell createNewView(Object object) {
+		return new MissingPageEntryCell(cellListPanel, object);
 	}
 	
 	@Override
-	protected void copyModelToView() {
+	protected void copyObjectsToView() {
 		List<MissingPageModel> pages = ctlr.getModel().missingPages;
 		if (pages==null) return;
 		for (MissingPageModel page : pages) {
-			addCellFromModel(page);
+			addCellFromObject(page);
 		}
 	}
 

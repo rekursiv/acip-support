@@ -65,7 +65,7 @@ public class EntryController {
 	public void onEdit(EntryEditEvent evt) {
 		model = evt.getEntry();
 		if (CatalogApp.debugMode) {
-			if (model==null) model = repo.get("13ab5cf538d00003fe0");					////////////////////   TEST  FIXME
+			if (model==null) model = repo.get("13ae733504c00035c89");					////////////////////   TEST 
 		}
 		checkIfDeleteAllowed();
 		eb.post(new EntryModelPostReadEvent());

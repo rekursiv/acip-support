@@ -3,7 +3,6 @@ package org.asianclassics.center.catalog.entry.cell;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.asianclassics.center.catalog.entry.model.Model;
 import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
@@ -23,7 +22,7 @@ public abstract class ListEntryCell extends EntryCell {
 	protected Composite rootPanel;
 	protected Composite cellListPanel;
 	protected Button btnAdd;
-	protected List<ModelHoldingEntryCell> cellList;
+	protected List<LinkedEntryCell> cellList;
 
 	public ListEntryCell(Composite parent, String title, String btnText) {
 		super(parent, title);
@@ -52,76 +51,66 @@ public abstract class ListEntryCell extends EntryCell {
 		btnAdd.setText(btnText);
 	}
 
-	protected void createNewModelListIfNeeded() {
-	}
-	
-	protected Model createNewModel() {
-		return null;
-	}
-	
-	protected ModelHoldingEntryCell createNewView(Model model) {
-		return null;
-	}
-	
-	protected void copyModelToView() {
-
-	}
-	
-	
-	protected void onAddNewCell() {
-		createNewModelListIfNeeded();
-		Model model = createNewModel();
-		addCellFromModel(model);
-		eb.post(new ParentAdaptSizeEvent());
-	}
-	
 	@Subscribe
 	public void onPostRead(EntryModelPostReadEvent evt) {
 		deleteAllViews();
-		copyModelToView();
+		copyObjectsToView();
 		eb.post(new ParentAdaptSizeEvent());   //  FIXME:  this could be optimized by only sending when necessary
 	}
 	
-	protected void addCellFromModel(Model model) {
-		if (cellList==null) cellList = new LinkedList<ModelHoldingEntryCell>();
-		cellList.add(createNewView(model));
-	}
-	
-	protected void deleteAllViews() {
-		if (cellList==null) return;
-		for (ModelHoldingEntryCell cell : cellList) {
-			cell.dispose();
-		}
-		cellList = new LinkedList<ModelHoldingEntryCell>();
-		pack();
-	}
-	
-	
 	@Subscribe
 	public void onDeleteCell(EntryCellListDeleteElementEvent evt) {
-		System.out.println("MissingPageEntryRow#onDeleteCell");
+		System.out.println("ListEntryCell#onDeleteCell");
 		if (cellList==null) return;
-		ModelHoldingEntryCell cell = evt.getCell();
+		LinkedEntryCell cell = evt.getCell();
 		if (cell==null) return;
-		Model model = cell.getModel();
-//		PageModel page = (PageModel)((MissingPageEntryCell)cell).getModel();
-		ctlr.getModel().missingPages.remove(model);
-		cellList.remove(cell);
-		cell.dispose();
-		eb.post(new ParentAdaptSizeEvent());
+		if (cellList.remove(cell)) {
+			cell.dispose();
+			eb.post(new ParentAdaptSizeEvent());
+		}
+	}
+	
+	
+	
+	protected void createNewModelListIfNeeded() {
+		// override me
+	}
+	
+	protected Object createNewObject() {
+		// override me
+		return null;
+	}
+	
+	protected LinkedEntryCell createNewView(Object object) {
+		// override me
+		return null;
+	}
+	
+	protected void copyObjectsToView() {
+		// override me
 	}
 	
 
+
+	protected void addCellFromObject(Object object) {
+		if (cellList==null) cellList = new LinkedList<LinkedEntryCell>();
+		cellList.add(createNewView(object));
+	}
 	
-	
-	
-	@Subscribe
-	public void onTest(TestEvent evt) {
-		if (cellList==null) System.out.println("NULL");
-		else {
-			System.out.println("cl size="+cellList.size());
-			System.out.println("m size="+ctlr.getModel().missingPages.size());
+	private void onAddNewCell() {
+		createNewModelListIfNeeded();
+		Object model = createNewObject();
+		addCellFromObject(model);
+		eb.post(new ParentAdaptSizeEvent());
+	}
+
+	private void deleteAllViews() {
+		if (cellList==null) return;
+		for (LinkedEntryCell cell : cellList) {
+			cell.dispose();
 		}
+		cellList = new LinkedList<LinkedEntryCell>();
+		pack();
 	}
 	
 }

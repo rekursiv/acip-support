@@ -58,7 +58,7 @@ public class EntryView extends Composite {
 		
 		this.injector = injector;
 		setLayout(new GridLayout(1, false));
-//*
+/*
 		new InfoEntryRow(this);
 		new LibraryNumberEntryRow(this);
 		new StampEntryRow(this);
@@ -83,10 +83,11 @@ public class EntryView extends Composite {
 		new LocationEntryRow(this);
 		new DrawingEntryRow(this);
 		new ColophonEntryRow(this);
-//*/		
+*/		
 		
-
-		
+		new StampEntryRow(this);   ////////////////////   TEST 
+		new MissingPageEntryRow(this);
+		new DrawingEntryRow(this);
 		
 		if (injector!=null) injector.injectMembers(this);
 		

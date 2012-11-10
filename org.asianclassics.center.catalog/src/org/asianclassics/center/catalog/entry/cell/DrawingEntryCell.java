@@ -2,7 +2,6 @@ package org.asianclassics.center.catalog.entry.cell;
 
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell.BoxType;
 import org.asianclassics.center.catalog.entry.model.DrawingModel;
-import org.asianclassics.center.catalog.entry.model.Model;
 import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -15,13 +14,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Control;
 
-public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEntryCell {
+public class DrawingEntryCell extends LinkedEntryCell {
 
 	private TextEntryCell tecPage;
 	private TextEntryCell tecCaption;
 	private Button btnColors;
 	private Button btnDelete;
-	private DrawingModel model;
+	private DrawingModel drawing;
 	private Label lblPosition;
 	private Button btnLeft;
 	private Button btnCenter;
@@ -29,9 +28,9 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 	private Button btnFullPage;
 
 
-	public DrawingEntryCell(Composite parent, Model model) {
+	public DrawingEntryCell(Composite parent, Object object) {
 		super(parent, null);
-		this.model = (DrawingModel) model;
+		this.drawing = (DrawingModel) object;
 		
 		tecPage = new TextEntryCell(this, "Page", 50, BoxType.SIMPLE, 100);
 		FormData fd_tecPage = new FormData();
@@ -42,8 +41,6 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 
 		FormData fd_lblPosition = new FormData();
 		fd_lblPosition.top = new FormAttachment(0, 10);
-//		fd_lblPosition.bottom = new FormAttachment(0, 27);
-//		fd_lblPosition.right = new FormAttachment(0, 166);
 		fd_lblPosition.left = new FormAttachment(0, 120);
 		lblPosition.setLayoutData(fd_lblPosition);
 		lblPosition.setText("Position:");
@@ -154,11 +151,11 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 	
 	@Override
 	public void onModelToView() {
-		tecPage.setData(model.page);
+		tecPage.setData(drawing.page);
 		tecPage.onModelToView();
-		setPositionString(model.position);
-		btnColors.setSelection(model.hasColors);
-		tecCaption.setData(model.caption);
+		setPositionString(drawing.position);
+		btnColors.setSelection(drawing.hasColors);
+		tecCaption.setData(drawing.caption);
 		tecCaption.onModelToView();
 	}
 	
@@ -175,11 +172,11 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 	@Override
 	public void onViewToModel() {
 		tecPage.onViewToModel();
-		model.page = tecPage.getData();
-		model.hasColors = btnColors.getSelection();
-		model.position = getPositionString();
+		drawing.page = tecPage.getData();
+		drawing.hasColors = btnColors.getSelection();
+		drawing.position = getPositionString();
 		tecCaption.onViewToModel();
-		model.caption = tecCaption.getData();
+		drawing.caption = tecCaption.getData();
 	}
 	
 	private String getPositionString() {
@@ -202,12 +199,8 @@ public class DrawingEntryCell extends LinkedEntryCell implements ModelHoldingEnt
 	}
 	
 	@Override
-	public Model getModel() {
-		return (Model)model;
-	}
-	
-	@Override
 	public void dispose() {
+		ctlr.getModel().drawings.remove(drawing);
 		eb.unregister(tecPage);
 		eb.unregister(tecCaption);
 		eb.unregister(this);

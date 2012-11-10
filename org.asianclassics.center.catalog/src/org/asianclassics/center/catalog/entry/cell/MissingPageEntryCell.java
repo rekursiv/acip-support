@@ -1,7 +1,6 @@
 package org.asianclassics.center.catalog.entry.cell;
 
 import org.asianclassics.center.catalog.entry.cell.TextEntryCell.BoxType;
-import org.asianclassics.center.catalog.entry.model.Model;
 import org.asianclassics.center.catalog.entry.model.MissingPageModel;
 import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
 import org.eclipse.swt.SWT;
@@ -14,18 +13,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Control;
 
-public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldingEntryCell {
+public class MissingPageEntryCell extends LinkedEntryCell {
 
 	private TextEntryCell tecBegin;
 	private TextEntryCell tecEnd;
 	private Button btnBlank;
 	private Button btnDelete;
-	private MissingPageModel model;
+	private MissingPageModel missingPage;
 
 
-	public MissingPageEntryCell(Composite parent, Model model) {
+	public MissingPageEntryCell(Composite parent, Object object) {
 		super(parent, null);
-		this.model = (MissingPageModel) model;
+		this.missingPage = (MissingPageModel) object;
 		
 		tecBegin = new TextEntryCell(this, "Begin", 50, BoxType.SIMPLE, 100);
 		FormData fd_tecBegin = new FormData();
@@ -82,29 +81,25 @@ public class MissingPageEntryCell extends LinkedEntryCell implements ModelHoldin
 	
 	@Override
 	public void onModelToView() {
-		tecBegin.setData(model.begin);
+		tecBegin.setData(missingPage.begin);
 		tecBegin.onModelToView();
-		tecEnd.setData(model.end);
+		tecEnd.setData(missingPage.end);
 		tecEnd.onModelToView();
-		btnBlank.setSelection(model.isBlank);
+		btnBlank.setSelection(missingPage.isBlank);
 	}
 
 	@Override
 	public void onViewToModel() {
 		tecBegin.onViewToModel();
-		model.begin = tecBegin.getData();
+		missingPage.begin = tecBegin.getData();
 		tecEnd.onViewToModel();
-		model.end = tecEnd.getData();
-		model.isBlank = btnBlank.getSelection();
-	}
-	
-	@Override
-	public Model getModel() {
-		return (Model)model;
+		missingPage.end = tecEnd.getData();
+		missingPage.isBlank = btnBlank.getSelection();
 	}
 	
 	@Override
 	public void dispose() {
+		ctlr.getModel().missingPages.remove(missingPage);
 		eb.unregister(tecBegin);
 		eb.unregister(tecEnd);
 		eb.unregister(this);
