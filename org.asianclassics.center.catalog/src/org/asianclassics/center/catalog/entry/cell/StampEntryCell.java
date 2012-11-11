@@ -15,15 +15,12 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
 import com.google.inject.Inject;
 
 
 public class StampEntryCell extends LinkedEntryCell {
 
-//	private Text txtTest;
-	
 	private Button btnDelete;
 	private AtomicInteger stampNum;
 	private Label lblImage;
@@ -34,14 +31,6 @@ public class StampEntryCell extends LinkedEntryCell {
 	public StampEntryCell(Composite parent, Object object) {
 		super(parent, null);
 		this.stampNum = (AtomicInteger) object;
-		/*
-		txtTest = new Text(this, SWT.NONE);
-		FormData fd_txtTest = new FormData();
-		fd_txtTest.right = new FormAttachment(0, 80);
-		fd_txtTest.top = new FormAttachment(btnDelete, 6);
-		fd_txtTest.left = new FormAttachment(0, 12);
-		txtTest.setLayoutData(fd_txtTest);
-		*/
 		
 		lblImage = new Label(this, SWT.NONE);
 		FormData fd_lblImage = new FormData();
@@ -67,7 +56,6 @@ public class StampEntryCell extends LinkedEntryCell {
 		});
 		FormData fd_btnDelete_1 = new FormData();
 		fd_btnDelete_1.left = new FormAttachment(lblImage, 6);
-//		fd_btnDelete_1.right = new FormAttachment(0, 100);
 		fd_btnDelete_1.top = new FormAttachment(lblStampNum, 12);
 		btnDelete.setLayoutData(fd_btnDelete_1);
 		btnDelete.setText("Delete Stamp");

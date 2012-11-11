@@ -7,6 +7,7 @@ import org.asianclassics.center.catalog.entry.cell.LinkedEntryCell;
 import org.asianclassics.center.catalog.entry.cell.ListEntryCell;
 import org.asianclassics.center.catalog.entry.cell.MissingPageEntryCell;
 import org.asianclassics.center.catalog.entry.model.MissingPageModel;
+import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
 import org.eclipse.swt.widgets.Composite;
 
 public class MissingPageEntryRow extends ListEntryCell {
@@ -16,15 +17,12 @@ public class MissingPageEntryRow extends ListEntryCell {
 	}
 
 	@Override
-	protected void createNewModelListIfNeeded() {
+	protected void onAddNewCell() {
 		if (ctlr.getModel().missingPages==null) ctlr.getModel().missingPages = new LinkedList<MissingPageModel>();
-	}
-	
-	@Override
-	protected Object createNewObject() {
 		MissingPageModel pm = new MissingPageModel();
 		ctlr.getModel().missingPages.add(pm);
-		return pm;
+		addCellFromObject(pm);
+		eb.post(new ParentAdaptSizeEvent());
 	}
 	
 	@Override

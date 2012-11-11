@@ -77,15 +77,8 @@ public abstract class ListEntryCell extends EntryCell {
 		}
 	}
 	
-	
-	
-	protected void createNewModelListIfNeeded() {
+	protected void onAddNewCell() {
 		// override me
-	}
-	
-	protected Object createNewObject() {
-		// override me
-		return null;
 	}
 	
 	protected LinkedEntryCell createNewView(Object object) {
@@ -96,21 +89,12 @@ public abstract class ListEntryCell extends EntryCell {
 	protected void copyObjectsToView() {
 		// override me
 	}
-	
-
 
 	protected void addCellFromObject(Object object) {
 		if (cellList==null) cellList = new LinkedList<LinkedEntryCell>();
 		cellList.add(createNewView(object));
 	}
 	
-	private void onAddNewCell() {
-		createNewModelListIfNeeded();
-		Object model = createNewObject();
-		addCellFromObject(model);
-		eb.post(new ParentAdaptSizeEvent());
-	}
-
 	private void deleteAllViews() {
 		if (cellList==null) return;
 		for (LinkedEntryCell cell : cellList) {

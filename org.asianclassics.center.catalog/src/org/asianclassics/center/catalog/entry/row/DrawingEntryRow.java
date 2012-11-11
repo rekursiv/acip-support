@@ -7,6 +7,7 @@ import org.asianclassics.center.catalog.entry.cell.DrawingEntryCell;
 import org.asianclassics.center.catalog.entry.cell.LinkedEntryCell;
 import org.asianclassics.center.catalog.entry.cell.ListEntryCell;
 import org.asianclassics.center.catalog.entry.model.DrawingModel;
+import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
 import org.eclipse.swt.widgets.Composite;
 
 public class DrawingEntryRow extends ListEntryCell {
@@ -16,15 +17,12 @@ public class DrawingEntryRow extends ListEntryCell {
 	}
 
 	@Override
-	protected void createNewModelListIfNeeded() {
+	protected void onAddNewCell() {
 		if (ctlr.getModel().drawings==null) ctlr.getModel().drawings = new LinkedList<DrawingModel>();
-	}
-	
-	@Override
-	protected Object createNewObject() {
 		DrawingModel model = new DrawingModel();
 		ctlr.getModel().drawings.add(model);
-		return model;
+		addCellFromObject(model);
+		eb.post(new ParentAdaptSizeEvent());
 	}
 	
 	@Override
