@@ -100,6 +100,7 @@ public class EntryController {
 	public void viewRawData() {
 		if (model!=null) {
 			StringBuilder url = new StringBuilder("http://127.0.0.1:5984/");
+			url.append("_utils/document.html?");  // for viewing in Futon  (comment out this line for pretty-print-JSON)
 			url.append(repo.getDbName());
 			url.append("/");
 			url.append(model.getId());

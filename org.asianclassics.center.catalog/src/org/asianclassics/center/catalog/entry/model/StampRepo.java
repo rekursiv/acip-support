@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.asianclassics.center.link.LinkManager;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.ImageData;
 import org.ektorp.Attachment;
 import org.ektorp.AttachmentInputStream;
@@ -55,10 +56,16 @@ public class StampRepo extends CouchDbRepositorySupport<StampModel> {
 		}
 	}
 	
-	public ImageData getImage(String id, String attachmentId) throws IOException {
+	public ImageData getImage(String id, String attachmentId) throws Exception {
 		AttachmentInputStream data = db.getAttachment(id, attachmentId);
 		InputStream is = new BufferedInputStream(data);
-		return new ImageData(is);
+        try {
+        	return new ImageData(is);
+        } finally {
+    	   is.close();
+    	   data.close();
+        }
+
 	}
 
 	

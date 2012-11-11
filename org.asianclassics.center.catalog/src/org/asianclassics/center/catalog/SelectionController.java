@@ -19,6 +19,8 @@ import com.google.inject.Singleton;
 @Singleton
 public class SelectionController {
 
+	public static final int maxListLength = 300;
+	
 	private EventBus eb;
 	private EntryRepo repo;
 	private String workerId;
@@ -81,11 +83,11 @@ public class SelectionController {
 	
 	
 	public List<Row> getPotiList() {
-		return repo.getPotis(workerId, 100);
+		return repo.getPotis(workerId, maxListLength);
 	}
 	
 	public List<Row> getSutraList(int potiIndex) {
-		return repo.getSutras(potiIndex, 100);
+		return repo.getSutras(potiIndex, maxListLength);
 	}
 	
 
