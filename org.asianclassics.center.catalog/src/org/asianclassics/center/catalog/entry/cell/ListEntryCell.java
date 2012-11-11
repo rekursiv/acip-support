@@ -3,10 +3,11 @@ package org.asianclassics.center.catalog.entry.cell;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.asianclassics.center.catalog.event.EntryCellListDeleteElementEvent;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
-import org.asianclassics.center.catalog.event.TestEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -53,9 +54,8 @@ public abstract class ListEntryCell extends EntryCell {
 
 	@Subscribe
 	public void onPostRead(EntryModelPostReadEvent evt) {
-		deleteAllViews();
 		copyObjectsToView();
-		eb.post(new ParentAdaptSizeEvent());   //  FIXME:  this could be optimized by only sending when necessary
+		eb.post(new ParentAdaptSizeEvent());
 	}
 	
 	@Subscribe
@@ -67,6 +67,13 @@ public abstract class ListEntryCell extends EntryCell {
 		if (cellList.remove(cell)) {
 			cell.dispose();
 			eb.post(new ParentAdaptSizeEvent());
+		}
+	}
+	
+	@Subscribe
+	public void onMakeTop(CatalogTaskMakeTopEvent evt) {
+		if (evt.getViewType()==CatalogTaskViewType.SELECTION) {
+			deleteAllViews();
 		}
 	}
 	

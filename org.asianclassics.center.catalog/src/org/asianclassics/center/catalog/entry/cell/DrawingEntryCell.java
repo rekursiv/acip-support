@@ -200,7 +200,7 @@ public class DrawingEntryCell extends LinkedEntryCell {
 	
 	@Override
 	public void dispose() {
-		ctlr.getModel().drawings.remove(drawing);
+		if (ctlr.getModel().drawings!=null) ctlr.getModel().drawings.remove(drawing);
 		eb.unregister(tecPage);
 		eb.unregister(tecCaption);
 		eb.unregister(this);

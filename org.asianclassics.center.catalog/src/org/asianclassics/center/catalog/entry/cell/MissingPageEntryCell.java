@@ -99,7 +99,7 @@ public class MissingPageEntryCell extends LinkedEntryCell {
 	
 	@Override
 	public void dispose() {
-		ctlr.getModel().missingPages.remove(missingPage);
+		if (ctlr.getModel().missingPages!=null) ctlr.getModel().missingPages.remove(missingPage);
 		eb.unregister(tecBegin);
 		eb.unregister(tecEnd);
 		eb.unregister(this);

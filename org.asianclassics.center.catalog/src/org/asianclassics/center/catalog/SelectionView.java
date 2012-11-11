@@ -55,6 +55,8 @@ public class SelectionView extends Composite {
 	private String idOfEntryToEdit;
 	private TableViewerColumn dateCol;
 	private Button btnLogout;
+	private int curPotiSelIndex;
+	private int curSutraSelIndex;
 
 	public SelectionView(Composite parent, int style, Injector injector) {
 		super(parent, style);
@@ -230,7 +232,7 @@ public class SelectionView extends Composite {
 	public void inject(EventBus eb, SelectionController ctlr) {
 		this.eb = eb;      ///  FIXME:  not used
 		this.ctlr = ctlr;
-
+		reset();
 		updateTables();
 	}
 	
@@ -243,19 +245,24 @@ public class SelectionView extends Composite {
 		}
 	}
 	
-//	@Subscribe
-//	public void onLogout(LogoutEvent evt) {   // will be needed if above gets fixed
-//		System.out.println("onLogout");
-//		idOfEntryToEdit=null;
-//	}
+	@Subscribe
+	public void onLogout(LogoutEvent evt) {
+		reset();
+	}
+	
+	private void reset() {
+		idOfEntryToEdit=null;
+		curPotiSelIndex = 1;
+		curSutraSelIndex = 0;
+	}
 	
 
 	private void updateTables() {
 		System.out.println("update");
 		doingUpdate = true;
 		updatePotiTable();
-		int initSelect = 1;
-		if (potiTableViewer.getTable().getItemCount()==1) initSelect = 0;
+		int initSelect = curPotiSelIndex;
+		if (potiTableViewer.getTable().getItemCount()<=initSelect) initSelect = 0;
 		potiTableViewer.getTable().setSelection(initSelect);  // does NOT fire a select event
 		onPotiSelect(potiTableViewer.getTable().getItem(initSelect).getData());
 		doingUpdate = false;
@@ -276,6 +283,7 @@ public class SelectionView extends Composite {
 			idOfEntryToEdit = null;
 			updateAction();
 		} else {
+			curPotiSelIndex = potiTableViewer.getTable().getSelectionIndex();
 			potiIndex = ((Row)data).getValueAsInt();
 			List<Row> sutraList = ctlr.getSutraList(potiIndex);
 			int nextSutra = sutraList.get(0).getValueAsNode().get("sutraIndex").asInt()+1;
@@ -283,7 +291,8 @@ public class SelectionView extends Composite {
 			sutraTableViewer.refresh();
 			sutraTableViewer.insert(nextSutra, 0);
 			int initSelect = 1;
-			if (doingUpdate) initSelect = 0;
+			if (doingUpdate) initSelect = curSutraSelIndex;
+			if (sutraTableViewer.getTable().getItemCount()<=initSelect) initSelect = sutraTableViewer.getTable().getItemCount();
 			sutraTableViewer.getTable().setSelection(initSelect);  // does NOT fire a select event
 			onSutraSelect(sutraTableViewer.getTable().getItem(initSelect).getData());
 		}
@@ -291,6 +300,7 @@ public class SelectionView extends Composite {
 	}
 	
 	private void onSutraSelect(Object data) {
+		curSutraSelIndex = sutraTableViewer.getTable().getSelectionIndex();
 		if (isInt(data)) {
 			sutraIndex = (int)data;
 			idOfEntryToEdit = null;

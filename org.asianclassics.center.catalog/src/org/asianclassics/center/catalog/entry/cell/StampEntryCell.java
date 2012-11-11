@@ -118,7 +118,7 @@ public class StampEntryCell extends LinkedEntryCell {
 	@Override
 	public void dispose() {
 		System.out.println("StampEntryCell#dispose()");
-		ctlr.getModel().stamps.remove(stampNum);
+		if (ctlr.getModel().stamps!=null) ctlr.getModel().stamps.remove(stampNum);
 		eb.unregister(this);
 		super.dispose();
 	}
