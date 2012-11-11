@@ -13,13 +13,13 @@ public class EntryScroller extends Composite {
 
 	public EntryScroller(Composite parent, int style, Injector injector) {
 		super(parent, style);
-		setLayout(new FillLayout(SWT.HORIZONTAL));
+		setLayout(new FillLayout(SWT.HORIZONTAL));		
 		scroller = new ScrolledComposite(this, SWT.H_SCROLL|SWT.V_SCROLL);
 		scroller.setExpandHorizontal(true);
-		entryView = new EntryView(scroller, SWT.NONE, injector);
-		scroller.setContent(entryView);
 		scroller.setShowFocusedControl(true);
 		scroller.setMinWidth(900);
+		entryView = new EntryView(scroller, SWT.NONE, injector);
+		scroller.setContent(entryView);
 		
 		if (injector!=null) injector.injectMembers(this);
 	}

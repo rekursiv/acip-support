@@ -25,7 +25,7 @@ import org.eclipse.swt.events.ModifyEvent;
 
 public class StampSelectDialog extends Dialog {
 
-	protected int result;
+	protected int stampNum;
 	protected Shell shell;
 	private Logger log;
 	private StampRepo repo;
@@ -35,6 +35,7 @@ public class StampSelectDialog extends Dialog {
 	private Button btnBrowseStamps;
 	private Button btnAccept;
 	private Button btnCancel;
+	private StampBrowseDialog browser;
 
 	/**
 	 * Create the dialog.
@@ -44,6 +45,7 @@ public class StampSelectDialog extends Dialog {
 	public StampSelectDialog(Shell parent, Injector injector) {
 		super(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		setText("Stamp Selection");
+		browser = new StampBrowseDialog(parent, injector);
 		if (injector!=null) injector.injectMembers(this);
 	}
 	
@@ -67,7 +69,7 @@ public class StampSelectDialog extends Dialog {
 				display.sleep();
 			}
 		}
-		return result;
+		return stampNum;
 	}
 
 	/**
@@ -75,7 +77,7 @@ public class StampSelectDialog extends Dialog {
 	 */
 	private void createContents() {
 		shell = new Shell(getParent(), getStyle());
-		shell.setSize(450, 300);
+		shell.setSize(400, 300);
 		shell.setText(getText());
 		shell.setLayout(new FormLayout());
 		
@@ -110,7 +112,8 @@ public class StampSelectDialog extends Dialog {
 		btnBrowseStamps.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				test();
+				stampNum = browser.open();
+				txtStampNum.setText(String.valueOf(stampNum));
 			}
 		});
 		FormData fd_btnBrowseStamps = new FormData();
@@ -123,7 +126,7 @@ public class StampSelectDialog extends Dialog {
 		btnAccept.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				result = Integer.parseInt(txtStampNum.getText());
+				stampNum = Integer.parseInt(txtStampNum.getText());
 				shell.close();
 			}
 		});
@@ -137,7 +140,7 @@ public class StampSelectDialog extends Dialog {
 		btnCancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				result = 0;  //  -1 ??
+				stampNum = 0;  //  -1 ??
 				shell.close();
 			}
 		});
@@ -152,25 +155,25 @@ public class StampSelectDialog extends Dialog {
 	private void onModifyText() {
 		log.info("onModifyText");
 		try {
-			result = Integer.parseInt(txtStampNum.getText());
+			stampNum = Integer.parseInt(txtStampNum.getText());
 			loadImage();
 		} catch (NumberFormatException e) {
-			if (result!=0) {
-				result = 0;
+			if (stampNum!=0) {
+				stampNum = 0;
 				loadImage();
 			}
 		}
 	}
 
 	private void loadImage() {
-		if (result==0) {
+		if (stampNum==0) {
 			lblImage.setImage(null);
 			lblImage.setText("Invalid Stamp Number");
 			log.info("Invalid Stamp Number");
 			return;
 		}
 		try {
-			ImageData imgData = repo.getImageByIndex(result);
+			ImageData imgData = repo.getImageByIndex(stampNum);
 			Image img = new Image(shell.getDisplay(), imgData);
 			lblImage.setImage(img);
 		} catch (Exception e) {
@@ -179,6 +182,6 @@ public class StampSelectDialog extends Dialog {
 	}
 	
 	private void test() {
-		log.info("r="+result);
+		log.info("r="+stampNum);
 	}
 }

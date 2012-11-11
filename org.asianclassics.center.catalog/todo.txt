@@ -1,6 +1,4 @@
 
-@@ stamp interface
-
 
 EntryView:
  copy prev. sutra

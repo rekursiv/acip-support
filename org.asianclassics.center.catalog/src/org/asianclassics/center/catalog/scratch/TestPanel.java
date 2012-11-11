@@ -2,6 +2,7 @@ package org.asianclassics.center.catalog.scratch;
 
 import java.util.logging.Logger;
 
+import org.asianclassics.center.catalog.entry.StampBrowseDialog;
 import org.asianclassics.center.catalog.entry.StampSelectDialog;
 import org.asianclassics.center.catalog.entry.model.StampRepo;
 import org.eclipse.swt.widgets.Composite;
@@ -18,13 +19,13 @@ public class TestPanel extends Composite {
 	private StampRepo repo;
 	private Logger log;
 	private Button btnOpenDialog;
-	private StampSelectDialog ssd;
+	private StampSelectDialog dlg;
 
 
 	public TestPanel(Composite parent, int style, Injector injector) {
 		super(parent, style);
 		
-		ssd = new StampSelectDialog(getShell(), injector);
+		dlg = new StampSelectDialog(getShell(), injector);
 		
 		btnOpenDialog = new Button(this, SWT.NONE);
 		btnOpenDialog.addSelectionListener(new SelectionAdapter() {
@@ -47,7 +48,7 @@ public class TestPanel extends Composite {
 	}
 
 	private void openDialog() {
-		int r = ssd.open();
+		int r = dlg.open();
 		log.info("dlg returned: "+r);
 	}
 	

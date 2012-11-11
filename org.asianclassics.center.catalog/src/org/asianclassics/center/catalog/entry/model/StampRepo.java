@@ -38,22 +38,23 @@ public class StampRepo extends CouchDbRepositorySupport<StampModel> {
 		if (sl==null||sl.isEmpty()) return null;
 		else return sl.get(0);
 	}
+	
+	@View(name="byCategory", map="function(doc) {emit(doc.category, null)}")
+	public List<StampModel> getByCategory(String category) {
+		ViewQuery q = createQuery("byCategory").includeDocs(true).key(category);
+		return db.queryView(q, type);
+	}
 
 	public ImageData getImageByIndex(int index) throws Exception {
 		StampModel stamp = getByIndex(index);
 		if (stamp==null) throw new Exception("Index not found in database.");
+		return getImage(stamp);
+	}
+	
+	public ImageData getImage(StampModel stamp) throws Exception {
 		String imageId = getSingleAttachmentId(stamp);
 		if (imageId==null) throw new Exception("Problem with attached image.");
 		return getImage(stamp.getId(), imageId);
-	}
-	
-	public String getSingleAttachmentId(StampModel stamp) {
-		Map<String, Attachment> attachmentMap = stamp.getAttachments();
-		if (attachmentMap!=null && attachmentMap.size()==1) {
-			return attachmentMap.keySet().iterator().next();
-		} else {
-			return null;
-		}
 	}
 	
 	public ImageData getImage(String id, String attachmentId) throws Exception {
@@ -65,7 +66,15 @@ public class StampRepo extends CouchDbRepositorySupport<StampModel> {
     	   is.close();
     	   data.close();
         }
-
+	}
+	
+	public String getSingleAttachmentId(StampModel stamp) {
+		Map<String, Attachment> attachmentMap = stamp.getAttachments();
+		if (attachmentMap!=null && attachmentMap.size()==1) {
+			return attachmentMap.keySet().iterator().next();
+		} else {
+			return null;
+		}
 	}
 
 	
