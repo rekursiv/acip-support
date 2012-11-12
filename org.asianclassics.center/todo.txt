@@ -12,5 +12,7 @@ deploy:
  disable log->view
  disable log->console
  enable log->file
+ check CenterShell#init()
+ check LoginController#onLinkReady()
  
  

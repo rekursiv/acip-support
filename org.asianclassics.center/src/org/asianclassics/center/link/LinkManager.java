@@ -36,11 +36,13 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 
 	public static final String dbOrgPrefix = "acip-center-";
 	private String dbCenterPrefix;
+	
 	private volatile boolean initInProgress = false;
 	private volatile boolean initInterrupt = false;
+	private volatile boolean isServer = false;
+	private volatile String serverIp = null;
+	
 	private JChannel channel = null;
-	private boolean isServer = false;
-	private String serverIp = null;
 	private String myIp = null;
 	private CouchDbInstance localLink;
 	private CouchDbInstance remoteLink;
@@ -128,7 +130,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		lock.unlock();
 	}
 	
-	private void shutdown() {
+	private synchronized void shutdown() {
 		log.info("Shutting down");
 		if (channel!=null) channel.close();
 		if (localLink!=null) {
@@ -173,7 +175,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		lock = lockService.getLock("acip");
 	}
 	
-	private void updateStatusFull(final String message) {
+	private synchronized void updateStatusFull(final String message) {
 		final String nodeType;
 		if (isServer) {
 			nodeType = "Server";
@@ -192,7 +194,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		});
 	}
 	
-	private void updateStatus(final String message) {
+	private synchronized void updateStatus(final String message) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -201,7 +203,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		});
 	}
 	
-	private void linkReady() {
+	private synchronized void linkReady() {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -210,7 +212,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		});
 	}
 	
-	private void setupServer() throws Exception {
+	private synchronized void setupServer() throws Exception {
 		log.info("Seting up server...");
 		if (isServer) {
 			// ???
@@ -249,7 +251,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 
 	
 	@Override
-	public void viewAccepted(View view) {   //  TODO:  synchronized ??
+	public void viewAccepted(View view) {
 		log.info(view.toString());
 		if (isServer) {
 			try {

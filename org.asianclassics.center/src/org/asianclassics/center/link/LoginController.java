@@ -24,15 +24,17 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class LoginController extends ReceiverAdapter {
+public class LoginController extends ReceiverAdapter implements Runnable {
 	
+	private volatile String workerId;
+	private volatile boolean isUserLoggedIn = false;
+	private volatile boolean loginInProgress = false;
+	private volatile boolean loginInterrupt = false;
 	private final Logger log;
 	private CouchDbConnector userDb;
 	private EventBus eb;
 	private LinkManager lm;
-	private boolean isUserLoggedIn = false;
 	private JChannel channel;
-	private String workerId;
 	
 	@Inject
 	public LoginController(Logger log, EventBus eb, LinkManager lm) {
@@ -49,6 +51,7 @@ public class LoginController extends ReceiverAdapter {
 	
 	@Subscribe
 	public void onLoginRequest(LoginRequestEvent evt) {
+		if (loginInProgress) return;
 		workerId = evt.getWorkerId().toLowerCase();
 		log.info("login: "+workerId);
 		if (workerId==null||workerId.isEmpty()) {
@@ -56,19 +59,18 @@ public class LoginController extends ReceiverAdapter {
 		} else if (userDb==null) {
 			eb.post(new LoginMessageEvent("ERROR:  No connection to user database."));
 		} else {
+			eb.post(new LoginMessageEvent("Logging in, please wait..."));
+			loginInProgress = true;
 			Object user = userDb.find(Object.class, workerId);
 			if (user==null) {
 				eb.post(new LoginMessageEvent("User '"+workerId+"' not found.  Please try again."));
+				loginInProgress = false;
 			} else {
 				if (LinkManager.testDirectLink) {
 					loginIfExclusive(true);
+					loginInProgress = false;
 				} else {
-//					eb.post(new LoginFailureEvent(workerId, "Logging in..."));  // FIXME:  needs async to work
-					try {
-						connectGroup();
-					} catch (Exception e) {
-						log.log(Level.SEVERE, "exception", e);
-					}
+					new Thread(this).start();
 				}
 			}
 		}
@@ -76,11 +78,26 @@ public class LoginController extends ReceiverAdapter {
 	
 	@Subscribe
 	public void onLogout(LogoutEvent evt) {
-		if (channel!=null) channel.disconnect();
+		loginInProgress = false;
 		isUserLoggedIn = false;
+		if (channel!=null) channel.disconnect();
 		eb.post(new MainMakeTopEvent(MainViewType.LOGIN));
 	}
 
+	@Override
+	public void run() {
+		try {
+			connectGroup();
+		} catch (Exception e) {
+			eb.post(new LoginMessageEvent("ERROR:  Cannot join login group."));
+			log.log(Level.SEVERE, "exception", e);
+			shutdown();
+			loginInProgress = false;
+		}
+		if (loginInterrupt) shutdown();
+		loginInProgress = false;
+	}
+	
 	@Override
 	public void viewAccepted(View view) {
 		if (isUserLoggedIn) return;
@@ -100,7 +117,7 @@ public class LoginController extends ReceiverAdapter {
 		loginIfExclusive(isExclusive);
 	}
 	
-	public void loginIfExclusive(boolean isExclusive) {
+	public synchronized void loginIfExclusive(boolean isExclusive) {
 		if (isExclusive) {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
@@ -114,16 +131,22 @@ public class LoginController extends ReceiverAdapter {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					eb.post(new LoginMessageEvent("User '"+workerId+"' already logged into another machine in this room.\nPlease logout from that machine before logging into this one."));
+					eb.post(new LoginMessageEvent("User '"+workerId+"' already logged into another machine in this room.\n" +
+							"Please logout from the other machine before logging into this one."));
 					if (channel!=null) channel.disconnect();
 				}
 			});
 		}
-
 	}
 
 	public void destroy() {
 		log.info("bye bye");
+		if (loginInProgress) loginInterrupt = true;
+		else shutdown();
+	}
+	
+	public synchronized void shutdown() {
+		log.info("shutdown");
 		if (channel!=null) channel.close();
 	}
 	
@@ -139,6 +162,5 @@ public class LoginController extends ReceiverAdapter {
 		channel.setAddressGenerator(new PayloadAddressGenerator(workerId));
 		channel.connect(LinkManager.dbOrgPrefix+"login");
 	}
-
 
 }
