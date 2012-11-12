@@ -32,7 +32,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class LinkManager extends ReceiverAdapter implements Runnable {
 	
-	public static final boolean testDirectLink = false;   // // // //
+	public static final boolean testDirectLink = true;   // // // //
 
 	public static final String dbOrgPrefix = "acip-center-";
 	private String dbCenterPrefix;

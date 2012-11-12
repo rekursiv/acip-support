@@ -32,7 +32,6 @@ public class LoginView extends Composite {
 	private Label lblStatus;
 	private EventBus eb;
 	private Label lblLogo;
-//	private Label lblServerHelpMessage;
 
 	
 	public LoginView(Composite parent, int style, Injector injector) {
@@ -87,19 +86,6 @@ public class LoginView extends Composite {
 		fd_lblLogo.right = new FormAttachment(0, 310);
 		lblLogo.setLayoutData(fd_lblLogo);
 		
-/*		
-		lblServerHelpMessage = new Label(this, SWT.NONE);
-		FormData fd_lblServerHelpMessage = new FormData();
-		fd_lblServerHelpMessage.top = new FormAttachment(lblStatus, 6);
-		fd_lblServerHelpMessage.right = new FormAttachment(lblStatus, 471);
-		fd_lblServerHelpMessage.left = new FormAttachment(lblStatus, 0, SWT.LEFT);
-		lblServerHelpMessage.setLayoutData(fd_lblServerHelpMessage);
-		lblServerHelpMessage.setText("Please make sure that the server machine is powered on.");
-//		Image img = new Image(Display.getDefault(), App.class.getResourceAsStream("logo_half.png"));
-	*/
-		
-		
-		
 		if (injector!=null) injector.injectMembers(this);
 	}
 	
@@ -128,11 +114,6 @@ public class LoginView extends Composite {
 	public void onLogout(LogoutEvent evt) {
 		reset();
 	}
-	
-//	@Subscribe
-//	public void onHelpUser(ServerHelpMessageEvent evt) {
-//		lblServerHelpMessage.setVisible(true);
-//	}
 	
 	private void login() {
 		eb.post(new LoginRequestEvent(txtWorkerId.getText()));
@@ -167,7 +148,6 @@ public class LoginView extends Composite {
 			btnLogin.setVisible(false);
 			lblStatus.setText("Connecting to database, please wait...");
 		}
-//		lblServerHelpMessage.setVisible(false);
 	}
 
 	@Override

@@ -17,8 +17,6 @@ import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.ektorp.ViewResult.Row;
 import org.joda.time.DateTime;
 
@@ -28,12 +26,13 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class EntryController {
+public class EntryController implements Runnable {
 	
 	private EntryModel model;
 	private EventBus eb;
 	
-	private boolean isModified;
+	private volatile boolean autoSaveTimerIsRunning = false;
+	private volatile boolean isModified;
 	private boolean isValid;
 	private EntryRepo repo;
 	private Logger log;
@@ -44,19 +43,42 @@ public class EntryController {
 		this.eb = eb;
 		this.repo = repo;
 	}
-
-	public EntryModel getModel() {
-		return model;
+	
+	@Override
+	public void run() {
+		log.info("run TOP");
+		autoSaveTimerIsRunning = true;
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			autoSaveTimerIsRunning = false;
+			return;
+		}
+		
+		if (isModified) {
+			isModified = false;
+			new Thread(this).start();
+		} else {
+			log.info("AUTO SAVE");
+			//write();
+		}
+		autoSaveTimerIsRunning = false;
+		log.info("run BOTTOM");
 	}
 
 	public void onModify() {
+		log.info("");
+		if (!autoSaveTimerIsRunning) new Thread(this).start();
 		isModified = true;
 	}
 
 	public void invalidate() {
 		isValid = false;
 	}
-	
+
+	public EntryModel getModel() {
+		return model;
+	}
 	
 	///////////////////////
 	
@@ -172,5 +194,7 @@ public class EntryController {
 			}
 		}
 	}
+
+
 
 }
