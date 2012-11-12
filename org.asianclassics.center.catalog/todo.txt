@@ -1,11 +1,10 @@
 
 
 
-autosave
- on modify, start timer if not started
- on end of timer, if modified again, restart timer
-   else save
-   
+
+add new stamps
+
+convert stamp db
 
 
 -----------------

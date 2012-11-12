@@ -9,6 +9,7 @@ import org.asianclassics.center.event.LoginRequestEvent;
 import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.event.LogoutEvent;
 import org.asianclassics.center.event.MainMakeTopEvent;
+import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.asianclassics.center.event.MainMakeTopEvent.MainViewType;
 import org.eclipse.swt.widgets.Display;
 import org.ektorp.CouchDbConnector;
@@ -82,6 +83,7 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 		isUserLoggedIn = false;
 		if (channel!=null) channel.disconnect();
 		eb.post(new MainMakeTopEvent(MainViewType.LOGIN));
+		eb.post(new StatusPanelUpdateEvent(""));
 	}
 
 	@Override
@@ -125,6 +127,7 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 					isUserLoggedIn = true;
 					eb.post(new LoginSuccessEvent(workerId));
 					eb.post(new MainMakeTopEvent(MainViewType.TASK));
+					eb.post(new StatusPanelUpdateEvent(""));
 				}
 			});
 		} else {

@@ -2,19 +2,12 @@ package org.asianclassics.center.catalog;
 
 import java.util.List;
 
-import org.asianclassics.center.catalog.entry.model.EntryModel;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.asianclassics.center.event.LogoutEvent;
-import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.IntNode;
-import org.codehaus.jackson.node.TextNode;
-import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -26,9 +19,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.ektorp.ViewResult.Row;
 
@@ -276,7 +267,6 @@ public class SelectionView extends Composite {
 	@Subscribe
 	public void onMakeTop(CatalogTaskMakeTopEvent evt) {   //  NOTE:  won't be fired on first "lazy load"
 		if (evt.getViewType()==CatalogTaskViewType.SELECTION) {
-			System.out.println("onMakeTop");
 //			if (idOfEntryToEdit==null) updateTables();   //  FIXME:  this doesn't update the tables after entry is deleted
 			updateTables();   //  WORKAROUND FOR NOW:  just update them every time
 		}
@@ -297,7 +287,6 @@ public class SelectionView extends Composite {
 	
 
 	private void updateTables() {
-		System.out.println("update");
 		doingUpdate = true;
 		updatePotiTable();
 		int initSelect = curPotiSelIndex;
@@ -348,7 +337,6 @@ public class SelectionView extends Composite {
 			if (sutraTableViewer.getTable().getItemCount()>1) {
 				Object copyFromData = sutraTableViewer.getTable().getItem(1).getData();
 				idOfEntryToCopy = ((Row)copyFromData).getValueAsNode().get("_id").asText();
-				System.out.println("*** idOfEntryToEdit="+idOfEntryToEdit);
 			}
 			idOfEntryToEdit = null;
 			updateAction();
@@ -356,13 +344,12 @@ public class SelectionView extends Composite {
 		else {
 			sutraIndex = ((Row)data).getValueAsNode().get("sutraIndex").asInt();
 			idOfEntryToEdit = ((Row)data).getValueAsNode().get("_id").asText();
-			System.out.println("id="+idOfEntryToEdit);
 			updateAction();
 		}
 	}
 	
 	private void updateAction() {
-		System.out.println("updateAction()    poti="+potiIndex+"   sutra="+sutraIndex+"   id="+idOfEntryToEdit);
+//		System.out.println("updateAction()    poti="+potiIndex+"   sutra="+sutraIndex+"   id="+idOfEntryToEdit);
 		String action;
 		if (potiIndex==-1) {
 			action = "Begin new poti";
@@ -377,7 +364,7 @@ public class SelectionView extends Composite {
 	}
 	
 	private void doAction() {
-		System.out.println("doAction()   poti="+potiIndex+"   sutra="+sutraIndex+"   id="+idOfEntryToEdit);
+//		System.out.println("doAction()   poti="+potiIndex+"   sutra="+sutraIndex+"   id="+idOfEntryToEdit);
 		ctlr.doAction(potiIndex, sutraIndex, idOfEntryToEdit, idOfEntryToCopy);
 	}
 	

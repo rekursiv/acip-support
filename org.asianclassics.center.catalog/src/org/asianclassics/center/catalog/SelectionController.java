@@ -34,7 +34,6 @@ public class SelectionController {
 	@Subscribe
 	public void onLoginSuccess(LoginSuccessEvent evt) {
 		workerId = evt.getWorkerId();
-		System.out.println("worker="+workerId);
 	}
 	
 	public void doAction(int potiIndex, int sutraIndex, String idOfEntryToEdit, String idOfEntryToCopy) {
@@ -52,7 +51,6 @@ public class SelectionController {
 	private void beginPoti() {
 		repo.lock();
 		int latestGlobalPoti = repo.getLatestPotiIndex();
-		System.out.println("beginPoti:  lgp="+latestGlobalPoti);
 		EntryModel entry = new EntryModel();
 		entry.inputBy = workerId;
 		entry.potiIndex = latestGlobalPoti+1;
@@ -64,7 +62,6 @@ public class SelectionController {
 	}
 	
 	private void addSutra(int potiIndex, int sutraIndex, String idOfEntryToCopy) {
-		System.out.println("SelectionController#addSutra id="+idOfEntryToCopy);
 		EntryModel entry = new EntryModel();
 		entry.potiIndex = potiIndex;
 		entry.sutraIndex = sutraIndex;
@@ -93,7 +90,6 @@ public class SelectionController {
 		eb.post(new EntryEditEvent(entry));
 	}
 	
-	
 	public List<Row> getPotiList() {
 		return repo.getPotis(workerId, maxListLength);
 	}
@@ -102,15 +98,7 @@ public class SelectionController {
 		return repo.getSutras(potiIndex, maxListLength);
 	}
 	
-
-	
-	
-	
-	
-	
 	public void test() {
-		List<Row> sutraList = repo.getSutras(1, 100);
-		System.out.println(sutraList.get(0).getValueAsNode().toString());
 	}
 	
 }

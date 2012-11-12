@@ -67,7 +67,6 @@ public class StampEntryCell extends LinkedEntryCell {
 	@Inject
 	public void inject(StampRepo repo) {
 		this.repo = repo;
-		System.out.println("StampRepo injection");
 	}
 	
 	@Override
@@ -98,14 +97,7 @@ public class StampEntryCell extends LinkedEntryCell {
 	}
 
 	@Override
-	public void onViewToModel() {
-//		stampNum.set(Integer.parseInt(txtTest.getText()));
-//		System.out.println("StampEntryCell#onViewToModel()   "+stampNum);
-	}
-	
-	@Override
 	public void dispose() {
-		System.out.println("StampEntryCell#dispose()");
 		if (ctlr.getModel().stamps!=null) ctlr.getModel().stamps.remove(stampNum);
 		eb.unregister(this);
 		super.dispose();

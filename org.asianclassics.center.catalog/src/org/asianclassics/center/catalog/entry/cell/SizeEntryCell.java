@@ -37,7 +37,6 @@ public class SizeEntryCell extends TextEntryCell {
 			} catch (NumberFormatException e) {
 			}
 			number = Math.round(flt*10.0f);
-//			System.out.println("n="+number);
 		}
 	}
 

@@ -10,18 +10,14 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		test(1);
-		test(2.34556);
-		test(5.5);
-		test(5.55);
-		test(34.999);
+		test();
 		
 	}
 	
-	public static void test(double f) {
-		new DecimalFormat("#.##").format(f);
-//		String s = String.format("%.1f", f);
-		String s = new DecimalFormat("#.#").format(f);
+	public static void test() {
+		DateTime dt = new DateTime();
+		String s = dt.toString("h:m:ss a");
+//		String s = dt.toString("d MMMM, y 'at' h:m a");
 		System.out.println(s);
 	}
 

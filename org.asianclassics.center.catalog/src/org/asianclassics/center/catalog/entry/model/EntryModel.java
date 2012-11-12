@@ -51,6 +51,15 @@ public class EntryModel extends Entity {
 	public boolean isCopy = false;
 	
 	@JsonIgnore
+	public String getSerial() {
+		StringBuilder serial = new StringBuilder("M");
+		serial.append(String.format("%07d", potiIndex));
+		serial.append("-");
+		serial.append(String.format("%03d", sutraIndex));
+		return serial.toString();
+	}
+	
+	@JsonIgnore
 	public int getPageWidth() {
 		if (pageSize==null) return 0;
 		else return pageSize.width;

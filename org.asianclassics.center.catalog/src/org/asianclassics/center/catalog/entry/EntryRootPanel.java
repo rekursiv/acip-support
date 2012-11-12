@@ -179,7 +179,6 @@ public class EntryRootPanel extends Composite {
 	
 	@Subscribe
 	public void onDeleteAllowed(EntryDeleteAllowedEvent evt) {
-		System.out.println("onDeleteAllowed");
 		btnDelete.setEnabled(true);
 	}
 	

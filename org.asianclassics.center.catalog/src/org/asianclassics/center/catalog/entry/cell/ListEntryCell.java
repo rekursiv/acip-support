@@ -60,7 +60,6 @@ public abstract class ListEntryCell extends EntryCell {
 	
 	@Subscribe
 	public void onDeleteCell(EntryCellListDeleteElementEvent evt) {
-		System.out.println("ListEntryCell#onDeleteCell");
 		if (cellList==null) return;
 		LinkedEntryCell cell = evt.getCell();
 		if (cell==null) return;

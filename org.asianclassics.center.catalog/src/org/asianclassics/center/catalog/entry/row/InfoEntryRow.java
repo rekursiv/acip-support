@@ -75,7 +75,7 @@ public class InfoEntryRow extends EntryCell {
 	
 	@Subscribe
 	public void onModelPostRead(EntryModelPostReadEvent evt) {
-		lblSerial.setText(buildSerial());
+		lblSerial.setText(ctlr.getModel().getSerial());
 		lblSubDate.setText(formatDate(ctlr.getModel().dateTimeFirstSubmitted));
 		lblEditDate.setText(formatDate(ctlr.getModel().dateTimeLastEdited));
 	}
@@ -85,11 +85,5 @@ public class InfoEntryRow extends EntryCell {
 		return dt.withZone(DateTimeZone.getDefault()).toString("d MMMM, y 'at' h:mm a"); 
 	}
 	
-	private String buildSerial() {
-		StringBuilder serial = new StringBuilder("M");
-		serial.append(String.format("%07d", ctlr.getModel().potiIndex));
-		serial.append("-");
-		serial.append(String.format("%03d", ctlr.getModel().sutraIndex));
-		return serial.toString();
-	}
+
 }
