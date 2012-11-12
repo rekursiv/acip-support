@@ -36,7 +36,14 @@ public class ComboBoxEntryCell extends StringEntryCell {
 	@Override
 	protected void setGuiData() {
 		if (data.isEmpty()) combo.deselectAll();
-		else combo.setText(data);
+		else {
+			combo.setText(data);
+			if (ctlr.getModel().isCopy) {
+				setHilite(HiliteMode.COPIED);
+			} else {
+				setHilite(HiliteMode.NONE);
+			}
+		}
 	}
 	
 	@Override

@@ -37,15 +37,15 @@ public class SelectionController {
 		System.out.println("worker="+workerId);
 	}
 	
-	public void doAction(int potiIndex, int sutraIndex, String id) {
+	public void doAction(int potiIndex, int sutraIndex, String idOfEntryToEdit, String idOfEntryToCopy) {
 		if (potiIndex==-1) {
 			beginPoti();
 		}
-		else if (id==null) {
-			addSutra(potiIndex, sutraIndex);
+		else if (idOfEntryToEdit==null) {
+			addSutra(potiIndex, sutraIndex, idOfEntryToCopy);
 		}
 		else {
-			editSutra(id);
+			editSutra(idOfEntryToEdit);
 		}
 	}
 	
@@ -57,18 +57,44 @@ public class SelectionController {
 		entry.inputBy = workerId;
 		entry.potiIndex = latestGlobalPoti+1;
 		entry.sutraIndex = 1;
-//		entry.titleTibetan = "This sutra begins poti # "+entry.potiIndex;
 		repo.add(entry);
 		repo.unlock();
 		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.ENTRY));
 		eb.post(new EntryEditEvent(entry));
 	}
 	
-	private void addSutra(int potiIndex, int sutraIndex) {
+	private void addSutra(int potiIndex, int sutraIndex, String idOfEntryToCopy) {
+		System.out.println("SelectionController#addSutra id="+idOfEntryToCopy);
 		EntryModel entry = new EntryModel();
+
 		entry.potiIndex = potiIndex;
 		entry.sutraIndex = sutraIndex;
-//		entry.titleTibetan = "This is sutra # "+entry.sutraIndex+" in poti # "+entry.potiIndex;
+
+		//  copy
+		if (idOfEntryToCopy!=null) {
+			System.out.println("   fetch model to copy");
+			EntryModel toCopy = repo.get(idOfEntryToCopy);  //  TODO: catch exception, log error
+			entry.format = toCopy.format;
+			entry.author = toCopy.author;
+			entry.inkColor = toCopy.inkColor;
+			entry.paperSource = toCopy.paperSource;
+			entry.paperColor = toCopy.paperColor;
+			entry.paperGrade = toCopy.paperGrade;
+			entry.readability = toCopy.readability;
+			entry.volume = toCopy.volume;
+			entry.linesPerPage = toCopy.linesPerPage;
+			entry.copySizes(toCopy);
+			entry.isCopy = true;
+		}
+		
+		/*
+function(doc) {
+  emit(doc._id, {format:doc.format, author:doc.author, inkColor:doc.inkColor, paperSource:doc.paperSource, paperColor:doc.paperColor, 
+  paperGrade:doc.paperGrade, readability:doc.readability, volume:doc.volume, linesPerPage:doc.linesPerPage, 
+  pageSize:doc.pageSize, printedAreaSize:doc.printedAreaSize});
+}
+		 */
+		
 		repo.add(entry);
 		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.ENTRY));
 		eb.post(new EntryEditEvent(entry));

@@ -102,6 +102,11 @@ public class TextEntryCell extends StringEntryCell {
 	protected void setGuiData() {
 		prevLineCount = 1;
 		text.setText(data);
+		if (!data.isEmpty() && ctlr.getModel().isCopy) {
+			setHilite(HiliteMode.COPIED);
+		} else {
+			setHilite(HiliteMode.NONE);
+		}
 	}
 	
 	

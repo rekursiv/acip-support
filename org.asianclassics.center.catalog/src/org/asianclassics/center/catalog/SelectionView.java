@@ -57,6 +57,7 @@ public class SelectionView extends Composite {
 	private Button btnLogout;
 	private int curPotiSelIndex;
 	private int curSutraSelIndex;
+	private String idOfEntryToCopy;
 
 	public SelectionView(Composite parent, int style, Injector injector) {
 		super(parent, style);
@@ -252,6 +253,8 @@ public class SelectionView extends Composite {
 	
 	private void reset() {
 		idOfEntryToEdit=null;
+		idOfEntryToCopy=null;
+		doingUpdate = false;
 		curPotiSelIndex = 1;
 		curSutraSelIndex = 0;
 	}
@@ -276,6 +279,8 @@ public class SelectionView extends Composite {
 	
 	private void onPotiSelect(Object data) {
 		if (isInt(data)) {
+			curPotiSelIndex = 1;
+			curSutraSelIndex = 0;
 			potiIndex = -1;
 			sutraIndex = 1;
 			sutraTableViewer.setInput(null);
@@ -292,7 +297,7 @@ public class SelectionView extends Composite {
 			sutraTableViewer.insert(nextSutra, 0);
 			int initSelect = 1;
 			if (doingUpdate) initSelect = curSutraSelIndex;
-			if (sutraTableViewer.getTable().getItemCount()<=initSelect) initSelect = sutraTableViewer.getTable().getItemCount();
+			if (sutraTableViewer.getTable().getItemCount()<=initSelect) initSelect = sutraTableViewer.getTable().getItemCount()-1;
 			sutraTableViewer.getTable().setSelection(initSelect);  // does NOT fire a select event
 			onSutraSelect(sutraTableViewer.getTable().getItem(initSelect).getData());
 		}
@@ -300,9 +305,15 @@ public class SelectionView extends Composite {
 	}
 	
 	private void onSutraSelect(Object data) {
+		idOfEntryToCopy=null;
 		curSutraSelIndex = sutraTableViewer.getTable().getSelectionIndex();
 		if (isInt(data)) {
 			sutraIndex = (int)data;
+			if (sutraTableViewer.getTable().getItemCount()>1) {
+				Object copyFromData = sutraTableViewer.getTable().getItem(1).getData();
+				idOfEntryToCopy = ((Row)copyFromData).getValueAsNode().get("_id").asText();
+				System.out.println("*** idOfEntryToEdit="+idOfEntryToEdit);
+			}
 			idOfEntryToEdit = null;
 			updateAction();
 		}
@@ -331,7 +342,7 @@ public class SelectionView extends Composite {
 	
 	private void doAction() {
 		System.out.println("doAction()   poti="+potiIndex+"   sutra="+sutraIndex+"   id="+idOfEntryToEdit);
-		ctlr.doAction(potiIndex, sutraIndex, idOfEntryToEdit);
+		ctlr.doAction(potiIndex, sutraIndex, idOfEntryToEdit, idOfEntryToCopy);
 	}
 	
 	

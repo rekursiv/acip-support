@@ -47,6 +47,8 @@ public class EntryModel extends Entity {
 	public String colophon;
 	
 	
+	@JsonIgnore
+	public boolean isCopy = false;
 	
 	@JsonIgnore
 	public int getPageWidth() {
@@ -95,6 +97,23 @@ public class EntryModel extends Entity {
 	public void setPrintedAreaHeight(int num) {
 		if (printedAreaSize==null) printedAreaSize = new SizeModel();
 		printedAreaSize.height = num;
+	}
+
+	
+	@JsonIgnore
+	public void copySizes(EntryModel src) {
+		if (src!=null) {
+			if (src.pageSize!=null) {
+				if (pageSize==null) pageSize = new SizeModel();
+				pageSize.width = src.pageSize.width;
+				pageSize.height = src.pageSize.height;	
+			}
+			if (src.printedAreaSize!=null) {
+				if (printedAreaSize==null) printedAreaSize = new SizeModel();
+				printedAreaSize.width = src.printedAreaSize.width;
+				printedAreaSize.height = src.printedAreaSize.height;	
+			}
+		}
 	}
 	
 	

@@ -1,8 +1,6 @@
 
 
-EntryView:
- copy prev. sutra
- autosave
+autosave
 
 
 SelectionView:
