@@ -1,10 +1,5 @@
 package org.asianclassics.center.link;
 
-import java.net.InetAddress;
-import java.net.InterfaceAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
@@ -12,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.asianclassics.center.event.LinkReadyEvent;
-import org.asianclassics.center.event.ServerHelpMessageEvent;
+import org.asianclassics.center.event.LoginMessageEvent;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.asianclassics.database.CustomCouchDbConnector;
 import org.eclipse.swt.widgets.Display;
@@ -37,9 +32,9 @@ import com.google.inject.Singleton;
 @Singleton
 public class LinkManager extends ReceiverAdapter implements Runnable {
 	
-	private boolean testDirectLink = true;   // // // //
+	public static final boolean testDirectLink = false;   // // // //
 
-	private static final String dbOrgPrefix = "acip-center-";
+	public static final String dbOrgPrefix = "acip-center-";
 	private String dbCenterPrefix;
 	private volatile boolean initInProgress = false;
 	private volatile boolean initInterrupt = false;
@@ -167,9 +162,9 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 
 		updateStatusFull("Waiting for server...");
 		
-		channel.setAddressGenerator(new GroupAddressGenerator(serverIp));
+		channel.setAddressGenerator(new PayloadAddressGenerator(serverIp));
 		channel.setReceiver(this);
-		channel.connect("acip");
+		channel.connect(LinkManager.dbOrgPrefix+"link");
 
 	}
 	
@@ -191,7 +186,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 			public void run() {
 				eb.post(new StatusPanelUpdateEvent(message, myIp, nodeType));
 				if (!isServer) {
-					eb.post(new ServerHelpMessageEvent());
+					eb.post(new LoginMessageEvent("Could not connect to database.\nPlease make sure that the server machine is powered on."));
 				}
 			}
 		});

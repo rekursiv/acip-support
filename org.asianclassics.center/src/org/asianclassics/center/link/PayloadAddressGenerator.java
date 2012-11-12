@@ -4,17 +4,17 @@ import org.jgroups.Address;
 import org.jgroups.stack.AddressGenerator;
 import org.jgroups.util.PayloadUUID;
 
-public class GroupAddressGenerator implements AddressGenerator {
+public class PayloadAddressGenerator implements AddressGenerator {
 
-	private String ip;
+	private String payload;
 	
-	public GroupAddressGenerator(String ip) {
-		this.ip = ip;
+	public PayloadAddressGenerator(String payload) {
+		this.payload = payload;
 	}
 
 	@Override
 	public Address generateAddress() {
-		return PayloadUUID.randomUUID(ip);
+		return PayloadUUID.randomUUID(payload);
 	}
 
 

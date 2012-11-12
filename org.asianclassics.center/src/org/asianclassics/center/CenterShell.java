@@ -5,9 +5,8 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
-import org.asianclassics.center.event.LoginSuccessEvent;
-import org.asianclassics.center.event.LogoutEvent;
 import org.asianclassics.center.link.LinkManager;
+import org.asianclassics.center.link.LoginController;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -18,7 +17,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import util.logging.LogSetup;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Injector;
 
 public class CenterShell extends Shell implements Listener {
@@ -37,7 +35,7 @@ public class CenterShell extends Shell implements Listener {
 	}
 
 	public void init(Injector injector) {
-//		addListener(SWT.Close, this);////////////////////   TEST 
+//		addListener(SWT.Close, this);			////////////////////   TEST (window closing shortcut)
 		setupLogging();
 		
 		loginCtlr = injector.getInstance(LoginController.class);
@@ -53,9 +51,9 @@ public class CenterShell extends Shell implements Listener {
 				display.sleep();
 			}
 		}
+		if (loginCtlr!=null) loginCtlr.destroy();
 		if (linkManager!=null) linkManager.destroy();
 		SWTResourceManager.dispose();
-		
 	}
 	
 	public void handleEvent(Event event) {

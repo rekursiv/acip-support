@@ -2,11 +2,10 @@ package org.asianclassics.center;
 
 
 import org.asianclassics.center.event.LinkReadyEvent;
-import org.asianclassics.center.event.LoginFailureEvent;
+import org.asianclassics.center.event.LoginMessageEvent;
 import org.asianclassics.center.event.LoginRequestEvent;
 import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.event.LogoutEvent;
-import org.asianclassics.center.event.ServerHelpMessageEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -33,7 +32,7 @@ public class LoginView extends Composite {
 	private Label lblStatus;
 	private EventBus eb;
 	private Label lblLogo;
-	private Label lblServerHelpMessage;
+//	private Label lblServerHelpMessage;
 
 	
 	public LoginView(Composite parent, int style, Injector injector) {
@@ -70,8 +69,9 @@ public class LoginView extends Composite {
 		fd_txtWorkerId.right = new FormAttachment(0, 178);
 		fd_txtWorkerId.left = new FormAttachment(0, 15);
 		FormData fd_lblStatus = new FormData();
+		fd_lblStatus.bottom = new FormAttachment(100, -12);
 		fd_lblStatus.top = new FormAttachment(txtWorkerId, 6);
-		fd_lblStatus.right = new FormAttachment(txtWorkerId, 348);
+		fd_lblStatus.right = new FormAttachment(100, -12);
 		fd_lblStatus.left = new FormAttachment(txtWorkerId, 0, SWT.LEFT);
 		lblStatus.setLayoutData(fd_lblStatus);
 
@@ -87,6 +87,7 @@ public class LoginView extends Composite {
 		fd_lblLogo.right = new FormAttachment(0, 310);
 		lblLogo.setLayoutData(fd_lblLogo);
 		
+/*		
 		lblServerHelpMessage = new Label(this, SWT.NONE);
 		FormData fd_lblServerHelpMessage = new FormData();
 		fd_lblServerHelpMessage.top = new FormAttachment(lblStatus, 6);
@@ -95,6 +96,9 @@ public class LoginView extends Composite {
 		lblServerHelpMessage.setLayoutData(fd_lblServerHelpMessage);
 		lblServerHelpMessage.setText("Please make sure that the server machine is powered on.");
 //		Image img = new Image(Display.getDefault(), App.class.getResourceAsStream("logo_half.png"));
+	*/
+		
+		
 		
 		if (injector!=null) injector.injectMembers(this);
 	}
@@ -116,8 +120,8 @@ public class LoginView extends Composite {
 	}
 
 	@Subscribe
-	public void onLoginFailure(LoginFailureEvent evt) {
-		setStatusText(evt.getErrorMessage());
+	public void onLoginFailure(LoginMessageEvent evt) {
+		setStatusText(evt.getMessage());
 	}
 	
 	@Subscribe
@@ -125,10 +129,10 @@ public class LoginView extends Composite {
 		reset();
 	}
 	
-	@Subscribe
-	public void onHelpUser(ServerHelpMessageEvent evt) {
-		lblServerHelpMessage.setVisible(true);
-	}
+//	@Subscribe
+//	public void onHelpUser(ServerHelpMessageEvent evt) {
+//		lblServerHelpMessage.setVisible(true);
+//	}
 	
 	private void login() {
 		eb.post(new LoginRequestEvent(txtWorkerId.getText()));
@@ -163,7 +167,7 @@ public class LoginView extends Composite {
 			btnLogin.setVisible(false);
 			lblStatus.setText("Connecting to database, please wait...");
 		}
-		lblServerHelpMessage.setVisible(false);
+//		lblServerHelpMessage.setVisible(false);
 	}
 
 	@Override
