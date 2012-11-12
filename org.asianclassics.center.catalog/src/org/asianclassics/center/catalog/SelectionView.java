@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.ektorp.ViewResult.Row;
 
 import com.google.common.eventbus.EventBus;
@@ -58,6 +60,7 @@ public class SelectionView extends Composite {
 	private int curPotiSelIndex;
 	private int curSutraSelIndex;
 	private String idOfEntryToCopy;
+	private TableViewerColumn validCol;
 
 	public SelectionView(Composite parent, int style, Injector injector) {
 		super(parent, style);
@@ -175,6 +178,39 @@ public class SelectionView extends Composite {
 				if (isInt(element))	return "<Add sutra>";
 				else return ((Row)element).getValueAsNode().get("sutraIndex").asText();
 			}
+		});
+		
+		validCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);
+		validCol.getColumn().setResizable(false);
+		validCol.getColumn().setWidth(80);
+		validCol.getColumn().setText("Saved As");
+		validCol.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Color getForeground(Object element) {
+				Boolean isValid = decode(element);
+				if (isValid==null) return SWTResourceManager.getColor(SWT.COLOR_BLACK);
+				else if (isValid==true) return SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN);
+				else return SWTResourceManager.getColor(SWT.COLOR_RED);
+			}
+			
+			@Override
+			public String getText(Object element) {
+				Boolean isValid = decode(element);
+				if (isValid==null) return "";
+				else if (isValid==true) return "FINAL";
+				else return "DRAFT";
+			}
+			public Boolean decode(Object element) {
+				if (isInt(element))	return null;
+				else {
+					JsonNode isValidNode = ((Row)element).getValueAsNode().get("isValid");
+					if (isValidNode==null) return null;
+					else {
+						return new Boolean(isValidNode.asBoolean());
+					}
+				}
+			}
+			
 		});
 		
 		dateCol = new TableViewerColumn(sutraTableViewer, SWT.NONE);

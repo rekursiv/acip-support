@@ -1,18 +1,13 @@
 
 
-autosave
-
-
-SelectionView:
- add "valid" field to Sutra list:  yes/no
- in list: mark invalid sutras in red
- preview pane?
-
 
 prevent multi-logins
 
+autosave
 
 -----------------
+
+SelectionView preview pane?
 
 re-evaluate ParentAdaptSizeEvent (no longer needed for scroller)
 

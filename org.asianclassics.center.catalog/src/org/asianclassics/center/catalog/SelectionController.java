@@ -66,13 +66,9 @@ public class SelectionController {
 	private void addSutra(int potiIndex, int sutraIndex, String idOfEntryToCopy) {
 		System.out.println("SelectionController#addSutra id="+idOfEntryToCopy);
 		EntryModel entry = new EntryModel();
-
 		entry.potiIndex = potiIndex;
 		entry.sutraIndex = sutraIndex;
-
-		//  copy
 		if (idOfEntryToCopy!=null) {
-			System.out.println("   fetch model to copy");
 			EntryModel toCopy = repo.get(idOfEntryToCopy);  //  TODO: catch exception, log error
 			entry.format = toCopy.format;
 			entry.author = toCopy.author;
@@ -86,19 +82,9 @@ public class SelectionController {
 			entry.copySizes(toCopy);
 			entry.isCopy = true;
 		}
-		
-		/*
-function(doc) {
-  emit(doc._id, {format:doc.format, author:doc.author, inkColor:doc.inkColor, paperSource:doc.paperSource, paperColor:doc.paperColor, 
-  paperGrade:doc.paperGrade, readability:doc.readability, volume:doc.volume, linesPerPage:doc.linesPerPage, 
-  pageSize:doc.pageSize, printedAreaSize:doc.printedAreaSize});
-}
-		 */
-		
 		repo.add(entry);
 		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.ENTRY));
 		eb.post(new EntryEditEvent(entry));
-		
 	}
 
 	private void editSutra(String id) {
