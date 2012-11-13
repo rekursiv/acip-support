@@ -28,7 +28,7 @@ public class LegacyStampDbConverter {
 
 	public static void main(String[] args) {
 		instance = new LegacyStampDbConverter();
-		instance.runConversion();
+//		instance.runConversion();
 	}
 
 	public void runConversion() {

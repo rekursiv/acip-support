@@ -47,13 +47,13 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 	@Subscribe
 	public void onLinkReady(LinkReadyEvent evt) {
 		this.userDb = lm.getDb("users");
-		eb.post(new LoginRequestEvent("tng"));						/////////////////    DEBUG:  Auto Login    /////////////////
+		eb.post(new LoginRequestEvent("TNG"));						/////////////////    DEBUG:  Auto Login    /////////////////
 	}
 	
 	@Subscribe
 	public void onLoginRequest(LoginRequestEvent evt) {
 		if (loginInProgress) return;
-		workerId = evt.getWorkerId().toLowerCase();
+		workerId = evt.getWorkerId().toUpperCase();
 		log.info("login: "+workerId);
 		if (workerId==null||workerId.isEmpty()) {
 			eb.post(new LoginMessageEvent("Enter your worker ID to log in."));

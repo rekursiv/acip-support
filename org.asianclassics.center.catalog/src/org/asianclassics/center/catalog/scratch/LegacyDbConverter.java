@@ -31,7 +31,7 @@ public class LegacyDbConverter {
 
 	public static void main(String[] args) {
 		instance = new LegacyDbConverter();
-		instance.runConversion();
+//		instance.runConversion();
 	}
 
 	public void runConversion() {
@@ -136,7 +136,6 @@ public class LegacyDbConverter {
 		entry = mapper.readValue(root, EntryModel.class);
 		convertId(oldId);
 		entry.isValid = true;
-		entry.inputBy = entry.inputBy.toLowerCase();
 		entry.dateTimeLastEdited = new DateTime();
 		entry.format = titleCase(entry.format);
 		entry.inkColor = titleCase(entry.inkColor);
