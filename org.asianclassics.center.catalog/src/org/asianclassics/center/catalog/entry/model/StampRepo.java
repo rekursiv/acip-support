@@ -70,7 +70,7 @@ public class StampRepo extends CouchDbRepositorySupport<StampModel> {
 	
 	public String getSingleAttachmentId(StampModel stamp) {
 		Map<String, Attachment> attachmentMap = stamp.getAttachments();
-		if (attachmentMap!=null && attachmentMap.size()==1) {
+		if (attachmentMap!=null && !attachmentMap.isEmpty()) {
 			return attachmentMap.keySet().iterator().next();
 		} else {
 			return null;

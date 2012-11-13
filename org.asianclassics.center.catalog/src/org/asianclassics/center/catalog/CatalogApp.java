@@ -15,7 +15,7 @@ import com.google.inject.Injector;
 
 public class CatalogApp {
 
-	public static final boolean debugMode = true;   //   FIXME:  debug mode won't work on test machine (loads db doc by specific ID)
+	public static final boolean debugMode = false;   //   FIXME:  debug mode won't work on test machine (loads db doc by specific ID)
 	
 	/**
 	 * Entry point

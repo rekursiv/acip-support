@@ -30,8 +30,8 @@ public class LegacyDbConverter {
 
 
 	public static void main(String[] args) {
-//		instance = new LegacyDbConverter();
-//		instance.runConversion();
+		instance = new LegacyDbConverter();
+		instance.runConversion();
 	}
 
 	public void runConversion() {

@@ -36,7 +36,7 @@ public class EntryController implements Runnable {
 	private EventBus eb;
 	
 	private volatile boolean autoSaveTimerRunning = false;
-	private volatile boolean autoSaveEnabled = false;  // start out disabled to prevent redundant save after load
+	private volatile boolean autoSaveArmed = false;  
 	private volatile boolean isModified = false;
 	private boolean isValid;
 	private boolean checkWorkMsgDisplayed = false;
@@ -48,6 +48,23 @@ public class EntryController implements Runnable {
 		this.log = log;
 		this.eb = eb;
 		this.repo = repo;
+	}
+	
+	@Subscribe
+	public void onEdit(EntryEditEvent evt) {
+		checkWorkMsgDisplayed = false;
+		autoSaveArmed = false;         // start out disabled to prevent redundant save after load
+		model = evt.getEntry();
+		if (model==null) {
+			if (CatalogApp.debugMode) model = repo.get("13ae733504c00035c89");					////////////////////   TEST 
+			else {
+				model = new EntryModel();
+				log.severe("ERROR:  EntryEditEvent was posted with NULL model");
+			}
+		}
+		log.info("Editing "+model.getId()+"   "+model.getSerial());
+		checkIfDeleteAllowed();
+		eb.post(new EntryModelPostReadEvent());
 	}
 	
 	@Override
@@ -64,14 +81,14 @@ public class EntryController implements Runnable {
 		if (isModified) {
 			isModified = false;
 			new Thread(this).start();
-		} else if (autoSaveEnabled) {
-			log.info("AUTO SAVE");
+		} else if (autoSaveArmed) {
+			log.info("DO AUTO SAVE");
 			writeAsync();
 			isModified = false;
 		} else {
-			log.info("ENABLE AUTO SAVE");
+			log.info("ARM AUTO SAVE");
 			isModified = false;
-			autoSaveEnabled = true;
+			autoSaveArmed = true;
 		}
 		autoSaveTimerRunning = false;
 //		log.info("run BOTTOM");
@@ -96,25 +113,6 @@ public class EntryController implements Runnable {
 
 	public EntryModel getModel() {
 		return model;
-	}
-	
-	///////////////////////
-	
-
-	@Subscribe
-	public void onEdit(EntryEditEvent evt) {
-		checkWorkMsgDisplayed = false;
-		autoSaveEnabled = false;
-		model = evt.getEntry();
-		if (model==null) {
-			if (CatalogApp.debugMode) model = repo.get("13ae733504c00035c89");					////////////////////   TEST 
-			else {
-				model = new EntryModel();
-				log.severe("ERROR:  EntryEditEvent was posted with NULL model");
-			}
-		}
-		checkIfDeleteAllowed();
-		eb.post(new EntryModelPostReadEvent());
 	}
 	
 	public void submit() {
@@ -161,6 +159,8 @@ public class EntryController implements Runnable {
 		endEditSession();
 	}
 
+	
+	
 	private void checkIfDeleteAllowed() {
 		boolean deleteAllowed = true;
 		if (model.sutraIndex==1) {  //  deleting sutra #1 would make the entire poti invisible in the selection interface
@@ -171,6 +171,7 @@ public class EntryController implements Runnable {
 	}
 	
 	private void writeAsync() {
+		if (CatalogApp.debugMode) return;                    ////////   disable autosave when in debug mode
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -199,7 +200,7 @@ public class EntryController implements Runnable {
 	
 	private void endEditSession() {
 		eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
-		autoSaveEnabled = false;
+		autoSaveArmed = false;
 	}
 
 }
