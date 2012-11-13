@@ -1,10 +1,6 @@
 
 
-uppercase workerIds
 
-add new stamps
-
-convert stamp db
 
 
 -----------------
@@ -18,3 +14,6 @@ re-evaluate ParentAdaptSizeEvent (no longer needed for scroller)
 
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
+
+
+stamp size (max) = 150 x 150 pixels

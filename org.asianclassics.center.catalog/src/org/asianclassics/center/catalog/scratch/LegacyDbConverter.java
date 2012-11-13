@@ -19,7 +19,7 @@ import org.joda.time.DateTimeZone;
 
 public class LegacyDbConverter {
 
-	private static final String dbOutputName = "acip-center-test-catalog";   ////  CAREFUL - this entire DB will be DELETED and REPLACED
+	private static final String dbOutputName = "acip-center-nlm_converted-catalog";   ////  CAREFUL - this entire DB will be DELETED and REPLACED
 	
 	private static LegacyDbConverter instance;
 	private CustomCouchDbConnector dbInput;

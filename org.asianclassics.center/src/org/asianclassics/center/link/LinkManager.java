@@ -204,6 +204,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	}
 	
 	private synchronized void linkReady() {
+		log.info("Link is ready.");
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {

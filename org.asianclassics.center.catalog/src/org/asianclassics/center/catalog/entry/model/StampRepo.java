@@ -12,7 +12,9 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.ImageData;
 import org.ektorp.Attachment;
 import org.ektorp.AttachmentInputStream;
+import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
+import org.ektorp.ViewResult;
 import org.ektorp.support.CouchDbRepositorySupport;
 import org.ektorp.support.View;
 
@@ -43,6 +45,14 @@ public class StampRepo extends CouchDbRepositorySupport<StampModel> {
 	public List<StampModel> getByCategory(String category) {
 		ViewQuery q = createQuery("byCategory").includeDocs(true).key(category);
 		return db.queryView(q, type);
+	}
+	
+	@View(name="getLatestStampIndex", map="function(doc) {emit(doc.index, doc.index)}")
+	public int getLatestStampIndex() {
+		ViewQuery q = createQuery("getLatestStampIndex").descending(true).limit(1).includeDocs(false);
+		ViewResult r = db.queryView(q);
+		if (r.isEmpty()) return 0;  // TODO:  throw exception??
+		return r.getRows().get(0).getValueAsInt();
 	}
 
 	public ImageData getImageByIndex(int index) throws Exception {
@@ -77,6 +87,9 @@ public class StampRepo extends CouchDbRepositorySupport<StampModel> {
 		}
 	}
 
+	public CouchDbConnector getDb() {
+		return db;
+	}
 	
 	
 	public void lock() {

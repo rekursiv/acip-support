@@ -17,7 +17,7 @@ import org.ektorp.impl.StdCouchDbInstance;
 
 public class LegacyStampDbConverter {
 
-	private static final String dbOutputName = "acip-center-test-stamps";   ////  CAREFUL - this entire DB will be DELETED and REPLACED
+	private static final String dbOutputName = "acip-center-nlm_converted-stamps";   ////  CAREFUL - this entire DB will be DELETED and REPLACED
 	
 	private static LegacyStampDbConverter instance;
 	private CustomCouchDbConnector dbInput;
