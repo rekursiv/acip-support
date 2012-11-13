@@ -3,6 +3,7 @@ package org.asianclassics.center.link;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.asianclassics.center.config.AppConfig;
 import org.asianclassics.center.event.LinkReadyEvent;
 import org.asianclassics.center.event.LoginMessageEvent;
 import org.asianclassics.center.event.LoginRequestEvent;
@@ -36,12 +37,14 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 	private EventBus eb;
 	private LinkManager lm;
 	private JChannel channel;
+	private AppConfig cfg;
 	
 	@Inject
-	public LoginController(Logger log, EventBus eb, LinkManager lm) {
+	public LoginController(Logger log, EventBus eb, LinkManager lm, AppConfig cfg) {
 		this.log=log;
 		this.eb = eb;
 		this.lm = lm;
+		this.cfg = cfg;
 	}
 
 	@Subscribe
@@ -67,7 +70,7 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 				eb.post(new LoginMessageEvent("User '"+workerId+"' not found.  Please try again."));
 				loginInProgress = false;
 			} else {
-				if (LinkManager.testDirectLink) {
+				if (cfg.get().testDirectLink) {
 					loginIfExclusive(true);
 					loginInProgress = false;
 				} else {
@@ -163,7 +166,7 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 			channel.setReceiver(this);
 		}
 		channel.setAddressGenerator(new PayloadAddressGenerator(workerId));
-		channel.connect(LinkManager.dbOrgPrefix+"login");
+		channel.connect(cfg.get().dbOrgPrefix+"login");
 	}
 
 }

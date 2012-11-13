@@ -19,7 +19,6 @@ public class InputApp {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		CenterShell.setProperties();
 		InputApp instance = new InputApp();
 		instance.init();
 	}

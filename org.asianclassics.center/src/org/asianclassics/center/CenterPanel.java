@@ -2,6 +2,7 @@ package org.asianclassics.center;
 
 import java.util.logging.Level;
 
+import org.asianclassics.center.config.AppConfig;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -30,17 +31,20 @@ public class CenterPanel extends Composite {
 		int statusPanelTop = 12;
 		int statusPanelHeight = 25;
 		
-//		if (true) {  // for WindowBuilder	
-		if (CenterShell.showLogView) {
-			logView = new LogView(this, SWT.NONE);
-			FormData fd_logView = new FormData();
-			fd_logView.right = new FormAttachment(100, -12);
-			fd_logView.bottom = new FormAttachment(0, 130);
-			fd_logView.top = new FormAttachment(0, 12);
-			fd_logView.left = new FormAttachment(0, 12);
-			logView.setLayoutData(fd_logView);
-			LogSetup.initView(logView, Level.ALL);
-			statusPanelTop = 136;
+//		if (true) {  // for WindowBuilder
+		if (injector!=null) {
+			AppConfig cfg = injector.getInstance(AppConfig.class);
+			if (cfg.get().showLogView) {
+				logView = new LogView(this, SWT.NONE);
+				FormData fd_logView = new FormData();
+				fd_logView.right = new FormAttachment(100, -12);
+				fd_logView.bottom = new FormAttachment(0, 130);
+				fd_logView.top = new FormAttachment(0, 12);
+				fd_logView.left = new FormAttachment(0, 12);
+				logView.setLayoutData(fd_logView);
+				LogSetup.initView(logView, Level.ALL);
+				statusPanelTop = 136;
+			}
 		}
 		
 		statusPanel = new StatusPanel(this, SWT.NONE, injector);

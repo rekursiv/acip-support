@@ -5,6 +5,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
+import org.asianclassics.center.config.AppConfig;
 import org.asianclassics.center.link.LinkManager;
 import org.asianclassics.center.link.LoginController;
 import org.eclipse.swt.SWT;
@@ -21,22 +22,13 @@ import com.google.inject.Injector;
 
 public class CenterShell extends Shell implements Listener {
 	
-	public static final boolean showLogView = true;
-	private static final boolean logToConsole = true;
-	private static final boolean logToFile = true;	
-	
 	private LinkManager linkManager;
 	private LoginController loginCtlr;
-	
-	public static void setProperties() {
-		System.getProperties().setProperty("java.util.logging.config.class", "util.logging.LogSetup");
-		System.getProperties().setProperty("java.net.preferIPv4Stack", "true");
-		System.getProperties().setProperty("org.ektorp.support.AutoUpdateViewOnChange", "true");
-	}
 
 	public void init(Injector injector) {
-//		addListener(SWT.Close, this);			////////////////////   TEST (window closing shortcut)
-		setupLogging();
+		AppConfig cfg = injector.getInstance(AppConfig.class);
+		if (cfg.get().allowCloseWhileLoggedIn==false) addListener(SWT.Close, this);
+		setupLogging(cfg);
 		
 		loginCtlr = injector.getInstance(LoginController.class);
 		linkManager = injector.getInstance(LinkManager.class);
@@ -67,15 +59,16 @@ public class CenterShell extends Shell implements Listener {
 		}
 	}
 	
-	private void setupLogging() {
+	private void setupLogging(AppConfig cfg) {
+		System.getProperties().setProperty("java.util.logging.config.class", "util.logging.LogSetup");
 		
 		// setup logging to console
-		if (logToConsole) {
+		if (cfg.get().logToConsole) {
 			LogSetup.initConsole(Level.ALL);
 		}
 
 		// setup logging to file
-		if (logToFile) {
+		if (cfg.get().logToFile) {
 			try {
 				LogManager.getLogManager().getLogger("").addHandler(new FileHandler("%h/acipcenter-%u-%g.log", 0, 10));
 			} catch (SecurityException e) {

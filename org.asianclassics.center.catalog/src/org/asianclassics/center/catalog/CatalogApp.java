@@ -22,7 +22,6 @@ public class CatalogApp {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		CenterShell.setProperties();
 		CatalogApp instance = new CatalogApp();
 		instance.init();
 	}

@@ -1,5 +1,6 @@
 package org.asianclassics.center;
 
+import org.asianclassics.center.config.AppConfig;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 
@@ -13,18 +14,17 @@ public class CenterApp {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		CenterShell.setProperties();
 		CenterApp instance = new CenterApp();
 		instance.init();
 	}
 	
 	protected void init() {
+		Injector injector = Guice.createInjector(new CenterModule());
+		
 		CenterShell cs = new CenterShell();
 		cs.setSize(800, 600);
 		cs.setText("ACIP Input Center System Test");
-		cs.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
-		Injector injector = Guice.createInjector(new CenterModule());
+		cs.setLayout(new FillLayout(SWT.HORIZONTAL));		
 		
 		CenterPanel cp = new CenterPanel(cs, SWT.NONE, injector);
 		
@@ -32,7 +32,7 @@ public class CenterApp {
 		cp.getMainStackView().setTaskView(taskView);
 		
 		cs.init(injector);
-				
+
 	}
 	
 

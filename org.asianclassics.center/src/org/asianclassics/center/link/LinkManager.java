@@ -6,6 +6,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.asianclassics.center.config.AppConfig;
 import org.asianclassics.center.event.LinkReadyEvent;
 import org.asianclassics.center.event.LoginMessageEvent;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
@@ -32,9 +33,6 @@ import com.google.inject.Singleton;
 @Singleton
 public class LinkManager extends ReceiverAdapter implements Runnable {
 	
-	public static final boolean testDirectLink = true;   // // // //
-
-	public static final String dbOrgPrefix = "acip-center-";
 	private String dbCenterPrefix;
 	
 	private volatile boolean initInProgress = false;
@@ -50,12 +48,18 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	private EventBus eb;
 	private LockService lockService;
 	private Lock lock;
+	private AppConfig cfg;
 
 
 	@Inject
-	public LinkManager(Logger log, EventBus eb) {
+	public LinkManager(Logger log, EventBus eb, AppConfig cfg) {
 		this.log = log;
 		this.eb = eb;
+		this.cfg = cfg;
+		System.getProperties().setProperty("java.net.preferIPv4Stack", "true");
+		if (cfg.get().autoUpdateCouchViews) {
+			System.getProperties().setProperty("org.ektorp.support.AutoUpdateViewOnChange", "true");
+		}
 	}
 	
 	@Override
@@ -71,7 +75,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 			return;
 		}
 
-		if (testDirectLink) {
+		if (cfg.get().testDirectLink) {
 			isServer = true;
 			try {
 				setupServer();
@@ -142,7 +146,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	}
 	
 	private void checkLocalForServer() throws Exception {
-		if (localLink.checkIfDbExists(new DbPath(dbOrgPrefix+"bootstrap"))) {
+		if (localLink.checkIfDbExists(new DbPath(cfg.get().dbOrgPrefix+"bootstrap"))) {
 			log.info("DB server is local");
 			isServer = true;
 		} else {
@@ -166,7 +170,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		
 		channel.setAddressGenerator(new PayloadAddressGenerator(serverIp));
 		channel.setReceiver(this);
-		channel.connect(LinkManager.dbOrgPrefix+"link");
+		channel.connect(cfg.get().dbOrgPrefix+"link");
 
 	}
 	
@@ -227,7 +231,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		if (centerCode==null) {
 			throw new Exception("Error reading center code from settings in bootstrap");
 		} else {
-			dbCenterPrefix = dbOrgPrefix+centerCode+"-";
+			dbCenterPrefix = cfg.get().dbOrgPrefix+centerCode+"-";
 			if (isServer) {
 				updateStatus("Linked with local database");
 			} else {
