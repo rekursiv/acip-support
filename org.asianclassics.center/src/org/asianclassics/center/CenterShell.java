@@ -32,6 +32,10 @@ public class CenterShell extends Shell implements Listener {
 		if (cfg.get().allowCloseWhileLoggedIn==false) addListener(SWT.Close, this);
 		if (cfg.get().openMaximized) setMaximized(true);
 		
+		if (CenterShell.class.getPackage().getImplementationVersion()!=null) {
+			setText(getText()+" V"+CenterShell.class.getPackage().getImplementationVersion());
+		}
+		
 		loginCtlr = injector.getInstance(LoginController.class);
 		linkManager = injector.getInstance(LinkManager.class);
 		linkManager.init();

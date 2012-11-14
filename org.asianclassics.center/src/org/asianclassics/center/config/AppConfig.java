@@ -64,12 +64,6 @@ public class AppConfig {
 //		debug(config);
 	}
 
-	public String getVersion() {
-		String s = AppConfig.class.getProtectionDomain().getCodeSource().toString();
-//		Files.ge
-		return s;
-	}
-	
 	public CenterAppConfigModel get() {
 		return config;
 	}

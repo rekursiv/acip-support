@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project org.asianclassics.center.catalog with libraries in sub-folder">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="C:/projects/ACIP/deploy/acipcenter.jar">
+            <manifest>
+            	<attribute name="Implementation-Version" value="1.0"/>
+                <attribute name="Main-Class" value="org.asianclassics.center.catalog.CatalogApp"/>
+                <attribute name="Class-Path" value=". acipcenter_lib/org.eclipse.osgi_3.8.0.v20120529-1548.jar acipcenter_lib/org.eclipse.core.commands_3.6.1.v20120521-2329.jar acipcenter_lib/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar acipcenter_lib/org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar acipcenter_lib/org.eclipse.core.runtime_3.8.0.v20120521-2346.jar acipcenter_lib/org.eclipse.text_3.5.200.v20120523-1310.jar acipcenter_lib/org.eclipse.swt.win32.win32.x86_64_3.100.0.v4233d.jar acipcenter_lib/org.eclipse.jface_3.8.0.v20120521-2329.jar acipcenter_lib/org.eclipse.jface.text_3.8.0.v20120531-0600.jar acipcenter_lib/org.eclipse.ui.forms_3.5.200.v20120521-2329.jar acipcenter_lib/guice-3.0-no_aop.jar acipcenter_lib/javax.inject.jar acipcenter_lib/jgroups-3.1.0.Final.jar acipcenter_lib/jackson-core-asl-1.9.7.jar acipcenter_lib/jackson-mapper-asl-1.9.7.jar acipcenter_lib/httpclient-4.1.2.jar acipcenter_lib/httpcore-4.1.2.jar acipcenter_lib/commons-logging-1.1.1.jar acipcenter_lib/commons-codec-1.4.jar acipcenter_lib/httpclient-cache-4.1.2.jar acipcenter_lib/commons-io-2.0.1.jar acipcenter_lib/slf4j-api-1.6.4.jar acipcenter_lib/slf4j-simple-1.6.4.jar acipcenter_lib/mockito-all-1.8.5.jar acipcenter_lib/junit-4.8.2.jar acipcenter_lib/joda-time-1.6.2.jar acipcenter_lib/joda-time-2.1.jar acipcenter_lib/guava-13.0.1.jar acipcenter_lib/swt.jar acipcenter_lib/jackson-core-asl-1.9.7.jar acipcenter_lib/jackson-mapper-asl-1.9.7.jar acipcenter_lib/slf4j-api-1.6.2.jar"/>
+            </manifest>
+            <fileset dir="C:/projects/eclipse_workspace/acip-support/org.asianclassics.center.catalog/bin"/>
+            <fileset dir="C:/projects/eclipse_workspace/java-util/util.logging/bin"/>
+            <fileset dir="C:/projects/eclipse_workspace/acip-support/org.asianclassics.center/bin"/>
+            <fileset dir="C:/projects/eclipse_workspace/acip-support/org.asianclassics.database/bin"/>
+            <fileset dir="C:/projects/git/Ektorp/org.ektorp/target/classes"/>
+            <fileset dir="C:/projects/git/Ektorp/org.ektorp/target/test-classes"/>
+        </jar>
+        <delete dir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <mkdir dir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/eclipse/plugins/org.eclipse.osgi_3.8.0.v20120529-1548.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/eclipse/plugins/org.eclipse.core.commands_3.6.1.v20120521-2329.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/eclipse/plugins/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/eclipse/plugins/org.eclipse.core.runtime_3.8.0.v20120521-2346.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/eclipse/plugins/org.eclipse.text_3.5.200.v20120523-1310.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+      	<!--  (I think I fixed this, but check next time...)
+        <copy file="C:/projects/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.100.0.v4233d.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        -->
+        <copy file="C:/projects/eclipse/plugins/org.eclipse.jface_3.8.0.v20120521-2329.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/eclipse/plugins/org.eclipse.jface.text_3.8.0.v20120531-0600.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/eclipse/plugins/org.eclipse.ui.forms_3.5.200.v20120521-2329.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/javalib/guice-3.0/guice-3.0-no_aop.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/javalib/guice-3.0/javax.inject.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/javalib/jgroups-3.1.0.Final.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/org/codehaus/jackson/jackson-core-asl/1.9.7/jackson-core-asl-1.9.7.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/org/codehaus/jackson/jackson-mapper-asl/1.9.7/jackson-mapper-asl-1.9.7.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/org/apache/httpcomponents/httpclient/4.1.2/httpclient-4.1.2.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/org/apache/httpcomponents/httpcore/4.1.2/httpcore-4.1.2.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/org/apache/httpcomponents/httpclient-cache/4.1.2/httpclient-cache-4.1.2.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/org/slf4j/slf4j-simple/1.6.4/slf4j-simple-1.6.4.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/org/mockito/mockito-all/1.8.5/mockito-all-1.8.5.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/Users/Aaron/.m2/repository/joda-time/joda-time/1.6.2/joda-time-1.6.2.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/javalib/joda-time-2.1/joda-time-2.1.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/javalib/guava-13.0.1.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+    	<!--
+        <copy file="C:/projects/javalib/swt-4.2-win32-win32-x86_64/swt.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+    	-->
+    	<copy file="C:/projects/javalib/swt-4.2-linux-gtk-x86_64/swt.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+    	
+        <copy file="C:/projects/javalib/ektorp-deps/jackson-core-asl-1.9.7.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/javalib/ektorp-deps/jackson-mapper-asl-1.9.7.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+        <copy file="C:/projects/javalib/slf4j-1.6.2/slf4j-1.6.2/slf4j-api-1.6.2.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+    </target>
+</project>

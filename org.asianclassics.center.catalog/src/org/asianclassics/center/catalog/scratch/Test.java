@@ -22,8 +22,7 @@ public class Test {
 	}
 	
 	public static void test() {
-		String s = AppConfig.class.getProtectionDomain().toString();
-		System.out.println(s);
+		System.out.println(Test.class.getPackage().getImplementationVersion());
 	}
 	
 	
