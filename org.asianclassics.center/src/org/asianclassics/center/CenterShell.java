@@ -24,6 +24,13 @@ public class CenterShell extends Shell implements Listener {
 	
 	private LinkManager linkManager;
 	private LoginController loginCtlr;
+	
+	
+	public static void setProperties() {
+		System.getProperties().setProperty("java.util.logging.config.class", "util.logging.LogSetup");
+		System.getProperties().setProperty("java.net.preferIPv4Stack", "true");
+	}
+
 
 	public void init(Injector injector) {
 		AppConfig cfg = injector.getInstance(AppConfig.class);

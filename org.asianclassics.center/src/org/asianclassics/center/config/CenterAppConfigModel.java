@@ -31,7 +31,7 @@ public class CenterAppConfigModel {
 	public String catalogStartView;
 	public String catalogInitModelId;
 	public boolean catalogAddEntryDebugBtns;
-	public boolean catalogDisableAutosave;
+	public int catalogAutoSaveDelay=30;       // in seconds
 
 }
 

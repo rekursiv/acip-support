@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 
 public class ComboBoxEntryCell extends StringEntryCell {
 	protected Combo combo;
+	protected FormData fd_combo;
 	protected boolean isReadOnly;
 
 
@@ -27,7 +28,7 @@ public class ComboBoxEntryCell extends StringEntryCell {
 				onModify();
 			}
 		});
-		FormData fd_combo = new FormData();
+		fd_combo = new FormData();
 		fd_combo.top = new FormAttachment(lblTitle, 0, SWT.TOP);
 		fd_combo.left = new FormAttachment(lblTitle, 6);
 		combo.setLayoutData(fd_combo);

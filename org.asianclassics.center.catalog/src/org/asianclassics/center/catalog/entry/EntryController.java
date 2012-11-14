@@ -31,11 +31,10 @@ import com.google.inject.Singleton;
 @Singleton
 public class EntryController implements Runnable {
 	
-	private static final int autoSaveDelayTime = 10;  // in seconds
-	
 	private EntryModel model;
 	private EventBus eb;
 	
+	private volatile int autoSaveDelayInMs;
 	private volatile boolean autoSaveTimerRunning = false;
 	private volatile boolean autoSaveArmed = false;  
 	private volatile boolean isModified = false;
@@ -52,12 +51,13 @@ public class EntryController implements Runnable {
 		this.eb = eb;
 		this.repo = repo;
 		this.cfg = cfg;
+		autoSaveDelayInMs = cfg.get().catalogAutoSaveDelay*500;  // convert to ms, divide by 2  (timer is fired twice before save)
 	}
 	
 	@Subscribe
 	public void onEdit(EntryEditEvent evt) {
+		autoSaveArmed = false;         // start out disarmed to prevent redundant save after load
 		checkWorkMsgDisplayed = false;
-		autoSaveArmed = false;         // start out disabled to prevent redundant save after load
 		model = evt.getEntry();
 		if (model==null) {
 			if (cfg.get().catalogInitModelId!=null) {
@@ -77,7 +77,7 @@ public class EntryController implements Runnable {
 //		log.info("run TOP");
 		autoSaveTimerRunning = true;
 		try {
-			Thread.sleep(autoSaveDelayTime*500);  // convert to ms, divide by 2
+			Thread.sleep(autoSaveDelayInMs);
 		} catch (InterruptedException e) {
 			autoSaveTimerRunning = false;
 			return;
@@ -101,7 +101,7 @@ public class EntryController implements Runnable {
 
 	public void onModify() {
 //		log.info("");
-		if (!autoSaveTimerRunning) {
+		if (!autoSaveTimerRunning&&autoSaveDelayInMs>100) {
 			autoSaveTimerRunning = true;
 			new Thread(this).start();
 		}
@@ -176,7 +176,6 @@ public class EntryController implements Runnable {
 	}
 	
 	private void writeAsync() {
-		if (cfg.get().catalogDisableAutosave) return;
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {

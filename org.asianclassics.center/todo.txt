@@ -1,16 +1,8 @@
 
+launcher
+ auto update from files in couch
 
+auto-shutdown
 
+admin mode?
 
-
-========
-
-deploy:
- LinkManager#testDirectLink=false
- disable log->view
- disable log->console
- enable log->file
- check CenterShell#init()
- check LoginController#onLinkReady()
- 
- 

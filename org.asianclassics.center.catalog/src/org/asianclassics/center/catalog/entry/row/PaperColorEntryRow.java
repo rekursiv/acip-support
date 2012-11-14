@@ -2,6 +2,7 @@ package org.asianclassics.center.catalog.entry.row;
 
 import org.asianclassics.center.catalog.entry.cell.ComboBoxEntryCell;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
+import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.eventbus.Subscribe;
@@ -17,6 +18,7 @@ public class PaperColorEntryRow extends ComboBoxEntryCell {
 		combo.add("White paper, Brown edge");
 		combo.add("White paper, Black edge");
 		combo.add("Black paper, Black edge");
+		fd_combo.right = new FormAttachment(lblTitle, 400);   //  Linux GTK won't resize comboboxes automagically
 	}
 	
 	@Subscribe

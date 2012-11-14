@@ -19,7 +19,7 @@ public class CatalogApp {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.getProperties().setProperty("java.util.logging.config.class", "util.logging.LogSetup");
+		CenterShell.setProperties();
 		CatalogApp instance = new CatalogApp();
 		instance.init();
 	}

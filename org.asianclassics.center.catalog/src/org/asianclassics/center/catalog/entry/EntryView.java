@@ -24,6 +24,7 @@ import org.asianclassics.center.catalog.entry.row.TitleSktEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleTibEntryRow;
 import org.asianclassics.center.catalog.entry.row.VolumeEntryRow;
 import org.asianclassics.center.catalog.entry.row.YearEntryRow;
+import org.asianclassics.center.catalog.event.EntryEditEvent;
 import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -36,6 +37,7 @@ public class EntryView extends Composite {
 
 	private Injector injector;
 	private static EntryView instance;
+	private Composite topWidget;
 
 	public EntryView(Composite parent, int style, Injector injector) {
 		super(parent, SWT.NONE);
@@ -44,7 +46,7 @@ public class EntryView extends Composite {
 		this.injector = injector;
 		setLayout(new GridLayout(1, false));
 
-		new InfoEntryRow(this);
+		topWidget = new InfoEntryRow(this);
 		new LibraryNumberEntryRow(this);
 		new StampEntryRow(this);
 		new TitleTibEntryRow(this);
@@ -72,7 +74,11 @@ public class EntryView extends Composite {
 		if (injector!=null) injector.injectMembers(this);
 		
 	}
-	
+
+	@Subscribe
+	public void onEdit(EntryEditEvent evt) {
+		if (topWidget!=null) topWidget.setFocus();
+	}
 
 	@Subscribe
 	public void onAdaptSize(ParentAdaptSizeEvent evt) {

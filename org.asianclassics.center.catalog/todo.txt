@@ -1,9 +1,11 @@
 
 
-config
-
-fullscreen?
-
+deploy
+ OS:  auto-hide toolbar
+ set up replication at HQ 
+ SSL at HQ???
+ 
+ 
 
 -----------------
 
@@ -11,11 +13,7 @@ SelectionView preview pane?
 
 re-evaluate ParentAdaptSizeEvent (no longer needed for scroller)
 
-
 =======
 
-
 //@JsonIgnoreProperties(ignoreUnknown = true)
-
-
 stamp size (max) = 150 x 150 pixels

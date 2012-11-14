@@ -14,7 +14,7 @@ public class CenterApp {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.getProperties().setProperty("java.util.logging.config.class", "util.logging.LogSetup");
+		CenterShell.setProperties();
 		CenterApp instance = new CenterApp();
 		instance.init();
 	}

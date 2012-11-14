@@ -56,7 +56,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		this.log = log;
 		this.eb = eb;
 		this.cfg = cfg;
-		System.getProperties().setProperty("java.net.preferIPv4Stack", "true");
+		
 		if (cfg.get().autoUpdateCouchViews) {
 			System.getProperties().setProperty("org.ektorp.support.AutoUpdateViewOnChange", "true");
 		}
@@ -192,7 +192,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 			public void run() {
 				eb.post(new StatusPanelUpdateEvent(message, myIp, nodeType));
 				if (!isServer) {
-					eb.post(new LoginMessageEvent("Could not connect to database.\nPlease make sure that the server machine is powered on."));
+					eb.post(new LoginMessageEvent("Could not connect to database.\n(Server machine needs to be powered on with ACIP app running.)"));
 				}
 			}
 		});
