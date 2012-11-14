@@ -88,7 +88,7 @@ public class StampSelectDialog extends Dialog {
 		fd_lblImage.top = new FormAttachment(0, 12);
 		fd_lblImage.left = new FormAttachment(0, 12);
 		lblImage.setLayoutData(fd_lblImage);
-		lblImage.setText("Image");
+//		lblImage.setText("Image");
 		
 		lblEnterAStamp = new Label(shell, SWT.NONE);
 		FormData fd_lblEnterAStamp = new FormData();
@@ -126,7 +126,7 @@ public class StampSelectDialog extends Dialog {
 		btnAccept.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				stampNum = Integer.parseInt(txtStampNum.getText());
+//				stampNum = Integer.parseInt(txtStampNum.getText());
 				shell.close();
 			}
 		});
@@ -153,32 +153,28 @@ public class StampSelectDialog extends Dialog {
 	}
 	
 	private void onModifyText() {
-		log.info("onModifyText");
 		try {
 			stampNum = Integer.parseInt(txtStampNum.getText());
 			loadImage();
 		} catch (NumberFormatException e) {
-			if (stampNum!=0) {
-				stampNum = 0;
-				loadImage();
-			}
+			invalidate();
 		}
 	}
 
 	private void loadImage() {
-		if (stampNum==0) {
-			lblImage.setImage(null);
-			lblImage.setText("Invalid Stamp Number");
-			log.info("Invalid Stamp Number");
-			return;
-		}
 		try {
 			ImageData imgData = repo.getImageByIndex(stampNum);
 			Image img = new Image(shell.getDisplay(), imgData);
 			lblImage.setImage(img);
 		} catch (Exception e) {
-			lblImage.setText("ERROR");
+			invalidate();
 		}
+	}
+	
+	private void invalidate() {
+		stampNum = 0;
+		lblImage.setImage(null);
+		lblImage.setText("Invalid Stamp Number");
 	}
 	
 	private void test() {

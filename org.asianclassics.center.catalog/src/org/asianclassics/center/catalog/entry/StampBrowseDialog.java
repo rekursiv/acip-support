@@ -86,7 +86,7 @@ public class StampBrowseDialog extends Dialog {
 	 */
 	private void createContents() {
 		shell = new Shell(getParent(), getStyle());
-		shell.setSize(579, 431);
+		shell.setSize(1000, 750);
 		shell.setText(getText());
 		shell.setLayout(new FormLayout());
 
@@ -156,7 +156,6 @@ public class StampBrowseDialog extends Dialog {
 		lblWait = new Label(shell, SWT.NONE);
 		FormData fd_lblWait = new FormData();
 		fd_lblWait.top = new FormAttachment(lblSelectCategory, -15);
-		fd_lblWait.bottom = new FormAttachment(lblSelectCategory, 0, SWT.BOTTOM);
 		fd_lblWait.left = new FormAttachment(cmbCategory, 6);
 		lblWait.setLayoutData(fd_lblWait);
 		lblWait.setText("Loading stamps, please wait...");
@@ -187,6 +186,7 @@ public class StampBrowseDialog extends Dialog {
 			Image img = new Image(shell.getDisplay(), imgData);
 			Button btnImage = new Button(stampPanel, SWT.NONE);
 			btnImage.setImage(img);
+			btnImage.setToolTipText(String.valueOf(stamp.index));
 			btnImage.setData(stamp.index);
 			btnImage.addSelectionListener(new SelectionAdapter() {
 				@Override

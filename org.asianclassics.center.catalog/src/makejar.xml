@@ -16,6 +16,7 @@
             <fileset dir="C:/projects/git/Ektorp/org.ektorp/target/classes"/>
             <fileset dir="C:/projects/git/Ektorp/org.ektorp/target/test-classes"/>
         </jar>
+    	<!-- 
         <delete dir="C:/projects/ACIP/deploy/acipcenter_lib"/>
         <mkdir dir="C:/projects/ACIP/deploy/acipcenter_lib"/>
         <copy file="C:/projects/eclipse/plugins/org.eclipse.osgi_3.8.0.v20120529-1548.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
@@ -24,9 +25,6 @@
         <copy file="C:/projects/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
         <copy file="C:/projects/eclipse/plugins/org.eclipse.core.runtime_3.8.0.v20120521-2346.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
         <copy file="C:/projects/eclipse/plugins/org.eclipse.text_3.5.200.v20120523-1310.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
-      	<!--  (I think I fixed this, but check next time...)
-        <copy file="C:/projects/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.100.0.v4233d.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
-        -->
         <copy file="C:/projects/eclipse/plugins/org.eclipse.jface_3.8.0.v20120521-2329.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
         <copy file="C:/projects/eclipse/plugins/org.eclipse.jface.text_3.8.0.v20120531-0600.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
         <copy file="C:/projects/eclipse/plugins/org.eclipse.ui.forms_3.5.200.v20120521-2329.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
@@ -48,13 +46,10 @@
         <copy file="C:/Users/Aaron/.m2/repository/joda-time/joda-time/1.6.2/joda-time-1.6.2.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
         <copy file="C:/projects/javalib/joda-time-2.1/joda-time-2.1.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
         <copy file="C:/projects/javalib/guava-13.0.1.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
-    	<!--
-        <copy file="C:/projects/javalib/swt-4.2-win32-win32-x86_64/swt.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
-    	-->
-    	<copy file="C:/projects/javalib/swt-4.2-linux-gtk-x86_64/swt.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
-    	
+    	<copy file="C:/projects/javalib/swt-4.2-linux-gtk-x86_64/swt.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>	
         <copy file="C:/projects/javalib/ektorp-deps/jackson-core-asl-1.9.7.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
         <copy file="C:/projects/javalib/ektorp-deps/jackson-mapper-asl-1.9.7.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
         <copy file="C:/projects/javalib/slf4j-1.6.2/slf4j-1.6.2/slf4j-api-1.6.2.jar" todir="C:/projects/ACIP/deploy/acipcenter_lib"/>
+    	-->
     </target>
 </project>
