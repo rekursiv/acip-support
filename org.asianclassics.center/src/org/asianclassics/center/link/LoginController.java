@@ -50,7 +50,9 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 	@Subscribe
 	public void onLinkReady(LinkReadyEvent evt) {
 		this.userDb = lm.getDb("users");
-		eb.post(new LoginRequestEvent("TNG"));						/////////////////    DEBUG:  Auto Login    /////////////////
+		if (cfg.get().autoLoginId!=null) {
+			eb.post(new LoginRequestEvent(cfg.get().autoLoginId));
+		}
 	}
 	
 	@Subscribe

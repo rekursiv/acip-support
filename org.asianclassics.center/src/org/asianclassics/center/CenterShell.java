@@ -27,8 +27,10 @@ public class CenterShell extends Shell implements Listener {
 
 	public void init(Injector injector) {
 		AppConfig cfg = injector.getInstance(AppConfig.class);
-		if (cfg.get().allowCloseWhileLoggedIn==false) addListener(SWT.Close, this);
 		setupLogging(cfg);
+	
+		if (cfg.get().allowCloseWhileLoggedIn==false) addListener(SWT.Close, this);
+		if (cfg.get().openMaximized) setMaximized(true);
 		
 		loginCtlr = injector.getInstance(LoginController.class);
 		linkManager = injector.getInstance(LinkManager.class);
@@ -60,7 +62,6 @@ public class CenterShell extends Shell implements Listener {
 	}
 	
 	private void setupLogging(AppConfig cfg) {
-		System.getProperties().setProperty("java.util.logging.config.class", "util.logging.LogSetup");
 		
 		// setup logging to console
 		if (cfg.get().logToConsole) {
@@ -77,6 +78,9 @@ public class CenterShell extends Shell implements Listener {
 				e.printStackTrace();
 			}
 		}
+		
+		// log config errors
+		cfg.logErrorsIfAny();
 	}
 	
 	@Override

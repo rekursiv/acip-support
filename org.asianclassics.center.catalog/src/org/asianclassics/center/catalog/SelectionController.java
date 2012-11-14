@@ -98,7 +98,4 @@ public class SelectionController {
 		return repo.getSutras(potiIndex, maxListLength);
 	}
 	
-	public void test() {
-	}
-	
 }

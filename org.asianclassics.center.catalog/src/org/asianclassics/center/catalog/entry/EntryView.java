@@ -1,6 +1,5 @@
 package org.asianclassics.center.catalog.entry;
 
-import org.asianclassics.center.catalog.CatalogApp;
 import org.asianclassics.center.catalog.entry.row.AuthorEntryRow;
 import org.asianclassics.center.catalog.entry.row.ColophonEntryRow;
 import org.asianclassics.center.catalog.entry.row.DrawingEntryRow;
@@ -11,44 +10,30 @@ import org.asianclassics.center.catalog.entry.row.InkColorEntryRow;
 import org.asianclassics.center.catalog.entry.row.LibraryNumberEntryRow;
 import org.asianclassics.center.catalog.entry.row.LineCountEntryRow;
 import org.asianclassics.center.catalog.entry.row.LocationEntryRow;
-import org.asianclassics.center.catalog.entry.row.PageSizeEntryRow;
-import org.asianclassics.center.catalog.entry.row.PrintedAreaSizeEntryRow;
-import org.asianclassics.center.catalog.entry.row.VolumeEntryRow;
 import org.asianclassics.center.catalog.entry.row.MissingPageEntryRow;
+import org.asianclassics.center.catalog.entry.row.PageSizeEntryRow;
 import org.asianclassics.center.catalog.entry.row.PaperColorEntryRow;
 import org.asianclassics.center.catalog.entry.row.PaperGradeEntryRow;
 import org.asianclassics.center.catalog.entry.row.PaperSourceEntryRow;
+import org.asianclassics.center.catalog.entry.row.PrintedAreaSizeEntryRow;
 import org.asianclassics.center.catalog.entry.row.ReadabilityEntryRow;
 import org.asianclassics.center.catalog.entry.row.StampEntryRow;
 import org.asianclassics.center.catalog.entry.row.SutraPageEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleBriefEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleSktEntryRow;
 import org.asianclassics.center.catalog.entry.row.TitleTibEntryRow;
+import org.asianclassics.center.catalog.entry.row.VolumeEntryRow;
 import org.asianclassics.center.catalog.entry.row.YearEntryRow;
-import org.asianclassics.center.catalog.event.EntryEditEvent;
-import org.asianclassics.center.catalog.event.TestEvent;
 import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormAttachment;
 
 public class EntryView extends Composite {
 
-	private EventBus eb;
-	private EntryController ctlr;
 	private Injector injector;
 	private static EntryView instance;
 
@@ -58,7 +43,7 @@ public class EntryView extends Composite {
 		
 		this.injector = injector;
 		setLayout(new GridLayout(1, false));
-//*
+
 		new InfoEntryRow(this);
 		new LibraryNumberEntryRow(this);
 		new StampEntryRow(this);
@@ -83,23 +68,12 @@ public class EntryView extends Composite {
 		new LocationEntryRow(this);
 		new DrawingEntryRow(this);
 		new ColophonEntryRow(this);
-//*/		
-		
-//		new StampEntryRow(this);   ////////////////////   TEST 
-//		new MissingPageEntryRow(this);
-//		new DrawingEntryRow(this);
-		
+
 		if (injector!=null) injector.injectMembers(this);
 		
 	}
 	
-	@Inject
-	public void inject(EventBus eb, EntryController ctlr) {
-		this.eb = eb;
-		this.ctlr = ctlr;
-		if (CatalogApp.debugMode) eb.post(new EntryEditEvent(null));   ////////////////////   TEST 
-	}
-	
+
 	@Subscribe
 	public void onAdaptSize(ParentAdaptSizeEvent evt) {
 		pack();

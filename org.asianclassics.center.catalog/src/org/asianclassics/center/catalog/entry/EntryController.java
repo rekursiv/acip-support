@@ -17,6 +17,7 @@ import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
+import org.asianclassics.center.config.AppConfig;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.eclipse.swt.widgets.Display;
 import org.ektorp.ViewResult.Row;
@@ -42,12 +43,15 @@ public class EntryController implements Runnable {
 	private boolean checkWorkMsgDisplayed = false;
 	private EntryRepo repo;
 	private Logger log;
+
+	private AppConfig cfg;
 	
 	@Inject
-	public EntryController(Logger log, EventBus eb, EntryRepo repo) {
+	public EntryController(Logger log, EventBus eb, EntryRepo repo, AppConfig cfg) {
 		this.log = log;
 		this.eb = eb;
 		this.repo = repo;
+		this.cfg = cfg;
 	}
 	
 	@Subscribe
@@ -56,8 +60,9 @@ public class EntryController implements Runnable {
 		autoSaveArmed = false;         // start out disabled to prevent redundant save after load
 		model = evt.getEntry();
 		if (model==null) {
-			if (CatalogApp.debugMode) model = repo.get("13ae733504c00035c89");					////////////////////   TEST 
-			else {
+			if (cfg.get().catalogInitModelId!=null) {
+				model = repo.get(cfg.get().catalogInitModelId);
+			} else {
 				model = new EntryModel();
 				log.severe("ERROR:  EntryEditEvent was posted with NULL model");
 			}
@@ -171,7 +176,7 @@ public class EntryController implements Runnable {
 	}
 	
 	private void writeAsync() {
-		if (CatalogApp.debugMode) return;                    ////////   disable autosave when in debug mode
+		if (cfg.get().catalogDisableAutosave) return;
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {

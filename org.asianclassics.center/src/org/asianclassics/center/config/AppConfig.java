@@ -7,6 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -20,9 +23,11 @@ public class AppConfig {
 	private final static String defaultFileName = "acipcenter-config.js";
 	private CenterAppConfigModel config;
 	private ObjectMapper mapper;
+	private Stack<Exception>  errorStack;
 	
 	@Inject
 	public AppConfig() {
+		errorStack= new Stack<Exception>();
 		mapper = new ObjectMapper();
 		config = new CenterAppConfigModel();
 		
@@ -30,7 +35,7 @@ public class AppConfig {
 			try {
 				config = loadFromFile(defaultFileName, CenterAppConfigModel.class);
 			} catch (Exception e) {
-				stashError(e);
+				errorStack.push(e);
 			}
 			if (config==null || config.useDefaults) {
 				config = new CenterAppConfigModel();
@@ -41,37 +46,40 @@ public class AppConfig {
 			try {
 				config = loadFromFile(config.loadFromFile, CenterAppConfigModel.class);
 			} catch (Exception e) {
-				stashError(e);
+				errorStack.push(e);
 			}
 		} else if (config.saveToFile!=null) {
 			String fileName = config.saveToFile;
 			if (fileName.isEmpty()) {
 				fileName = defaultFileName;
-				config.saveToFile = null;
 			}
+			config.saveToFile = null;
 			try {
 				saveToFile(fileName, config);
 			} catch (Exception e) {
-				stashError(e);
+				errorStack.push(e);
 			}
 		}
 		
-		
-		config.setDebugConfig();    ////////  TEMP
-		debug(config);
+//		debug(config);
 	}
 
-	
+	public String getVersion() {
+		String s = AppConfig.class.getProtectionDomain().getCodeSource().toString();
+//		Files.ge
+		return s;
+	}
 	
 	public CenterAppConfigModel get() {
 		return config;
 	}
 	
-	
-	private void stashError(Exception e) {
-		// TODO:  save error for later logging
-		e.printStackTrace();
+	public void logErrorsIfAny() {
+		Logger log = Logger.getGlobal();
+		while (!errorStack.empty()) log.log(Level.SEVERE, "CONFIG", errorStack.pop());
 	}
+	
+
 	
 	private Path buildPath(String fileName) {
 		String pathStr = System.getProperty("user.dir")+"/"+fileName;

@@ -59,39 +59,6 @@ public class SelectionView extends Composite {
 		doingUpdate = false;
 		idOfEntryToEdit = null;
 
-		if (CatalogApp.debugMode) {
-		
-			btnTest = new Button(this, SWT.NONE);
-			FormData fd_btnTest = new FormData();
-			fd_btnTest.top = new FormAttachment(1, 0);
-			fd_btnTest.right = new FormAttachment(100, -1);
-			btnTest.setLayoutData(fd_btnTest);
-			btnTest.setBounds(425, 5, 34, 25);
-			btnTest.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					ctlr.test();
-				}
-			});
-			btnTest.setText("Test");
-			
-			btnUpdate = new Button(this, SWT.NONE);
-			FormData fd_btnUpdate = new FormData();
-			fd_btnUpdate.bottom = new FormAttachment(btnTest, 0, SWT.BOTTOM);
-			fd_btnUpdate.right = new FormAttachment(btnTest, -6);
-
-			btnUpdate.setLayoutData(fd_btnUpdate);
-			btnUpdate.setBounds(476, 5, 66, 25);
-			btnUpdate.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					updateTables();
-				}
-			});
-			btnUpdate.setText("Update");
-		
-		}
-
 		setLayout(new FormLayout());
 		
 		btnAction = new Button(this, SWT.NONE);
@@ -107,8 +74,6 @@ public class SelectionView extends Composite {
 			}
 		});
 		btnAction.setText("<action>");
-		
-		
 		
 		potiTableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		potiTableViewer.setContentProvider(ArrayContentProvider.getInstance());

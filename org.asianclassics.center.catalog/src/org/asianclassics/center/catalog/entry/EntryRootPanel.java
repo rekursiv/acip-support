@@ -5,6 +5,7 @@ import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.EntryDeleteAllowedEvent;
 import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
+import org.asianclassics.center.config.AppConfig;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -134,42 +135,46 @@ public class EntryRootPanel extends Composite {
 		lblUserMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		
 		
-		if (CatalogApp.debugMode) {
-			btnBack = new Button(controlPanel, SWT.NONE);
-			btnBack.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent arg0) {
-					eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
-				}
-			});
-			FormData fd_btnBack = new FormData();
-			fd_btnBack.top = new FormAttachment(btnSubmit, 0, SWT.TOP);
-			fd_btnBack.left = new FormAttachment(btnSubmit, 6);
-			btnBack.setLayoutData(fd_btnBack);
-			btnBack.setText("<< Back");
-			
-			btnRaw = new Button(controlPanel, SWT.NONE);
-			btnRaw.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent arg0) {
-					ctlr.viewRawData();
-				}
-			});
-			FormData fd_btnRaw = new FormData();
-			fd_btnRaw.top = new FormAttachment(btnBack, 0, SWT.TOP);
-			fd_btnRaw.left = new FormAttachment(btnBack, 6);
-			btnRaw.setLayoutData(fd_btnRaw);
-			btnRaw.setText("Raw");
-			controlPanel.setTabList(new Control[]{btnSubmit});
-		}
+
 
 		if (injector!=null) injector.injectMembers(this);
 	}
 
+	public void addDebugBtns() {
+		btnBack = new Button(controlPanel, SWT.NONE);
+		btnBack.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				eb.post(new CatalogTaskMakeTopEvent(CatalogTaskViewType.SELECTION));
+			}
+		});
+		FormData fd_btnBack = new FormData();
+		fd_btnBack.top = new FormAttachment(btnSubmit, 0, SWT.TOP);
+		fd_btnBack.left = new FormAttachment(btnSubmit, 6);
+		btnBack.setLayoutData(fd_btnBack);
+		btnBack.setText("<< Back");
+		
+		btnRaw = new Button(controlPanel, SWT.NONE);
+		btnRaw.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				ctlr.viewRawData();
+			}
+		});
+		FormData fd_btnRaw = new FormData();
+		fd_btnRaw.top = new FormAttachment(btnBack, 0, SWT.TOP);
+		fd_btnRaw.left = new FormAttachment(btnBack, 6);
+		btnRaw.setLayoutData(fd_btnRaw);
+		btnRaw.setText("Raw");
+		controlPanel.setTabList(new Control[]{btnSubmit});
+	}
+	
 	@Inject
-	public void inject(EventBus eb, EntryController ctlr) {
+	public void inject(EventBus eb, EntryController ctlr, AppConfig cfg) {
 		this.eb = eb;
 		this.ctlr = ctlr;
+		if (cfg.get().catalogAddEntryDebugBtns) addDebugBtns();
+		
 	}
 	
 	@Subscribe

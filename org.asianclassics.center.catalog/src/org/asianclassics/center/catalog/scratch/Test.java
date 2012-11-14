@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 
+import org.asianclassics.center.config.AppConfig;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -21,6 +22,12 @@ public class Test {
 	}
 	
 	public static void test() {
+		String s = AppConfig.class.getProtectionDomain().toString();
+		System.out.println(s);
+	}
+	
+	
+	public static void test_file() {
 		
 		Path p = Paths.get("c:/scratch/temp/test.txt");
 		String s;
