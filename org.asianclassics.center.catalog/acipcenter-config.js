@@ -2,6 +2,7 @@
   "useDefaults" : false,
   "saveToFile" : null,
   "loadFromFile" : "server-test-config.js",
+  "_loadFromFile" : null,
   "logToConsole" : true,
   "logToFile" : false,
   "showLogView" : true,
@@ -14,5 +15,5 @@
   "catalogStartView" : "entry",
   "catalogInitModelId" : "13af8a5e93004aceac2",
   "catalogAddEntryDebugBtns" : true,
-  "catalogDisableAutosave" : true
+  "catalogAutoSaveDelay" : 0
 }

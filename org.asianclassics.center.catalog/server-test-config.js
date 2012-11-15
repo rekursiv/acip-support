@@ -14,5 +14,5 @@
   "catalogStartView" : null,
   "catalogInitModelId" : null,
   "catalogAddEntryDebugBtns" : true,
-  "catalogDisableAutosave" : true
+  "catalogAutoSaveDelay" : 0
 }

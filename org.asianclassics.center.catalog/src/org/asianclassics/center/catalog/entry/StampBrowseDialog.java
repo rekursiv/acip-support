@@ -146,7 +146,7 @@ public class StampBrowseDialog extends Dialog {
 				stampScroller.setFocus();
 			}
 		});
-		cmbCategory.setItems(new String[] {"Chinese", "Lanycha", "Mongolian", "Picture", "Tibetan Circle", "Tibetan Drawing", "Tibetan Single", "Tibetan Square"});
+		cmbCategory.setItems(new String[] {"Chinese", "Lanycha", "Mongolian", "Picture", "Tibetan Circle", "Tibetan Drawing", "Tibetan Single", "Tibetan Square", "New"});
 		FormData fd_cmbCategory = new FormData();
 		fd_cmbCategory.top = new FormAttachment(lblSelectCategory, 0, SWT.TOP);
 		fd_cmbCategory.left = new FormAttachment(lblSelectCategory, 6);
