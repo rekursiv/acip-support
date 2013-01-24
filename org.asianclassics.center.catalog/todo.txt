@@ -1,7 +1,6 @@
 
-reset "saved" msg - confusing
-  fix "leading zero minute" bug
 
+***  stamps
 
 
 "copy from" feature - copy an entire sutra into current

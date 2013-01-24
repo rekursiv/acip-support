@@ -99,6 +99,7 @@ public class EntryController implements Runnable {
 //		log.info("run BOTTOM");
 	}
 
+
 	public void onModify() {
 //		log.info("");
 		if (!autoSaveTimerRunning&&autoSaveDelayInMs>100) {
@@ -109,6 +110,7 @@ public class EntryController implements Runnable {
 			eb.post(new EntryUserMessageEvent(""));   // clear message
 			checkWorkMsgDisplayed = false;
 		}
+		eb.post(new StatusPanelUpdateEvent(""));   // clear status
 		isModified = true;
 	}
 
@@ -194,7 +196,7 @@ public class EntryController implements Runnable {
 			log.log(Level.SEVERE, "ERROR", e);
 			return;
 		}
-		eb.post(new StatusPanelUpdateEvent("Saved "+model.getSerial()+" to database at "+now.toString("h:m a")));
+		eb.post(new StatusPanelUpdateEvent("Saved "+model.getSerial()+" to database at "+now.toString("h:mm a")));
 	}
 
 	private void validate() {

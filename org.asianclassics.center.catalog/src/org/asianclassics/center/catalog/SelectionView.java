@@ -5,6 +5,7 @@ import java.util.List;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.asianclassics.center.event.LogoutEvent;
+import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.codehaus.jackson.JsonNode;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -86,6 +87,7 @@ public class SelectionView extends Composite {
 		potiTable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				clearStatus();
 				onPotiSelect(e.item.getData());
 			}
 		});
@@ -118,6 +120,7 @@ public class SelectionView extends Composite {
 		sutraTable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				clearStatus();
 				onSutraSelect(e.item.getData());
 			}
 		});
@@ -250,6 +253,10 @@ public class SelectionView extends Composite {
 		curSutraSelIndex = 0;
 	}
 	
+	private void clearStatus() {
+		eb.post(new StatusPanelUpdateEvent(""));
+	}
+		
 
 	private void updateTables() {
 		doingUpdate = true;
