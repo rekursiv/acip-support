@@ -1,6 +1,5 @@
 package org.asianclassics.center.catalog;
 
-import org.asianclassics.center.CenterModule;
 import org.asianclassics.center.CenterPanel;
 import org.asianclassics.center.CenterShell;
 import org.asianclassics.center.TaskView;
@@ -30,7 +29,7 @@ public class CatalogApp {
 		cs.setText("ACIP Input Center Catalog Entry");
 		cs.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
-		Injector injector = Guice.createInjector(new CenterModule());
+		Injector injector = Guice.createInjector(new CatalogModule());
 		
 		CenterPanel cp = new CenterPanel(cs, SWT.NONE, injector);
 		TaskView taskView = new CatalogTaskView(cp.getMainStackView(), SWT.NONE, injector);

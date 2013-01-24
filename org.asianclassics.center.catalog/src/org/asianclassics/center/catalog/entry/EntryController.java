@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.asianclassics.center.catalog.CatalogApp;
+import org.asianclassics.center.catalog.CatalogConfig;
 import org.asianclassics.center.catalog.entry.model.EntryModel;
 import org.asianclassics.center.catalog.entry.model.EntryRepo;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
@@ -17,7 +18,6 @@ import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.asianclassics.center.catalog.event.EntryModelPreWriteEvent;
 import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
 import org.asianclassics.center.catalog.event.EntryValidateEvent;
-import org.asianclassics.center.config.AppConfig;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.eclipse.swt.widgets.Display;
 import org.ektorp.ViewResult.Row;
@@ -43,15 +43,15 @@ public class EntryController implements Runnable {
 	private EntryRepo repo;
 	private Logger log;
 
-	private AppConfig cfg;
+	private CatalogConfig cfg;
 	
 	@Inject
-	public EntryController(Logger log, EventBus eb, EntryRepo repo, AppConfig cfg) {
+	public EntryController(Logger log, EventBus eb, EntryRepo repo, CatalogConfig cfg) {
 		this.log = log;
 		this.eb = eb;
 		this.repo = repo;
 		this.cfg = cfg;
-		autoSaveDelayInMs = cfg.get().catalogAutoSaveDelay*500;  // convert to ms, divide by 2  (timer is fired twice before save)
+		autoSaveDelayInMs = cfg.catalogAutoSaveDelay*500;  // convert to ms, divide by 2  (timer is fired twice before save)
 	}
 	
 	@Subscribe
@@ -60,8 +60,8 @@ public class EntryController implements Runnable {
 		checkWorkMsgDisplayed = false;
 		model = evt.getEntry();
 		if (model==null) {
-			if (cfg.get().catalogInitModelId!=null) {
-				model = repo.get(cfg.get().catalogInitModelId);
+			if (cfg.catalogInitModelId!=null) {
+				model = repo.get(cfg.catalogInitModelId);
 			} else {
 				model = new EntryModel();
 				log.severe("ERROR:  EntryEditEvent was posted with NULL model");

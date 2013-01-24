@@ -1,5 +1,10 @@
 
+reset "saved" msg - confusing
+  fix "leading zero minute" bug
 
+
+
+"copy from" feature - copy an entire sutra into current
 
 -----------------
 
@@ -13,3 +18,15 @@ SSL at HQ
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
 stamp size (max) = 150 x 150 pixels
+
+last stamp index in DB = 1022
+
+---------
+
+function(doc) {
+  if (doc.stamps&&doc.stamps.indexOf(0)!=-1){ emit(null, doc); }
+}
+
+stamp 1023 goes with poti 57476 sutra 8
+
+stamp 1024 goes with poti 57476 sutra 15

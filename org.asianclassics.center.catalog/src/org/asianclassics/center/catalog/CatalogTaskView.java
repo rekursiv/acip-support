@@ -4,7 +4,6 @@ import org.asianclassics.center.TaskView;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.EntryEditEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
-import org.asianclassics.center.config.AppConfig;
 import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.event.LogoutEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -27,7 +26,7 @@ import org.eclipse.swt.widgets.Control;
 public class CatalogTaskView extends TaskView {
 	private EventBus eb;
 	private CatalogTaskStackView stack;
-	private AppConfig cfg;
+	private CatalogConfig cfg;
 
 	
 	public CatalogTaskView(Composite parent, int style, Injector injector) {
@@ -47,7 +46,7 @@ public class CatalogTaskView extends TaskView {
 	}
 
 	@Inject
-	public void inject(EventBus eb, AppConfig cfg) {
+	public void inject(EventBus eb, CatalogConfig cfg) {
 		this.eb = eb;
 		this.cfg = cfg;
 	}
@@ -55,13 +54,13 @@ public class CatalogTaskView extends TaskView {
 	@Subscribe
 	public void onLoginSuccess(LoginSuccessEvent evt) {
 		CatalogTaskViewType startingView = CatalogTaskViewType.SELECTION;
-		if (cfg.get().catalogStartView!=null) {
-			if (cfg.get().catalogStartView.equalsIgnoreCase("entry")) startingView = CatalogTaskViewType.ENTRY;
+		if (cfg.catalogStartView!=null) {
+			if (cfg.catalogStartView.equalsIgnoreCase("entry")) startingView = CatalogTaskViewType.ENTRY;
 			else startingView = CatalogTaskViewType.TEST;
 		}
 		eb.post(new CatalogTaskMakeTopEvent(startingView));
 		
-		if (cfg.get().catalogInitModelId!=null) eb.post(new EntryEditEvent(null));
+		if (cfg.catalogInitModelId!=null) eb.post(new EntryEditEvent(null));
 	}
 	
 	@Override

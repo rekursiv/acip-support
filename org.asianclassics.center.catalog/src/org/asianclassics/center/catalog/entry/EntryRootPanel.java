@@ -1,11 +1,10 @@
 package org.asianclassics.center.catalog.entry;
 
-import org.asianclassics.center.catalog.CatalogApp;
+import org.asianclassics.center.catalog.CatalogConfig;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
+import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.asianclassics.center.catalog.event.EntryDeleteAllowedEvent;
 import org.asianclassics.center.catalog.event.EntryUserMessageEvent;
-import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
-import org.asianclassics.center.config.AppConfig;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -14,6 +13,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Group;
@@ -25,7 +25,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.eclipse.swt.widgets.Control;
 
 public class EntryRootPanel extends Composite {
 
@@ -170,10 +169,10 @@ public class EntryRootPanel extends Composite {
 	}
 	
 	@Inject
-	public void inject(EventBus eb, EntryController ctlr, AppConfig cfg) {
+	public void inject(EventBus eb, EntryController ctlr, CatalogConfig cfg) {
 		this.eb = eb;
 		this.ctlr = ctlr;
-		if (cfg.get().catalogAddEntryDebugBtns) addDebugBtns();
+		if (cfg.catalogAddEntryDebugBtns) addDebugBtns();
 		
 	}
 	
