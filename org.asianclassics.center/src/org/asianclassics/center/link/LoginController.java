@@ -3,7 +3,7 @@ package org.asianclassics.center.link;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.asianclassics.center.config.AppConfig;
+import org.asianclassics.center.CenterConfig;
 import org.asianclassics.center.event.LinkReadyEvent;
 import org.asianclassics.center.event.LoginMessageEvent;
 import org.asianclassics.center.event.LoginRequestEvent;
@@ -37,10 +37,10 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 	private EventBus eb;
 	private LinkManager lm;
 	private JChannel channel;
-	private AppConfig cfg;
+	private CenterConfig cfg;
 	
 	@Inject
-	public LoginController(Logger log, EventBus eb, LinkManager lm, AppConfig cfg) {
+	public LoginController(Logger log, EventBus eb, LinkManager lm, CenterConfig cfg) {
 		this.log=log;
 		this.eb = eb;
 		this.lm = lm;
@@ -50,8 +50,8 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 	@Subscribe
 	public void onLinkReady(LinkReadyEvent evt) {
 		this.userDb = lm.getDb("users");
-		if (cfg.get().autoLoginId!=null) {
-			eb.post(new LoginRequestEvent(cfg.get().autoLoginId));
+		if (cfg.autoLoginId!=null) {
+			eb.post(new LoginRequestEvent(cfg.autoLoginId));
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 				eb.post(new LoginMessageEvent("User '"+workerId+"' not found.  Please try again."));
 				loginInProgress = false;
 			} else {
-				if (cfg.get().testDirectLink) {
+				if (cfg.testDirectLink) {
 					loginIfExclusive(true);
 					loginInProgress = false;
 				} else {
@@ -168,7 +168,7 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 			channel.setReceiver(this);
 		}
 		channel.setAddressGenerator(new PayloadAddressGenerator(workerId));
-		channel.connect(cfg.get().dbOrgPrefix+"login");
+		channel.connect(cfg.dbOrgPrefix+"login");
 	}
 
 }

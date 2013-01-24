@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.asianclassics.center.config.AppConfig;
+import org.asianclassics.center.CenterConfig;
 import org.asianclassics.center.event.LinkReadyEvent;
 import org.asianclassics.center.event.LoginMessageEvent;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
@@ -48,16 +48,16 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	private EventBus eb;
 	private LockService lockService;
 	private Lock lock;
-	private AppConfig cfg;
+	private CenterConfig cfg;
 
 
 	@Inject
-	public LinkManager(Logger log, EventBus eb, AppConfig cfg) {
+	public LinkManager(Logger log, EventBus eb, CenterConfig cfg) {
 		this.log = log;
 		this.eb = eb;
 		this.cfg = cfg;
 		
-		if (cfg.get().autoUpdateCouchViews) {
+		if (cfg.autoUpdateCouchViews) {
 			System.getProperties().setProperty("org.ektorp.support.AutoUpdateViewOnChange", "true");
 		}
 	}
@@ -75,7 +75,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 			return;
 		}
 
-		if (cfg.get().testDirectLink) {
+		if (cfg.testDirectLink) {
 			isServer = true;
 			try {
 				setupServer();
@@ -146,7 +146,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	}
 	
 	private void checkLocalForServer() throws Exception {
-		if (localLink.checkIfDbExists(new DbPath(cfg.get().dbOrgPrefix+"bootstrap"))) {
+		if (localLink.checkIfDbExists(new DbPath(cfg.dbOrgPrefix+"bootstrap"))) {
 			log.info("DB server is local");
 			isServer = true;
 		} else {
@@ -170,7 +170,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		
 		channel.setAddressGenerator(new PayloadAddressGenerator(serverIp));
 		channel.setReceiver(this);
-		channel.connect(cfg.get().dbOrgPrefix+"link");
+		channel.connect(cfg.dbOrgPrefix+"link");
 
 	}
 	
@@ -231,7 +231,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		if (centerCode==null) {
 			throw new Exception("Error reading center code from settings in bootstrap");
 		} else {
-			dbCenterPrefix = cfg.get().dbOrgPrefix+centerCode+"-";
+			dbCenterPrefix = cfg.dbOrgPrefix+centerCode+"-";
 			if (isServer) {
 				updateStatus("Linked with local database");
 			} else {

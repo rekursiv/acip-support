@@ -1,5 +1,14 @@
 package org.asianclassics.center;
 
+
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+
+import util.config.ConfigManager;
+import util.logging.LogSetup;
+
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
@@ -9,14 +18,31 @@ import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
 public class CenterModule extends AbstractModule {
-	private final EventBus eventBus = new EventBus();
+	protected String filePrefix;
+	protected ConfigManager<?> cfgMgr;
+	protected CenterConfig config;
+	protected EventBus eventBus;
 
-	@Override
-	protected void configure() {
-		configureEventBus();
+	
+	public CenterModule() {
+		filePrefix = "acipcenter";
+		cfgMgr = new ConfigManager<CenterConfig>(CenterConfig.class, filePrefix+"-config.js");
+		eventBus = new EventBus();
 	}
 	
-	protected void configureEventBus() {
+	@Override
+	protected void configure() {
+		setupConfig();
+		setupLogging();
+		setupEventBus();
+	}
+	
+	protected void setupConfig() {
+		config = (CenterConfig)cfgMgr.load();
+		bind(CenterConfig.class).toInstance(config);
+	}
+	
+	protected void setupEventBus() {
 		bind(EventBus.class).toInstance(eventBus);
 		bindListener(Matchers.any(), new TypeListener() {
 			public <I> void hear(TypeLiteral<I> typeLiteral, TypeEncounter<I> typeEncounter) {
@@ -28,5 +54,29 @@ public class CenterModule extends AbstractModule {
 				});
 			}
 		});
+	}
+	
+	protected void setupLogging() {
+		
+//		LogManager.getLogManager().getLogger("").setLevel(Level.ALL);
+		
+		// setup logging to console
+		if (config.logToConsole) {
+			LogSetup.initConsole(Level.ALL);
+		}
+
+		// setup logging to file
+		if (config.logToFile) {
+			try {
+				LogManager.getLogManager().getLogger("").addHandler(new FileHandler("log/"+filePrefix+"-%u-%g.log", 0, 10));
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// log config errors
+		cfgMgr.logErrorsIfAny();
 	}
 }

@@ -1,6 +1,5 @@
 package org.asianclassics.center;
 
-import org.asianclassics.center.config.AppConfig;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 

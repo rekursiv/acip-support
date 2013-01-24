@@ -2,7 +2,6 @@ package org.asianclassics.center;
 
 import java.util.logging.Level;
 
-import org.asianclassics.center.config.AppConfig;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -33,8 +32,8 @@ public class CenterPanel extends Composite {
 		
 //		if (true) {  // for WindowBuilder
 		if (injector!=null) {
-			AppConfig cfg = injector.getInstance(AppConfig.class);
-			if (cfg.get().showLogView) {
+			CenterConfig cfg = injector.getInstance(CenterConfig.class);
+			if (cfg.showLogView) {
 				logView = new LogView(this, SWT.NONE);
 				FormData fd_logView = new FormData();
 				fd_logView.right = new FormAttachment(100, -12);
