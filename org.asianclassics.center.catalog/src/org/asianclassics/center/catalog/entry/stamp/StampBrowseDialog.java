@@ -1,4 +1,4 @@
-package org.asianclassics.center.catalog.entry;
+package org.asianclassics.center.catalog.entry.stamp;
 
 import java.util.List;
 import java.util.logging.Level;

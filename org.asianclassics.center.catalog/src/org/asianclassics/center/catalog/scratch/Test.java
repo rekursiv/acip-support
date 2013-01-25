@@ -1,12 +1,18 @@
 package org.asianclassics.center.catalog.scratch;
 
+import java.awt.Image;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 
+import javax.imageio.ImageIO;
+
+import org.asianclassics.center.catalog.entry.stamp.StampScanDialog;
+import org.eclipse.swt.graphics.ImageData;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -16,12 +22,21 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		test();
+		try {
+			test();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
-	public static void test() {
-		System.out.println(Test.class.getPackage().getImplementationVersion());
+	public static void test() throws IOException {
+		Path path = Paths.get("c:/scratch/temp/new_stamps/test2.jpg");
+		InputStream is = Files.newInputStream(path);
+//		ImageData id = new ImageData(is);
+		Image image = ImageIO.read(is);
+		ImageIO.createImageInputStream(image);
 	}
 	
 	
@@ -41,7 +56,8 @@ public class Test {
 	
 	public static void test_dir() {
 		
-		String dir = System.getProperty("user.dir");  // dir where app runs from (or where JAR file is)
+//		String dir = System.getProperty("user.dir");  // dir where app runs from (or where JAR file is)
+		String dir = System.getProperty("user.home");  // user home dir
 		System.out.println(dir);
 	}
 	
@@ -55,11 +71,4 @@ public class Test {
 
 }
 
-/*
- 
- 		DateTime dt = new DateTime();
-		System.out.println(dt.getZone().toString());
-		System.out.println(dt.withZone(DateTimeZone.getDefault()).getZone().toString());
-		String s = dt.toString("d MMMM, y 'at' h:m a");
-
-*/
+///		System.out.println(Test.class.getPackage().getImplementationVersion());

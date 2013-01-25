@@ -1,6 +1,6 @@
 
 
-***  stamps
+** test stamps on Linux
 
 
 "copy from" feature - copy an entire sutra into current
@@ -29,3 +29,5 @@ function(doc) {
 stamp 1023 goes with poti 57476 sutra 8
 
 stamp 1024 goes with poti 57476 sutra 15
+
+

@@ -1,4 +1,4 @@
-package org.asianclassics.center.catalog.entry;
+package org.asianclassics.center.catalog.entry.stamp;
 
 import java.util.logging.Logger;
 
@@ -33,9 +33,11 @@ public class StampSelectDialog extends Dialog {
 	private Label lblEnterAStamp;
 	private Text txtStampNum;
 	private Button btnBrowseStamps;
+	private Button btnScanNewStamp;
 	private Button btnAccept;
 	private Button btnCancel;
 	private StampBrowseDialog browser;
+	private StampScanDialog scanner;
 
 	/**
 	 * Create the dialog.
@@ -46,6 +48,7 @@ public class StampSelectDialog extends Dialog {
 		super(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		setText("Stamp Selection");
 		browser = new StampBrowseDialog(parent, injector);
+		scanner = new StampScanDialog(parent, injector);
 		if (injector!=null) injector.injectMembers(this);
 	}
 	
@@ -149,6 +152,20 @@ public class StampSelectDialog extends Dialog {
 		fd_btnCancel.left = new FormAttachment(btnAccept, 6);
 		btnCancel.setLayoutData(fd_btnCancel);
 		btnCancel.setText("Cancel");
+		
+		btnScanNewStamp = new Button(shell, SWT.NONE);
+		btnScanNewStamp.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				stampNum = scanner.open();
+				txtStampNum.setText(String.valueOf(stampNum));
+			}
+		});
+		FormData fd_btnScanNewStamp = new FormData();
+		fd_btnScanNewStamp.top = new FormAttachment(btnBrowseStamps, 6);
+		fd_btnScanNewStamp.left = new FormAttachment(btnBrowseStamps, 0, SWT.LEFT);
+		btnScanNewStamp.setLayoutData(fd_btnScanNewStamp);
+		btnScanNewStamp.setText("Scan New Stamp");
 
 	}
 	

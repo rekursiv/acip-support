@@ -11,7 +11,7 @@
   "testDirectLink" : true,
   "autoUpdateCouchViews" : true,
   "autoLoginId" : "TNG",
-  "catalogStartView" : null,
+  "catalogStartView" : "test",
   "catalogInitModelId" : null,
   "catalogAddEntryDebugBtns" : true,
   "catalogAutoSaveDelay" : 0

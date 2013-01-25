@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.asianclassics.center.catalog.entry.EntryView;
-import org.asianclassics.center.catalog.entry.StampSelectDialog;
 import org.asianclassics.center.catalog.entry.cell.LinkedEntryCell;
 import org.asianclassics.center.catalog.entry.cell.ListEntryCell;
 import org.asianclassics.center.catalog.entry.cell.StampEntryCell;
+import org.asianclassics.center.catalog.entry.stamp.StampSelectDialog;
 import org.asianclassics.center.catalog.event.ParentAdaptSizeEvent;
 import org.eclipse.swt.widgets.Composite;
 

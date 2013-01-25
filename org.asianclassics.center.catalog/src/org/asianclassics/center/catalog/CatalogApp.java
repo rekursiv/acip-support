@@ -36,7 +36,7 @@ public class CatalogApp {
 		cp.getMainStackView().setTaskView(taskView);
 
 		cs.init(injector);
-				
+
 	}
 	
 
