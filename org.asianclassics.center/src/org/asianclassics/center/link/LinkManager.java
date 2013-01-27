@@ -80,7 +80,11 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 			try {
 				setupServer();
 			} catch (Exception e) {
+				updateStatus("Error setting up server. (No bootstrap??)");
 				log.log(Level.SEVERE, "exception", e);
+				shutdown();
+				initInProgress = false;
+				return;
 			}
 		} else {
 			try {
