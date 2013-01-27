@@ -2,13 +2,11 @@ package org.asianclassics.center.catalog.entry.model;
 
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import org.asianclassics.center.link.LinkManager;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.ImageData;
 import org.ektorp.Attachment;
 import org.ektorp.AttachmentInputStream;
@@ -21,16 +19,18 @@ import org.ektorp.support.View;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+
 @Singleton
 public class StampRepo extends CouchDbRepositorySupport<StampModel> {
-
 	private LinkManager lm;
+	public static final String[] categories = new String[] {"Chinese", "Lanycha", "Mongolian", "Picture", "Tibetan Circle", "Tibetan Drawing", "Tibetan Single", "Tibetan Square", "New"};
+
 
 	@Inject
 	public StampRepo(LinkManager lm) {
 		super(StampModel.class, lm.getDb("stamps"), true);
 		this.lm = lm;
-		initStandardDesignDocument();    //  DEBUG
+		initStandardDesignDocument();      //  TODO:  make configurable
 	}
 	
 	@View(name="byIndex", map="function(doc) {emit(doc.index, null)}")

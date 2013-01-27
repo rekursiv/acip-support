@@ -1,11 +1,21 @@
 
 
-** test stamps on Linux
 
+
+** update stamp DB
+ 
+test word wrap in linux
+
+---
+
+search by title, brief, author
 
 "copy from" feature - copy an entire sutra into current
 
 -----------------
+
+note: Missing page:  end sometimes unknown, using ? for end
+
 
 SelectionView preview pane?
 
@@ -30,4 +40,20 @@ stamp 1023 goes with poti 57476 sutra 8
 
 stamp 1024 goes with poti 57476 sutra 15
 
+stamp 1025 goes with poti 57476 sutra 16 and 17
+
+stamp 1026 goes with poti 57476 sutra 18
+
+stamp 1027 goes with poti 57476 sutra 23
+
+
+-------  categories
+
+1016 picture
+1017 picture
+1018 picture
+1019 chinese
+1020 tibetan square
+1021 picture
+1022 picture
 

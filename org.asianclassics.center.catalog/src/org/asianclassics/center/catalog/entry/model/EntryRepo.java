@@ -22,7 +22,7 @@ public class EntryRepo extends CouchDbRepositorySupport<EntryModel> {
 	public EntryRepo(LinkManager lm) {
 		super(EntryModel.class, lm.getDb("catalog"), true);
 		this.lm = lm;
-		initStandardDesignDocument();    //  DEBUG
+		initStandardDesignDocument();    //  TODO:  make configurable
 	}
 
 	@View(name="getLatestPotiIndex", map="function(doc) {emit(doc.potiIndex, doc.potiIndex)}")

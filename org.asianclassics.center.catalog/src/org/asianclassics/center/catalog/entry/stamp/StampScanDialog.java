@@ -32,6 +32,7 @@ import org.ektorp.AttachmentInputStream;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.eclipse.swt.widgets.Combo;
 
 public class StampScanDialog extends Dialog {
 
@@ -43,6 +44,8 @@ public class StampScanDialog extends Dialog {
 	private int stampNum;
 	private StampRepo repo;
 	private Logger log;
+	private Combo cmbCategory;
+	private Label lblCategory;
 
 
 	public StampScanDialog(Shell parent, Injector injector) {
@@ -51,11 +54,13 @@ public class StampScanDialog extends Dialog {
 		if (injector!=null) injector.injectMembers(this);
 	}
 	
+	
 	@Inject
 	public void inject(StampRepo sr, Logger log) {
 		repo = sr;
 		this.log = log;
 	}
+	
 
 	public int open() {
 		stampNum = 0;
@@ -71,16 +76,17 @@ public class StampScanDialog extends Dialog {
 		return stampNum;
 	}
 
+	
 	private void createContents() {
 		shell = new Shell(getParent(), getStyle());
-		shell.setSize(450, 200);
+		shell.setSize(500, 200);
 		shell.setText(getText());
 		shell.setLayout(new FormLayout());
 		
 		lblScanHowTo = new Label(shell, SWT.NONE);
 		FormData fd_lblScanHowTo = new FormData();
 		fd_lblScanHowTo.right = new FormAttachment(100, -12);
-		fd_lblScanHowTo.bottom = new FormAttachment(0, 115);
+		fd_lblScanHowTo.bottom = new FormAttachment(0, 80);
 		fd_lblScanHowTo.top = new FormAttachment(0, 10);
 		fd_lblScanHowTo.left = new FormAttachment(0, 10);
 		lblScanHowTo.setLayoutData(fd_lblScanHowTo);
@@ -95,9 +101,7 @@ public class StampScanDialog extends Dialog {
 			}
 		});
 		FormData fd_btnImport = new FormData();
-		fd_btnImport.right = new FormAttachment(0, 109);
-		fd_btnImport.top = new FormAttachment(0, 125);
-		fd_btnImport.left = new FormAttachment(0, 25);
+		fd_btnImport.left = new FormAttachment(0, 11);
 		btnImport.setLayoutData(fd_btnImport);
 		btnImport.setText("Import Stamp");
 		
@@ -121,7 +125,34 @@ public class StampScanDialog extends Dialog {
 		sb.append("Save your scan as \"Scanned Document.jpg\" in your \"Documents\" folder.\n");
 		sb.append("(This is the default in Simple Scan.)");
 		lblScanHowTo.setText(sb.toString());
+		
+		cmbCategory = new Combo(shell, SWT.READ_ONLY);
+		FormData fd_combo = new FormData();
+		fd_combo.right = new FormAttachment(lblScanHowTo, 0, SWT.RIGHT);
+		cmbCategory.setLayoutData(fd_combo);
+/*		
+		cmbCategory.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				String category = cmbCategory.getText().replace(" ", "_");
+				log.info(category);
+			}
+		});
+		*/
+		cmbCategory.setItems(StampRepo.categories);
+		
+		lblCategory = new Label(shell, SWT.NONE);
+		fd_btnImport.top = new FormAttachment(lblCategory, 19);
+		fd_combo.bottom = new FormAttachment(lblCategory, 23);
+		fd_combo.top = new FormAttachment(lblCategory, 0, SWT.TOP);
+		fd_combo.left = new FormAttachment(lblCategory, 6);
+		FormData fd_lblPleaseChooseA = new FormData();
+		fd_lblPleaseChooseA.top = new FormAttachment(lblScanHowTo, 6);
+		fd_lblPleaseChooseA.left = new FormAttachment(lblScanHowTo, 0, SWT.LEFT);
+		lblCategory.setLayoutData(fd_lblPleaseChooseA);
+		lblCategory.setText("Please choose a category for this stamp:");
 	}
+	
 	
 	private void showMessage(String msg) {
 		MessageBox messageBox = new MessageBox(shell, SWT.APPLICATION_MODAL|SWT.OK);
@@ -130,26 +161,28 @@ public class StampScanDialog extends Dialog {
         messageBox.open();
 	}
 	
+	
 	private void importStamp() {
-		stampNum = repo.getLatestStampIndex()+1;	
-		log.info("next stamp # "+stampNum);
-
+		String category = cmbCategory.getText();
+		if (category==null||category.isEmpty()) {
+			showMessage("No category selected.  Please select a category first.");
+			return;
+		}
+		
 		StringBuilder pathName = new StringBuilder();
-		pathName.append("c:/scratch/temp/new_stamps/test.jpg");   ////  TEST
-//		pathName.append(System.getProperty("user.home"));
-//		pathName.append("/Documents");
-//		pathName.append("/Scanned Document.jpg");
+//		pathName.append("c:/scratch/temp/new_stamps/test.jpg");   ////  TEST
+		pathName.append(System.getProperty("user.home"));
+		pathName.append("/Documents");
+		pathName.append("/Scanned Document.jpg");
 		log.info(pathName.toString());
 		
 		Path path = Paths.get(pathName.toString());
-		String category = "New";  //  TODO:  category chooser
 		
 		InputStream is = null;
 		try {
 			is = Files.newInputStream(path);
 		} catch (IOException e) {
 			showMessage("\"Scanned Document.jpg\" was not found in \"Documents\" folder.");
-			stampNum=0;
 			return;
 		}
 		
@@ -158,20 +191,23 @@ public class StampScanDialog extends Dialog {
 			stampBuffer = scaleStamp(is);
 		} catch (Exception e) {
 			showMessage("Error scaling stamp:  "+e.getMessage());
-			stampNum=0;
 			return;
 		}
-		
 
+		repo.lock();
+		stampNum = repo.getLatestStampIndex()+1;	
+		log.info("next stamp # "+stampNum);
+		
 		StampModel stamp = new StampModel();
 		stamp.index = stampNum;
-		stamp.category = category;
+		stamp.category = category.replace(" ", "_");
 		
 		try {
 			addStampToDb(stamp, new ByteArrayInputStream(stampBuffer.toByteArray()));
 		} catch (Exception e) {
 			showMessage("Error writing stamp to databse:  "+e.getMessage());
 			stampNum=0;
+			repo.unlock();
 			return;
 		}
 		
@@ -181,8 +217,9 @@ public class StampScanDialog extends Dialog {
 		} catch (IOException e) {
 			log.log(Level.SEVERE, "", e);
 		}
-		
+		repo.unlock();
 	}
+	
 	
 	private ByteArrayOutputStream scaleStamp(InputStream is) throws Exception {
 		ByteArrayOutputStream stampBuffer = new ByteArrayOutputStream();
@@ -207,11 +244,10 @@ public class StampScanDialog extends Dialog {
 		return stampBuffer;
 	}
 
+	
 	private void addStampToDb(StampModel stamp, InputStream is) throws Exception {
 		repo.add(stamp);
 		AttachmentInputStream ais = new AttachmentInputStream("stamp.jpg", is, "image/jpeg");
 		repo.getDb().createAttachment(stamp.getId(), stamp.getRevision(), ais);
 	}
-	
-	
 }

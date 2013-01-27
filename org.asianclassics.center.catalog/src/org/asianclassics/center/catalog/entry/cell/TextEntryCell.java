@@ -8,6 +8,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
@@ -24,7 +25,6 @@ public class TextEntryCell extends StringEntryCell {
 	protected static final BoxType defaultBoxType = BoxType.STANDARD;
 
 	protected StyledText text;
-	protected int prevLineCount = 1;
 	protected boolean adaptBoxHeight;
 	protected int simpleBoxWidth;
 	protected BoxType boxType;
@@ -80,8 +80,9 @@ public class TextEntryCell extends StringEntryCell {
 			public void modifyText(ModifyEvent evt) {
 				onModify();
 				if (adaptBoxHeight) {
-					if (text.getLineCount()!=prevLineCount) eb.post(new ParentAdaptSizeEvent());
-					prevLineCount=text.getLineCount();
+					Point curSize = text.getSize();
+					Point prefSize = text.computeSize(curSize.x, SWT.DEFAULT, true);
+					if (curSize.y != prefSize.y) eb.post(new ParentAdaptSizeEvent());
 				}
 			}
 		});
@@ -100,7 +101,6 @@ public class TextEntryCell extends StringEntryCell {
 	
 	@Override
 	protected void setGuiData() {
-		prevLineCount = 1;
 		text.setText(data);
 		if (!data.isEmpty() && ctlr.getModel().isCopy) {
 			setHilite(HiliteMode.COPIED);

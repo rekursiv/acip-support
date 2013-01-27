@@ -9,7 +9,7 @@ import com.google.common.eventbus.Subscribe;
 public class FormatEntryRow extends ComboBoxEntryCell {
 
 	public FormatEntryRow(Composite parent) {
-		super(parent, "Format");
+		super(parent, "Format", true);
 		addHorizSep();
 		combo.add("Xylograph");
 		combo.add("Typography");
