@@ -23,7 +23,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class StampRepo extends CouchDbRepositorySupport<StampModel> {
 	private LinkManager lm;
-	public static final String[] categories = new String[] {"Chinese", "Lanycha", "Mongolian", "Picture", "Tibetan Circle", "Tibetan Drawing", "Tibetan Single", "Tibetan Square", "New"};
+	public static final String[] categories = new String[] {"Chinese", "Lanycha", "Mongolian", "Picture", "Tibetan Circle", "Tibetan Drawing", "Tibetan Single", "Tibetan Square"};
 
 
 	@Inject
@@ -55,16 +55,15 @@ public class StampRepo extends CouchDbRepositorySupport<StampModel> {
 		return r.getRows().get(0).getValueAsInt();
 	}
 
-	public ImageData getImageByIndex(int index) throws Exception {
+	public ImageData getImageByIndex(int index) throws Exception {   	// returns thumbnail image
 		StampModel stamp = getByIndex(index);
 		if (stamp==null) throw new Exception("Index not found in database.");
 		return getImage(stamp);
 	}
 	
-	public ImageData getImage(StampModel stamp) throws Exception {
-		String imageId = getSingleAttachmentId(stamp);
-		if (imageId==null) throw new Exception("Problem with attached image.");
-		return getImage(stamp.getId(), imageId);
+
+	public ImageData getImage(StampModel stamp) throws Exception {   	// returns thumbnail image
+		return getImage(stamp.getId(), "thumb.jpg");
 	}
 	
 	public ImageData getImage(String id, String attachmentId) throws Exception {
@@ -78,7 +77,7 @@ public class StampRepo extends CouchDbRepositorySupport<StampModel> {
         }
 	}
 	
-	public String getSingleAttachmentId(StampModel stamp) {
+	public String getSingleAttachmentId(StampModel stamp) {  // not useful now that we're storing multiple images
 		Map<String, Attachment> attachmentMap = stamp.getAttachments();
 		if (attachmentMap!=null && !attachmentMap.isEmpty()) {
 			return attachmentMap.keySet().iterator().next();

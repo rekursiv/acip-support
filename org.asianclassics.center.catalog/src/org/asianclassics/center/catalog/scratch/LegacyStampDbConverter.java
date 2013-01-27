@@ -86,7 +86,7 @@ public class LegacyStampDbConverter {
 		String newId = root.get("_id").asText();
 		String newRev = root.get("_rev").asText();
 		AttachmentInputStream dataIn = dbInput.getAttachment(id, oldKey);
-		AttachmentInputStream dataOut = new AttachmentInputStream("stamp.jpg", dataIn, dataIn.getContentType());
+		AttachmentInputStream dataOut = new AttachmentInputStream("thumb.jpg", dataIn, dataIn.getContentType());
 		dbOutput.createAttachment(newId, newRev, dataOut);
 		dataIn.close();
 		dataOut.close();

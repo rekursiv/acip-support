@@ -1,10 +1,6 @@
 
 
-
-
-** update stamp DB
- 
-test word wrap in linux
+link stamps
 
 ---
 
@@ -23,18 +19,19 @@ re-evaluate ParentAdaptSizeEvent (no longer needed for scroller)
 
 SSL at HQ
 
-=======
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
-stamp size (max) = 150 x 150 pixels
+=====================   STAMPS   =====================
 
-last stamp index in DB = 1022
+---
+import old fullres stamps (req. some cleanup of orig. files)
+  Note: Ngawang re-scanned stamps 778 and 779 - these should be replaced before re-importing
+---
+  
+
+last stamp index in DB = 1022  
+
 
 ---------
-
-function(doc) {
-  if (doc.stamps&&doc.stamps.indexOf(0)!=-1){ emit(null, doc); }
-}
 
 stamp 1023 goes with poti 57476 sutra 8
 
@@ -48,6 +45,12 @@ stamp 1027 goes with poti 57476 sutra 23
 
 
 -------  categories
+"Chinese", "Lanycha", "Mongolian", "Picture", 
+"Tibetan Circle", "Tibetan Drawing", "Tibetan Single", "Tibetan Square"
+
+
+778 picture
+779 mongolian
 
 1016 picture
 1017 picture
@@ -56,4 +59,28 @@ stamp 1027 goes with poti 57476 sutra 23
 1020 tibetan square
 1021 picture
 1022 picture
+
+----
+
+1023 tib circle
+1024 picture
+1025 tib square
+1026 picture
+1027 picture 
+
+
+
+-------
+stamp size (max) = 150 x 150 pixels
+
+function(doc) {
+  if (doc.stamps&&doc.stamps.indexOf(0)!=-1){ emit(null, doc); }
+}
+    if (doc.index==778) {emit(null, doc);}
+    
+    
+    
+=============================================================================
+
+//@JsonIgnoreProperties(ignoreUnknown = true)
 

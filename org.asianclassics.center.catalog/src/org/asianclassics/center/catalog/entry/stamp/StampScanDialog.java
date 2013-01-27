@@ -168,13 +168,12 @@ public class StampScanDialog extends Dialog {
 			showMessage("No category selected.  Please select a category first.");
 			return;
 		}
-		
+
 		StringBuilder pathName = new StringBuilder();
-//		pathName.append("c:/scratch/temp/new_stamps/test.jpg");   ////  TEST
 		pathName.append(System.getProperty("user.home"));
 		pathName.append("/Documents");
 		pathName.append("/Scanned Document.jpg");
-		log.info(pathName.toString());
+		log.finest(pathName.toString());
 		
 		Path path = Paths.get(pathName.toString());
 		
@@ -186,33 +185,37 @@ public class StampScanDialog extends Dialog {
 			return;
 		}
 		
-		ByteArrayOutputStream stampBuffer = null;
+		ByteArrayOutputStream stampThumbBuffer = null;
 		try {
-			stampBuffer = scaleStamp(is);
+			stampThumbBuffer = scaleStamp(is);
+			is.close();   // re-open file so we can copy it into the DB (is.reset() not supported)
+			is = Files.newInputStream(path); 
 		} catch (Exception e) {
 			showMessage("Error scaling stamp:  "+e.getMessage());
+			if (is!=null) try { is.close(); } catch (IOException ex) { }
 			return;
 		}
 
 		repo.lock();
-		stampNum = repo.getLatestStampIndex()+1;	
-		log.info("next stamp # "+stampNum);
+		stampNum = repo.getLatestStampIndex()+1;
+		log.finest("next stamp # "+stampNum);
 		
 		StampModel stamp = new StampModel();
 		stamp.index = stampNum;
 		stamp.category = category.replace(" ", "_");
 		
 		try {
-			addStampToDb(stamp, new ByteArrayInputStream(stampBuffer.toByteArray()));
+			addStampToDb(stamp, is, new ByteArrayInputStream(stampThumbBuffer.toByteArray()));
 		} catch (Exception e) {
 			showMessage("Error writing stamp to databse:  "+e.getMessage());
 			stampNum=0;
 			repo.unlock();
+			if (is!=null) try { is.close(); } catch (IOException ex) { }
 			return;
 		}
 		
 		try {
-			is.close();
+			if (is!=null) is.close();
 			Files.delete(path);
 		} catch (IOException e) {
 			log.log(Level.SEVERE, "", e);
@@ -245,9 +248,11 @@ public class StampScanDialog extends Dialog {
 	}
 
 	
-	private void addStampToDb(StampModel stamp, InputStream is) throws Exception {
+	private void addStampToDb(StampModel stamp, InputStream fullres, InputStream thumb) throws Exception {
 		repo.add(stamp);
-		AttachmentInputStream ais = new AttachmentInputStream("stamp.jpg", is, "image/jpeg");
-		repo.getDb().createAttachment(stamp.getId(), stamp.getRevision(), ais);
+		AttachmentInputStream ais = new AttachmentInputStream("fullres.jpg", fullres, "image/jpeg");
+		String newRev = repo.getDb().createAttachment(stamp.getId(), stamp.getRevision(), ais);
+		ais = new AttachmentInputStream("thumb.jpg", thumb, "image/jpeg");
+		repo.getDb().createAttachment(stamp.getId(), newRev, ais);
 	}
 }
