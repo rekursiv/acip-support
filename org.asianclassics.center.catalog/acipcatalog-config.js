@@ -2,7 +2,7 @@
   "cfgUseDefaults" : false,
   "cfgSaveToFile" : null,
   "cfgLoadFromFile" : null,
-  "logToConsole" : false,
+  "logToConsole" : true,
   "logToFile" : false,
   "showLogView" : true,
   "allowCloseWhileLoggedIn" : true,
@@ -10,9 +10,9 @@
   "dbOrgPrefix" : "acip-center-",
   "testDirectLink" : true,
   "autoUpdateCouchViews" : true,
-  "autoLoginId" : "TNG",
-  "catalogStartView" : "test",
-  "catalogInitModelId" : "13c468215c60000abe6",
+  "autoLoginId" : null,
+  "catalogStartView" : null,
+  "catalogInitModelId" : null,
   "catalogAddEntryDebugBtns" : true,
   "catalogAutoSaveDelay" : 0
 }
