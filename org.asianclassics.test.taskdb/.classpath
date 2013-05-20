@@ -17,6 +17,6 @@
 	<classpathentry kind="lib" path="C:/projects/javalib/swt-grouplayout.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.database"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.ektorp"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.input.center"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.center.input"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

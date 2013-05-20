@@ -1,15 +1,20 @@
 package org.asianclassics.center.input;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
 import org.asianclassics.center.input.db.Source;
+import org.asianclassics.center.input.db.SourceRepo;
 import org.asianclassics.center.link.LinkManager;
 import org.asianclassics.database.DateTimeStamp;
 
 
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.widgets.Display;
 import org.ektorp.CouchDbConnector;
 
 import com.google.common.eventbus.EventBus;
@@ -26,6 +31,7 @@ public class InputTaskController {
 	private String workerId;
 	private CouchDbConnector taskDb;
 	private InputTaskRepo taskRepo;
+	private SourceRepo srcRepo;
 	private InputTask curTask;
 	private String taskType;
 	private String workingTxt;
@@ -52,6 +58,7 @@ public class InputTaskController {
 		
 		taskDb = lm.getDb("tasks");
 		taskRepo = new InputTaskRepo(taskDb);
+		srcRepo = new SourceRepo(taskDb);
 		
 		getTask();
 	}
@@ -64,7 +71,14 @@ public class InputTaskController {
 		
 		
 		if (curTask!=null) {
-			srcTxt = taskDb.get(Source.class, curTask.getSourceId()).getText();
+			srcTxt = taskDb.get(Source.class, curTask.getSourceId()).getText();    //  TEST
+			try {
+				ImageData imgData = srcRepo.getImage(curTask.getSourceId(), "img.png");
+				view.setImage(imgData);
+			} catch (Exception e) {
+				log.log(Level.WARNING, "", e);
+			}
+
 			String fixmeId = curTask.getTaskToFixId();
 			if (fixmeId==null) {
 				taskType = "input";
@@ -81,15 +95,11 @@ public class InputTaskController {
 		log.info("taskType: "+taskType);
 		log.info("workingText: "+workingTxt);
 		log.info("referenceTxt: "+referenceTxt);
+		log.info("srcTxt: "+srcTxt);
 
-		view.setTemp(srcTxt);
 		view.setReferenceText(referenceTxt);
 		view.setWorkingText(workingTxt);
-		
-		
-		
-//		view.loadData();
-		
+
 	}
 
 	public void finishTask(String product) {

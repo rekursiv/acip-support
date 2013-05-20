@@ -1,12 +1,18 @@
 package org.asianclassics.test.taskdb;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import org.asianclassics.center.input.db.InputTask;
+import org.asianclassics.center.input.db.InputTaskRepo;
+import org.asianclassics.center.input.db.Source;
+import org.asianclassics.center.input.db.SourceRepo;
 import org.asianclassics.database.CustomCouchDbConnector;
-import org.asianclassics.input.center.tasks.InputTask;
-import org.asianclassics.input.center.tasks.Source;
-import org.asianclassics.input.center.tasks.InputTaskRepo;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -18,6 +24,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
+import org.ektorp.AttachmentInputStream;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.DbPath;
@@ -34,6 +41,7 @@ public class DbSetup extends Composite {
 	private CouchDbConnector db = null;
 	private CouchDbInstance couch = null;
 	private InputTaskRepo taskRepo = null;
+	private SourceRepo srcRepo = null;
 	
 	private Table table;
 	private Label lblDbStatus;
@@ -61,7 +69,8 @@ public class DbSetup extends Composite {
 		btnUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				uiUpdate();
+//				uiUpdate();
+				test();
 			}
 		});
 		btnUpdate.setText("Update UI");
@@ -233,23 +242,46 @@ public class DbSetup extends Composite {
 		if (dbExists && db.getAllDocIds().isEmpty()) {
 			taskRepo = new InputTaskRepo(db);
 			taskRepo.initStandardDesignDocument();
-			initPage("page one text to input");
-			initPage("page two type me in");
-			initPage("page three");
-			initPage("page four");
+			srcRepo = new SourceRepo(db);
+			initPage();
+			initPage();
+			
 			uiUpdate();
 		}
 	}
 	
-	public void initPage(String text) {
-		Source s = new Source();
-		s.setText(text);
-		s.setPageIndex(pageIndex);
-		db.create(s);
+	public void initPage() {
+		Source src = new Source();
+//		s.setText(text);
+		src.setPageIndex(pageIndex);
+		srcRepo.add(src);
+		attachImage(src);
 		InputTask it = new InputTask();
-		it.linkWithSource(s);
+		it.linkWithSource(src);
 		it.setActive(true);
 		taskRepo.add(it);
 		++pageIndex;
 	}
+	
+	
+	public void test() {
+		srcRepo = new SourceRepo(db);
+		Source src = new Source();
+		attachImage(src);
+	}
+	
+	public void attachImage(Source src) {
+		Path path = Paths.get("C:/projects/ACIP/input_test_sample/tib_test/"+pageIndex+".png");
+		
+		InputStream is = null;
+		try {
+			is = Files.newInputStream(path);
+			AttachmentInputStream ais = new AttachmentInputStream("img.png", is, "image/png");
+			db.createAttachment(src.getId(), src.getRevision(), ais);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 }
