@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.asianclassics.center.event.LoginSuccessEvent;
+import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
 import org.asianclassics.center.input.db.Source;
@@ -33,10 +34,6 @@ public class InputTaskController {
 	private InputTaskRepo taskRepo;
 	private SourceRepo srcRepo;
 	private InputTask curTask;
-	private String taskType;
-	private String workingTxt;
-	private String referenceTxt;
-	private String srcTxt;
 	private InputTaskView view;
 	
 
@@ -64,17 +61,21 @@ public class InputTaskController {
 	}
 
 	private void getTask() {
-		taskType = "empty";
-		workingTxt = "";
-		referenceTxt = null;
+		String taskType = "empty";
+		String workingTxt = "";
+		String referenceTxt = null;
+		
 		curTask = taskRepo.getTask(workerId);
 		
+		String partnerWid = null;
 		
+
+		
+		ImageData imgData = null;
 		if (curTask!=null) {
-			srcTxt = taskDb.get(Source.class, curTask.getSourceId()).getText();    //  TEST
+//			srcTxt = taskDb.get(Source.class, curTask.getSourceId()).getText();    //  TEST
 			try {
-				ImageData imgData = srcRepo.getImage(curTask.getSourceId(), "img.png");
-				view.setImage(imgData);
+				imgData = srcRepo.getImage(curTask.getSourceId(), "img.png");
 			} catch (Exception e) {
 				log.log(Level.WARNING, "", e);
 			}
@@ -86,22 +87,42 @@ public class InputTaskController {
 				taskType = "correction";
 				workingTxt = taskDb.get(InputTask.class, curTask.getTaskToFixId()).getProduct();
 				InputTask partnerTask = taskDb.get(InputTask.class, curTask.getPartnerId());
-				if (partnerTask!=null) referenceTxt = partnerTask.getProduct();
+				if (partnerTask!=null) {
+					referenceTxt = partnerTask.getProduct();
+					partnerWid = partnerTask.getWorker();
+				}
 			}
 			curTask.setDateTimeStarted(DateTimeStamp.gen());
 			taskDb.update(curTask);
 		}
 		
-		log.info("taskType: "+taskType);
+//		log.info("taskType: "+taskType);
 		log.info("workingText: "+workingTxt);
 		log.info("referenceTxt: "+referenceTxt);
-		log.info("srcTxt: "+srcTxt);
 
+
+		StringBuilder statMsg = new StringBuilder();
+		statMsg.append(taskType);
+		if (curTask!=null) {
+			statMsg.append(":  v");
+			statMsg.append(curTask.getVolumeIndex());
+			statMsg.append(", p");
+			statMsg.append(curTask.getVolumeIndex());			
+			if (partnerWid!=null) {
+				statMsg.append(", partner=");
+				statMsg.append(partnerWid);
+			}
+		}
+
+		
+		view.setStatus(statMsg.toString());
+		
+		view.setImage(imgData);
 		view.setReferenceText(referenceTxt);
 		view.setWorkingText(workingTxt);
 
 	}
-
+	
 	public void finishTask(String product) {
 		if (curTask!=null) {
 			log.info(product);

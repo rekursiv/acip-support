@@ -34,7 +34,6 @@ public class TibetanEditor extends Composite {
 		if (xcdr!=null) {
 			scanner = new TibetanPartitionScanner();
 			FastPartitioner parter = new FastPartitioner(scanner, scanner.getLegalContentTypes());
-//			document.setDocumentPartitioner("tibetan", parter);
 			document.setDocumentPartitioner(parter);
 			parter.connect(document);			
 			editManager = new EditManager(scanner, textViewer, xcdr);
@@ -56,6 +55,10 @@ public class TibetanEditor extends Composite {
 	
 	public DiffDocument getDocument() {
 		return document;
+	}
+	
+	public SourceViewer getSourceViewer() {
+		return textViewer;
 	}
 	
 	

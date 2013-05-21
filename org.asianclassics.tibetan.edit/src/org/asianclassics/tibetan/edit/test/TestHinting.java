@@ -128,8 +128,8 @@ public class TestHinting extends Composite {
 	}
 	
 	public void init() {
-		hintEd.init(null);
-//		hintEd.init(new TibetanTranscoder());
+//		hintEd.init(null);
+		hintEd.init(new TibetanTranscoder());
 	}
 
 	@Override

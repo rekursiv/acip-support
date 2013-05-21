@@ -69,8 +69,7 @@ public class DbSetup extends Composite {
 		btnUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-//				uiUpdate();
-				test();
+				uiUpdate();
 			}
 		});
 		btnUpdate.setText("Update UI");
@@ -263,12 +262,6 @@ public class DbSetup extends Composite {
 		++pageIndex;
 	}
 	
-	
-	public void test() {
-		srcRepo = new SourceRepo(db);
-		Source src = new Source();
-		attachImage(src);
-	}
 	
 	public void attachImage(Source src) {
 		Path path = Paths.get("C:/projects/ACIP/input_test_sample/tib_test/"+pageIndex+".png");

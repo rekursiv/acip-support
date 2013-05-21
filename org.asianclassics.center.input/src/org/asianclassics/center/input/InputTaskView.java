@@ -1,9 +1,12 @@
 package org.asianclassics.center.input;
 
+import java.util.logging.Logger;
+
 import org.asianclassics.center.TaskView;
 import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.event.LogoutEvent;
 import org.asianclassics.tibetan.edit.TibetanEditor;
+import org.asianclassics.tibetan.transcoder.TibetanTranscoder;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
@@ -13,6 +16,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.custom.CaretEvent;
+import org.eclipse.swt.custom.CaretListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -29,13 +36,35 @@ public class InputTaskView extends TaskView {
 	private EventBus eb;
 	private Button btnFinish;
 	private TibetanEditor editor;
+	private TibetanTranscoder xcdr = null;
 	private Label lblImage;
 	private InputTaskController itCon;
+	private Label lblStatus;
+	private Text txtWorkingTibetan;
+	private Text txtWorkingRoman;
+	private Logger log;
+	private Label lblStatic1;
+	private Label lblReferenceText;
+	private Text txtRefRoman;
+	private Text txtRefTibetan;
 
 	
 	public InputTaskView(Composite parent, int style, Injector injector) {
 		super(parent, style);
 		setLayout(new FormLayout());
+		
+		lblStatic1 = new Label(this, SWT.NONE);
+		FormData fd_lblStatic1 = new FormData();
+		lblStatic1.setLayoutData(fd_lblStatic1);
+		lblStatic1.setText("Working Text");
+		
+		txtWorkingRoman = new Text(this, SWT.BORDER);
+		fd_lblStatic1.bottom = new FormAttachment(100, -182);
+		fd_lblStatic1.top = new FormAttachment(100, -203);
+		FormData fd_txtWorkingRoman = new FormData();
+		fd_txtWorkingRoman.bottom = new FormAttachment(100, -150);
+		fd_txtWorkingRoman.top = new FormAttachment(100, -171);
+		txtWorkingRoman.setLayoutData(fd_txtWorkingRoman);
 		
 		btnLogout = new Button(this, SWT.NONE);
 		btnLogout.addSelectionListener(new SelectionAdapter() {
@@ -56,16 +85,19 @@ public class InputTaskView extends TaskView {
 		btnFinish.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				itCon.finishTask(editor.getWorkingText());
+				String roman = xcdr.transcode(editor.getWorkingText(), TibetanTranscoder.TIBETAN);
+				itCon.finishTask(roman);
 			}
 		});
 		FormData fd_btnFinish = new FormData();
 		fd_btnFinish.top = new FormAttachment(btnLogout, 0, SWT.TOP);
-		fd_btnFinish.left = new FormAttachment(20);
+		fd_btnFinish.left = new FormAttachment(0, 150);
 		btnFinish.setLayoutData(fd_btnFinish);
 		btnFinish.setText("Finish");
 		
 		editor = new TibetanEditor(this, SWT.NONE);
+		fd_lblStatic1.right = new FormAttachment(editor, 70);
+		fd_lblStatic1.left = new FormAttachment(editor, 0, SWT.LEFT);
 		FormData fd_composite = new FormData();
 		fd_composite.right = new FormAttachment(100, -12);
 		fd_composite.left = new FormAttachment(0, 12);
@@ -73,7 +105,7 @@ public class InputTaskView extends TaskView {
 		
 		lblImage = new Label(this, SWT.BORDER);
 		fd_composite.top = new FormAttachment(0, 320);
-		fd_composite.bottom = new FormAttachment(100, -12);
+		fd_composite.bottom = new FormAttachment(100, -213);
 		FormData fd_lblImage = new FormData();
 		fd_lblImage.bottom = new FormAttachment(0, 305);
 		fd_lblImage.left = new FormAttachment(0, 12);
@@ -81,31 +113,100 @@ public class InputTaskView extends TaskView {
 		fd_lblImage.top = new FormAttachment(0, 85);
 		lblImage.setLayoutData(fd_lblImage);
 		
+		lblStatus = new Label(this, SWT.NONE);
+		FormData fd_lblStatus = new FormData();
+		fd_lblStatus.right = new FormAttachment(0, 530);
+		fd_lblStatus.top = new FormAttachment(0, 50);
+		fd_lblStatus.left = new FormAttachment(lblImage, 0, SWT.LEFT);
+		lblStatus.setLayoutData(fd_lblStatus);
+		lblStatus.setText("lblStatus");
+		
+		txtWorkingTibetan = new Text(this, SWT.BORDER);
+		fd_txtWorkingRoman.right = new FormAttachment(100, -23);
+		fd_txtWorkingRoman.left = new FormAttachment(txtWorkingTibetan, 0, SWT.LEFT);
+		txtWorkingTibetan.setFont(SWTResourceManager.getFont("Segoe UI", 26, SWT.NORMAL));
+		FormData fd_txtWorkingTibetan = new FormData();
+		fd_txtWorkingTibetan.right = new FormAttachment(100, -23);
+		fd_txtWorkingTibetan.left = new FormAttachment(btnLogout, 0, SWT.LEFT);
+		fd_txtWorkingTibetan.bottom = new FormAttachment(100, -105);
+		fd_txtWorkingTibetan.top = new FormAttachment(100, -158);
+		txtWorkingTibetan.setLayoutData(fd_txtWorkingTibetan);
+		
+		lblReferenceText = new Label(this, SWT.NONE);
+		lblReferenceText.setText("Reference Text");
+		FormData fd_lblReferenceText = new FormData();
+		fd_lblReferenceText.left = new FormAttachment(lblStatic1, 0, SWT.LEFT);
+		lblReferenceText.setLayoutData(fd_lblReferenceText);
+		
+		txtRefRoman = new Text(this, SWT.BORDER);
+		fd_lblReferenceText.top = new FormAttachment(txtRefRoman, -21, SWT.TOP);
+		fd_lblReferenceText.bottom = new FormAttachment(txtRefRoman, -6);
+		FormData fd_txtRefRoman = new FormData();
+		fd_txtRefRoman.bottom = new FormAttachment(100, -58);
+		fd_txtRefRoman.top = new FormAttachment(100, -79);
+		txtRefRoman.setLayoutData(fd_txtRefRoman);
+		
+		txtRefTibetan = new Text(this, SWT.BORDER);
+		fd_txtRefRoman.right = new FormAttachment(100, -23);
+		fd_txtRefRoman.left = new FormAttachment(txtRefTibetan, 0, SWT.LEFT);
+		txtRefTibetan.setFont(SWTResourceManager.getFont("Segoe UI", 26, SWT.NORMAL));
+		FormData fd_txtRefTibetan = new FormData();
+		fd_txtRefTibetan.right = new FormAttachment(100, -23);
+		fd_txtRefTibetan.left = new FormAttachment(txtWorkingTibetan, 0, SWT.LEFT);
+		fd_txtRefTibetan.bottom = new FormAttachment(100, -12);
+		fd_txtRefTibetan.top = new FormAttachment(100, -65);
+		txtRefTibetan.setLayoutData(fd_txtRefTibetan);
+		
 		if (injector!=null) injector.injectMembers(this);
 	}
 	
 	@Inject
-	public void inject(EventBus eb, InputTaskController itCon) {
+	public void inject(Logger log, EventBus eb, InputTaskController itCon) {
+		this.log = log;
 		this.eb = eb;
 		this.itCon = itCon;
 		itCon.setView(this);
-		editor.init(null);
+//		editor.init(null);
+		xcdr = new TibetanTranscoder();
+		editor.init(xcdr);
+		editor.getSourceViewer().getTextWidget().addCaretListener(new CaretListener() {
+			@Override
+			public void caretMoved(CaretEvent arg0) {
+				updateDebugView();
+			}			
+		});
 	}
 
 	
 	public void setWorkingText(String text) {
-		editor.setWorkingText(text);
+		String tib = xcdr.transcode(text, TibetanTranscoder.ROMAN);
+		editor.setWorkingText(tib);
+		updateDebugView();
 		editor.setFocus();  //  i focus u, y u no work??
 	}
 	
 	public void setReferenceText(String text) {
-		editor.setReferenceText(text);
+		String tib = null;
+		if (text==null) {
+			txtRefRoman.setText("");
+			txtRefTibetan.setText("");
+		} else {
+			tib = xcdr.transcode(text, TibetanTranscoder.ROMAN);
+			String roman = xcdr.transcode(text, TibetanTranscoder.TIBETAN);
+			txtRefRoman.setText(roman);
+			txtRefTibetan.setText(tib);
+		}
+		editor.setReferenceText(tib);
 	}
 	
 	public void setImage(ImageData imgData) {
-		Image img = new Image(Display.getDefault(), imgData);
+		Image img = null;
+		if (imgData!=null) img = new Image(Display.getDefault(), imgData);
 		lblImage.setImage(img);
-//		lblImage.pack();
+	}
+	
+	public void setStatus(String msg) {
+		lblStatus.setText(msg);
 	}
 	
 
@@ -113,4 +214,18 @@ public class InputTaskView extends TaskView {
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
 	}
+	
+	
+	
+	
+	/////////   DEBUG
+	public void updateDebugView() {
+//		log.info("*");
+		String text = editor.getWorkingText();
+		String tib = xcdr.transcode(text, TibetanTranscoder.ROMAN);
+		String roman = xcdr.transcode(text, TibetanTranscoder.TIBETAN);
+		txtWorkingRoman.setText(roman);
+		txtWorkingTibetan.setText(tib);
+	}
+	
 }

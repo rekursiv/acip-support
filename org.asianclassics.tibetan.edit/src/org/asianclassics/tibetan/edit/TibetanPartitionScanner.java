@@ -34,7 +34,7 @@ public class TibetanPartitionScanner implements IPartitionTokenScanner {
 		tokenLength = 0;
 		inComment = false;
 //		index = -1;  //
-		System.out.println("# setRange:   offset="+offset+"   len="+length);
+//		System.out.println("# setRange:   offset="+offset+"   len="+length);
 	}
 	
 

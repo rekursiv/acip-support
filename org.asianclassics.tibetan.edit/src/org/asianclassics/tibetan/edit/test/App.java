@@ -8,8 +8,8 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 public class App {
 
-//	TestHinting test;
-	TestTibetan test;
+	TestHinting test;
+//	TestTibetan test;
 	
 	protected static Shell shell;
 
@@ -52,11 +52,11 @@ public class App {
 		shell.setText("SWT Application");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-//		shell.setSize(524, 462);
-//		test = new TestHinting(shell, SWT.NONE);
+		shell.setSize(524, 462);
+		test = new TestHinting(shell, SWT.NONE);
 		
-		shell.setSize(1600, 300);
-		test = new TestTibetan(shell, SWT.NONE);
+//		shell.setSize(1600, 300);
+//		test = new TestTibetan(shell, SWT.NONE);
 
 	}
 
