@@ -11,6 +11,8 @@
   "testDirectLink" : true,
   "autoUpdateCouchViews" : true,
   "autoLoginId" : null,
+  "dbCenterCode" : null,
+  "directLinkServerIp" : null,
   "catalogStartView" : null,
   "catalogInitModelId" : null,
   "catalogAddEntryDebugBtns" : true,

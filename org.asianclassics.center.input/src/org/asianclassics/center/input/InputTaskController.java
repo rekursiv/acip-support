@@ -107,7 +107,7 @@ public class InputTaskController {
 			statMsg.append(":  v");
 			statMsg.append(curTask.getVolumeIndex());
 			statMsg.append(", p");
-			statMsg.append(curTask.getVolumeIndex());			
+			statMsg.append(curTask.getPageIndex());			
 			if (partnerWid!=null) {
 				statMsg.append(", partner=");
 				statMsg.append(partnerWid);
@@ -131,8 +131,8 @@ public class InputTaskController {
 			curTask.setDateTimeFinished(DateTimeStamp.gen());
 			taskRepo.finalize(curTask);
 			curTask=null;
-			getTask();
 		}
+		getTask();
 	}
 	
 	

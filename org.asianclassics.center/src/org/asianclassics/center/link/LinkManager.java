@@ -64,7 +64,46 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	
 	@Override
 	public void run() {
-		updateStatus("Connecting to local database...");
+		updateStatus("Connecting to database...");
+		
+		if (cfg.directLinkServerIp!=null) setupStaticLink();
+		else setupBootstrapLink();
+
+		if (initInterrupt) shutdown();
+		initInProgress = false;
+	}
+	
+	
+	private void setupStaticLink() {
+		serverIp = cfg.directLinkServerIp;
+		dbCenterPrefix = cfg.dbOrgPrefix+cfg.dbCenterCode+"-";
+
+		try {			
+			remoteLink = new StdCouchDbInstance(new StdHttpClient.Builder().host(serverIp).build());
+		} catch (Exception e) {
+			updateStatus("ERROR:  Cannot connect to database.");
+			log.log(Level.SEVERE, "exception", e);
+			shutdown();
+			initInProgress = false;
+			return;
+		}	
+		
+		try {			
+			channel = new JChannel("jgroups-stack.xml");
+			myIp = channel.getProtocolStack().getTransport().getBindAddress().getHostAddress();
+		} catch (Exception e) {
+			updateStatus("ERROR:  Cannot create JChannel.");
+			log.log(Level.SEVERE, "exception", e);
+			shutdown();
+			initInProgress = false;
+			return;
+		}	
+
+		updateStatusFull("Linked with remote database at "+serverIp);
+		linkReady();		
+	}
+	
+	private void setupBootstrapLink() {
 		try {
 			localLink = new StdCouchDbInstance(new StdHttpClient.Builder().build());
 		} catch (Exception e) {
@@ -108,9 +147,9 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 			initLock();
 		}
 
-		if (initInterrupt) shutdown();
-		initInProgress = false;
 	}
+	
+	
 	
 	public void init() {
 		initInProgress = true;
@@ -222,7 +261,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	}
 	
 	private synchronized void setupServer() throws Exception {
-		log.info("Seting up server...");
+		log.info("Setting up server...");
 		if (isServer) {
 			// ???
 		} else {

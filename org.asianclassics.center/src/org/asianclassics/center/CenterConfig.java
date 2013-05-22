@@ -19,7 +19,8 @@ public class CenterConfig extends ConfigBase {
 	public boolean testDirectLink;
 	public boolean autoUpdateCouchViews;
 	public String autoLoginId;
-	
+	public String dbCenterCode;
+	public String directLinkServerIp;
 
 }
 
