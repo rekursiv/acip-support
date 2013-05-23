@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.asianclassics.center.TaskView;
 import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.event.LogoutEvent;
+import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.asianclassics.tibetan.edit.TibetanEditor;
 import org.asianclassics.tibetan.transcoder.TibetanTranscoder;
 import org.eclipse.swt.widgets.Composite;
@@ -189,6 +190,7 @@ public class InputTaskView extends TaskView {
 				updateDebugView();
 			}			
 		});
+		
 	}
 
 	
@@ -196,7 +198,17 @@ public class InputTaskView extends TaskView {
 		String tib = xcdr.transcode(text, TibetanTranscoder.ROMAN);
 		editor.setWorkingText(tib);
 		updateDebugView();
-		editor.setFocus();  //  i focus u, y u no work??
+	}
+	
+	@Override
+	public boolean setFocus() {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				editor.setFocus();
+			}
+		});
+		return true;
 	}
 	
 	public void setReferenceText(String text) {

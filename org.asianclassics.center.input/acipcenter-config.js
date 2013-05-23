@@ -10,5 +10,5 @@
   "dbOrgPrefix" : "acip-center-",
   "testDirectLink" : true,
   "autoUpdateCouchViews" : true,
-  "autoLoginId" : "A"
+  "autoLoginId" : null
 }

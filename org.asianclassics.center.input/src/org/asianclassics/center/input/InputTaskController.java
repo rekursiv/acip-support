@@ -69,8 +69,6 @@ public class InputTaskController {
 		
 		String partnerWid = null;
 		
-
-		
 		ImageData imgData = null;
 		if (curTask!=null) {
 //			srcTxt = taskDb.get(Source.class, curTask.getSourceId()).getText();    //  TEST
@@ -97,9 +95,8 @@ public class InputTaskController {
 		}
 		
 //		log.info("taskType: "+taskType);
-		log.info("workingText: "+workingTxt);
-		log.info("referenceTxt: "+referenceTxt);
-
+//		log.info("workingText: "+workingTxt);
+//		log.info("referenceTxt: "+referenceTxt);
 
 		StringBuilder statMsg = new StringBuilder();
 		statMsg.append(taskType);
@@ -114,13 +111,11 @@ public class InputTaskController {
 			}
 		}
 
-		
 		view.setStatus(statMsg.toString());
-		
 		view.setImage(imgData);
 		view.setReferenceText(referenceTxt);
 		view.setWorkingText(workingTxt);
-
+		view.setFocus();
 	}
 	
 	public void finishTask(String product) {
