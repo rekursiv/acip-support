@@ -1,5 +1,6 @@
 package org.asianclassics.center.input;
 
+import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
 import org.asianclassics.center.TaskView;
@@ -9,6 +10,8 @@ import org.asianclassics.tibetan.edit.TibetanEditor;
 import org.asianclassics.tibetan.transcoder.TibetanTranscoder;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
@@ -20,10 +23,14 @@ import org.eclipse.swt.custom.CaretEvent;
 import org.eclipse.swt.custom.CaretListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Rectangle;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -47,6 +54,7 @@ public class InputTaskView extends TaskView {
 	private Label lblReferenceText;
 	private Text txtRefRoman;
 	private Text txtRefTibetan;
+	private Image scan = null;
 
 	
 	public InputTaskView(Composite parent, int style, Injector injector) {
@@ -161,12 +169,18 @@ public class InputTaskView extends TaskView {
 	}
 	
 	@Inject
-	public void inject(Logger log, EventBus eb, InputTaskController itCon) {
-		this.log = log;
+	public void inject(Logger logger, EventBus eb, InputTaskController itCon) {
+		this.log = logger;
 		this.eb = eb;
 		this.itCon = itCon;
 		itCon.setView(this);
-//		editor.init(null);
+
+		lblImage.addListener(SWT.Resize,  new Listener () {
+			    public void handleEvent (Event e) {
+			    	onResize();
+			    }
+		});
+	
 		xcdr = new TibetanTranscoder();
 		editor.init(xcdr);
 		editor.getSourceViewer().getTextWidget().addCaretListener(new CaretListener() {
@@ -200,16 +214,42 @@ public class InputTaskView extends TaskView {
 	}
 	
 	public void setImage(ImageData imgData) {
-		Image img = null;
-		if (imgData!=null) img = new Image(Display.getDefault(), imgData);
-		lblImage.setImage(img);
+		if (imgData==null) scan = null;
+		else scan = new Image(Display.getDefault(), imgData);
+		onResize();
 	}
 	
+
 	public void setStatus(String msg) {
 		lblStatus.setText(msg);
 	}
 	
-
+	private void onResize() {
+		if (scan==null) {
+			lblImage.setImage(null);
+		} else {
+			float scale = (float)lblImage.getSize().x / (float)scan.getImageData().width;
+			int width = (int)((float)scan.getImageData().width*scale);
+			int height = (int)((float)scan.getImageData().height*scale);
+			lblImage.setImage(resizeImage(scan, width, height));
+		}
+	}
+	
+	private Image resizeImage(Image image, int width, int height) {
+		Image scaled = new Image(Display.getDefault(), width, height);
+		GC gc = new GC(scaled);
+		gc.setAntialias(SWT.ON);
+		gc.setInterpolation(SWT.HIGH);
+		gc.drawImage(image, 0, 0, 
+		image.getBounds().width, image.getBounds().height, 
+		0, 0, width, height);
+		gc.dispose();
+		return scaled;
+	}
+	
+	
+	
+	
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components

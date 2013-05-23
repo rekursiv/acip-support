@@ -242,7 +242,17 @@ public class DbSetup extends Composite {
 			taskRepo = new InputTaskRepo(db);
 			taskRepo.initStandardDesignDocument();
 			srcRepo = new SourceRepo(db);
+			
+			initPage();  ///
 			initPage();
+			
+			initPage();  ///
+			initPage();
+			
+			initPage();  ///
+			initPage();
+			
+			initPage();  ///
 			initPage();
 			
 			uiUpdate();
