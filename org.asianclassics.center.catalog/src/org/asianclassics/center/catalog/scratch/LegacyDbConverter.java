@@ -4,10 +4,6 @@ import java.util.List;
 
 import org.asianclassics.center.catalog.entry.model.EntryModel;
 import org.asianclassics.database.CustomCouchDbConnector;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.node.ObjectNode;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.DbPath;
 import org.ektorp.http.HttpClient;
@@ -16,6 +12,11 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class LegacyDbConverter {
 
@@ -51,7 +52,7 @@ public class LegacyDbConverter {
 		
 		System.out.println("Setting up DBs...");
 		mapper = new ObjectMapper();
-		mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		
 		HttpClient httpClient = new StdHttpClient.Builder().build();
 		CouchDbInstance couch = new StdCouchDbInstance(httpClient);
@@ -133,7 +134,7 @@ public class LegacyDbConverter {
 			}
 		}
 
-		entry = mapper.readValue(root, EntryModel.class);
+		entry = mapper.readValue(root.toString(), EntryModel.class);   //  NOTE:  updated for newer version of Jackson, NOT TESTED
 		convertId(oldId);
 		entry.isValid = true;
 		entry.dateTimeLastEdited = new DateTime();

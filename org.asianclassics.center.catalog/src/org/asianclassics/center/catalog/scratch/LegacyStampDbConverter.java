@@ -3,10 +3,6 @@ package org.asianclassics.center.catalog.scratch;
 import java.util.List;
 
 import org.asianclassics.database.CustomCouchDbConnector;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.node.ObjectNode;
 import org.ektorp.AttachmentInputStream;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.DbPath;
@@ -14,6 +10,11 @@ import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class LegacyStampDbConverter {
 
@@ -48,7 +49,7 @@ public class LegacyStampDbConverter {
 		
 		System.out.println("Setting up DBs...");
 		mapper = new ObjectMapper();
-		mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		
 		HttpClient httpClient = new StdHttpClient.Builder().build();
 		CouchDbInstance couch = new StdCouchDbInstance(httpClient);
@@ -81,7 +82,7 @@ public class LegacyStampDbConverter {
 		root.remove("_rev");
 		root.remove("_id");
 		JsonNode aNode = root.remove("_attachments");
-		String oldKey = aNode.getFieldNames().next();
+		String oldKey = aNode.fieldNames().next();
 		dbOutput.create(root);
 		String newId = root.get("_id").asText();
 		String newRev = root.get("_rev").asText();

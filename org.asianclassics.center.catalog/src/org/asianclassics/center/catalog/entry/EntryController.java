@@ -192,6 +192,7 @@ public class EntryController implements Runnable {
 		model.dateTimeLastEdited = now;
 		try {
 			repo.update(model);
+			// TODO:  remove "go back" btn
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "ERROR", e);
 			return;

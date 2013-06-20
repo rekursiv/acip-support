@@ -10,10 +10,10 @@ import org.asianclassics.center.CenterModule;
 import org.asianclassics.center.catalog.entry.model.StampModel;
 import org.asianclassics.center.catalog.entry.model.StampRepo;
 import org.asianclassics.center.link.LinkManager;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.ektorp.AttachmentInputStream;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -40,7 +40,7 @@ public class StampAdder {
 	public void addStamp() throws Exception {
 		System.getProperties().setProperty("org.ektorp.support.AutoUpdateViewOnChange", "true");
 		mapper = new ObjectMapper();
-		mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		
 		Injector injector = Guice.createInjector(new CenterModule());
 		LinkManager linkManager = injector.getInstance(LinkManager.class);

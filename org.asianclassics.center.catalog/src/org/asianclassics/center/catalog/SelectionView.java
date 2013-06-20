@@ -6,7 +6,6 @@ import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent;
 import org.asianclassics.center.catalog.event.CatalogTaskMakeTopEvent.CatalogTaskViewType;
 import org.asianclassics.center.event.LogoutEvent;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
-import org.codehaus.jackson.JsonNode;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -24,6 +23,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.ektorp.ViewResult.Row;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;

@@ -36,7 +36,8 @@ import org.eclipse.swt.events.SelectionEvent;
 
 public class DbSetup extends Composite {
 	
-	private static final String dbName = "acip-center-input-tasks";
+//	private static final String dbName = "acip-center-input-tasks";
+	private static final String dbName = "acip-center-test-tasks";
 	
 	private CouchDbConnector db = null;
 	private CouchDbInstance couch = null;
@@ -274,7 +275,8 @@ public class DbSetup extends Composite {
 	
 	
 	public void attachImage(Source src) {
-		Path path = Paths.get("C:/projects/ACIP/input_test_sample/tib_test/"+pageIndex+".png");
+//		Path path = Paths.get("C:/projects/ACIP/input_test_sample/tib_test/"+pageIndex+".png");
+		Path path = Paths.get("/home/acip/input_test_sample/tib_test/"+pageIndex+".png");
 		
 		InputStream is = null;
 		try {

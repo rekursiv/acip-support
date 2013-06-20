@@ -3,9 +3,10 @@ package org.asianclassics.center.catalog.entry.model;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.ektorp.support.Entity;
 import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class EntryModel extends Entity {
 	private static final long serialVersionUID = -8518504850247837263L;
