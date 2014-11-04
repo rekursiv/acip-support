@@ -58,6 +58,9 @@ public class InputTaskController {
 		srcRepo = new SourceRepo(taskDb);
 		
 		getTask();
+//		log.info(taskDb.getDatabaseName());
+//		log.info(taskDb.getDbInfo().getDocCount()+"");
+//		log.info(""+srcRepo.getAll().size());
 	}
 
 	private void getTask() {
@@ -94,9 +97,9 @@ public class InputTaskController {
 			taskDb.update(curTask);
 		}
 		
-//		log.info("taskType: "+taskType);
-//		log.info("workingText: "+workingTxt);
-//		log.info("referenceTxt: "+referenceTxt);
+		log.info("taskType: "+taskType);
+		log.info("workingText: "+workingTxt);
+		log.info("referenceTxt: "+referenceTxt);
 
 		StringBuilder statMsg = new StringBuilder();
 		statMsg.append(taskType);

@@ -1,20 +1,22 @@
 package org.asianclassics.center.input.db;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+//import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.ektorp.support.Entity;
 import org.ektorp.support.TypeDiscriminator;
 
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
-@TypeDiscriminator("doc.type === 'InputTask'")
+//@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
+//@TypeDiscriminator("doc.type === 'InputTask'")
+@SuppressWarnings("serial")
 public class InputTask extends Entity {
+	
 
-	private static final long serialVersionUID = -896660677691894212L;
-
+	private String type = "InputTask";
+	
 	private boolean isActive = true;
 	private boolean isFinal = false;
 	private String worker = "_init";
-
+	
 	private int taskPriority=10;
 	private int projectPriority=10;
 	
@@ -52,6 +54,11 @@ public class InputTask extends Entity {
 	@JsonIgnore
 	public void makeLowerPriority(InputTask task) {
 		taskPriority=task.getTaskPriority()+1;
+	}
+	
+	@TypeDiscriminator
+	public String getType() {
+		return type;
 	}
 	
 	public boolean isActive() {

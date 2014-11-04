@@ -22,15 +22,17 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 	}
 
 	
-	@Override
-	@GenerateView
-	public List<InputTask> getAll() {
-		return super.getAll();
-	}
+//	@Override
+//	@GenerateView
+//	public List<InputTask> getAll() {
+//		return super.getAll();
+//	}
 	
 	
 //	@View(name="getAssignedTasks", map="function(doc) {if (doc.type === 'InputTask' && doc.active && doc.worker) emit([doc.worker, doc.priority], null)}")
 	@View(name="getAssignedTasks", map="function(doc) {if (doc.type === 'InputTask' && doc.active && doc.worker) emit([doc.worker, doc.taskPriority, doc.projectPriority, doc.collectionIndex, doc.volumeIndex, doc.pageIndex], null)}")
+//	@View(name="getAssignedTasks", map="function(doc) {if (doc.active && doc.worker) emit([doc.worker, doc.taskPriority, doc.projectPriority, doc.collectionIndex, doc.volumeIndex, doc.pageIndex], null)}")
+
 	public List<InputTask> getAssignedTasks(String worker, int limit) {
 		ComplexKey startKey = ComplexKey.of(worker);
 		ComplexKey endKey = ComplexKey.of(worker, ComplexKey.emptyObject());
@@ -59,15 +61,18 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 	
 	public InputTask getTask(String worker) {
 		List<InputTask> taskList = getAssignedTasks(worker, 1);
+		log.info("W:"+taskList.size());
 		if (!taskList.isEmpty()) return taskList.get(0);
 		
 		taskList = getAssignedTasks("_any", taskBlockSize);
+		log.info("A:"+taskList.size());
 		if (!taskList.isEmpty()) {
 			InputTask task = assignTasks(taskList, worker);
 			if (task!=null) return task;
 		}
 
 		taskList = getAssignedTasks("_init", taskBlockSize);
+		log.info("I:"+taskList.size());
 		if (!taskList.isEmpty()) {
 			return buildInputTasks(taskList, worker);
 		} else return null;

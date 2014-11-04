@@ -247,14 +247,14 @@ public class DbSetup extends Composite {
 			initPage();  ///
 			initPage();
 			
-			initPage();  ///
-			initPage();
+//			initPage();  ///
+//			initPage();
 			
-			initPage();  ///
-			initPage();
+//			initPage();  ///
+//			initPage();
 			
-			initPage();  ///
-			initPage();
+//			initPage();  ///
+//			initPage();
 			
 			uiUpdate();
 		}
@@ -275,8 +275,8 @@ public class DbSetup extends Composite {
 	
 	
 	public void attachImage(Source src) {
-//		Path path = Paths.get("C:/projects/ACIP/input_test_sample/tib_test/"+pageIndex+".png");
-		Path path = Paths.get("/home/acip/input_test_sample/tib_test/"+pageIndex+".png");
+		Path path = Paths.get("C:/projects/ACIP/input_test_sample/tib_test/"+pageIndex+".png");
+//		Path path = Paths.get("/home/acip/input_test_sample/tib_test/"+pageIndex+".png");
 		
 		InputStream is = null;
 		try {
