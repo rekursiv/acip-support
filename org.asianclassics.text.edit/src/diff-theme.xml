@@ -11,10 +11,11 @@
    <!--<baseFont family="..." size="13"/>-->
    
    <!--  General editor colors. -->
+   <baseFont family="sans-serif" size="28"/>
    <background color="ffffff"/>
-   <caret color="ff0000"/>
+   <caret color="000000"/>
    <selection fg="default" bg="default"/>
-   <currentLineHighlight color="ffffff" fade="false"/>
+   <currentLineHighlight color="e8f2fe" fade="false"/>
    <marginLine fg="b0b4b9"/>
    <markAllHighlight color="ffc800"/>
    <markOccurrencesHighlight color="d4d4d4" border="false"/>
@@ -28,19 +29,20 @@
    
    <!-- Gutter styling. -->
    <gutterBorder color="dddddd"/>
-   <lineNumbers fg="787878"/>
+   <lineNumbers fg="787878" fontFamily="sans-serif" fontSize="20"/>
    <foldIndicator fg="808080" iconBg="ffffff"/>
    <iconRowHeader activeLineRange="3399ff"/>
    
    <!-- Syntax tokens. -->
    <tokenStyles>
-   
-      <style token="VARIABLE" fg="000000" bg="ff2222"/>		<!-- different -->
-      <style token="SEPARATOR" fg="000000" bg="22ff22"/>	<!-- missing -->
-      <style token="REGEX" fg="000000" bg="ffaa00"/>  		<!-- extra -->
-                     
-   
+
+      <style token="WHITESPACE" fg="000000"/>
       <style token="IDENTIFIER" fg="000000"/>
+      <style token="VARIABLE" fg="000000" bg="ffbb77"/>		<!-- different -->
+      <style token="SEPARATOR" fg="000000" bg="55ff44"/>	<!-- missing -->
+      <style token="REGEX" fg="000000" bg="ff8877"/>  		<!-- extra -->
+
+ 
       <style token="RESERVED_WORD" fg="0000ff" bold="true"/>
       <style token="RESERVED_WORD_2" fg="0000ff" bold="true"/>
       <style token="ANNOTATION" fg="808080"/>
@@ -70,10 +72,6 @@
       <style token="MARKUP_ENTITY_REFERENCE" fg="008000"/>
       <style token="OPERATOR" fg="804040"/>
       <style token="PREPROCESSOR" fg="808080"/>
-
-
-      <style token="WHITESPACE" fg="000000"/>
-      
       <style token="ERROR_IDENTIFIER" fg="000000" bg="ffcccc"/>
       <style token="ERROR_NUMBER_FORMAT" fg="000000" bg="ffcccc"/>
       <style token="ERROR_STRING_DOUBLE" fg="000000" bg="ffcccc"/>

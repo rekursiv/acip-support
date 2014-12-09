@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.ektorp"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.center.input"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseSWT"/>
+	<classpathentry kind="lib" path="C:/projects/eclipse/plugins/org.eclipse.equinox.common_3.6.200.v20130402-1505.jar" sourcepath="C:/projects/eclipse/plugins/org.eclipse.equinox.common_3.6.200.v20130402-1505.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
