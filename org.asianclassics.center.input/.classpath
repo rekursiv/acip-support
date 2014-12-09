@@ -10,10 +10,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/util.logging"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.database"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/slf4j-1.6.2/slf4j-1.6.2/slf4j-api-1.6.2.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.tibetan.edit"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.tibetan.transcoder"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/jgroups-3.1.0.Final.jar" sourcepath="C:/projects/javalib/jgroups-sources.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.ektorp"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseSWT"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.text.edit"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -4,11 +4,11 @@
   "cfgLoadFromFile" : null,
   "logToConsole" : true,
   "logToFile" : false,
-  "showLogView" : false,
+  "showLogView" : true,
   "allowCloseWhileLoggedIn" : true,
   "openMaximized" : false,
   "dbOrgPrefix" : "acip-center-",
   "testDirectLink" : true,
   "autoUpdateCouchViews" : true,
-  "autoLoginId" : null
+  "autoLoginId" : "test"
 }
