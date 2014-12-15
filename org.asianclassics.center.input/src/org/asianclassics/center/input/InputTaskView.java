@@ -108,7 +108,7 @@ public class InputTaskView extends TaskView {
 		txtReference = new Text(this, SWT.BORDER);
 		fd_lblReferenceText.top = new FormAttachment(0, 335);
 		fd_lblReferenceText.bottom = new FormAttachment(0, 350);
-		txtReference.setFont(SWTResourceManager.getFont("Segoe UI", 26, SWT.NORMAL));
+		txtReference.setFont(SWTResourceManager.getFont("Segoe UI", 20, SWT.NORMAL));
 		FormData fd_txtRefTibetan = new FormData();
 		fd_txtRefTibetan.right = new FormAttachment(100, -15);
 		fd_txtRefTibetan.left = new FormAttachment(0, 12);

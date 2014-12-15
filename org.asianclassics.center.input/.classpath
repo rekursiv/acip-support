@@ -14,5 +14,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.ektorp"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseSWT"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.text.edit"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.center.input.db"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -68,7 +68,7 @@ public class SpellCheckParser extends AbstractParser {
 
 		
 	public void loadDict() throws Exception {
-		InputStream is = getClass().getResourceAsStream("/engdict.txt");
+		InputStream is = getClass().getResourceAsStream("/tibdict.txt");
 		if (is==null) {
 			throw new Exception("Resource file not found.");
 		}

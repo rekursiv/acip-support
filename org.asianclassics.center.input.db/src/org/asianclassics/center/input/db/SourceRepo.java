@@ -2,15 +2,11 @@ package org.asianclassics.center.input.db;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.ImageData;
-import org.ektorp.Attachment;
 import org.ektorp.AttachmentInputStream;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.CouchDbRepositorySupport;
-import org.ektorp.support.GenerateView;
 
 public class SourceRepo extends CouchDbRepositorySupport<Source> {
 	

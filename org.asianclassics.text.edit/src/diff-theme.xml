@@ -11,7 +11,7 @@
    <!--<baseFont family="..." size="13"/>-->
    
    <!--  General editor colors. -->
-   <baseFont family="sans-serif" size="28"/>
+   <baseFont family="sans-serif" size="20"/>
    <background color="ffffff"/>
    <caret color="000000"/>
    <selection fg="default" bg="default"/>
