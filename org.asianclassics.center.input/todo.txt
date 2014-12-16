@@ -1,13 +1,25 @@
 
 
+Project Manager:  back-end GUI
 
+Project Dispatch:  automated data shuffler  (RickshawNet version running on portable computer)
+
+?? Project Viewer:  for viewing finished projects
+
+
+"projects" DB 
+ new projects added by "manager", assigned to input center
+ "dispatch" moves projects in and out of input center DBs
+
+use separate DB for each project?? 
+ 
 
 =====
 
-Project
-PageSet
-PageSource
-PageInputTask
+Project - set of pagesets, gets assigned to an input center
+Book - set of pages
+PageSource - holds image
+InputTask - task for one input operator to do once (correction/input)
 
 
 

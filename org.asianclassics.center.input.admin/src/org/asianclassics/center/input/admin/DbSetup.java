@@ -1,4 +1,4 @@
-package org.asianclassics.test.taskdb;
+package org.asianclassics.center.input.admin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
 import org.asianclassics.center.input.db.Source;
 import org.asianclassics.center.input.db.SourceRepo;
-import org.asianclassics.database.CustomCouchDbConnector;
+//import org.asianclassics.database.CustomCouchDbConnector;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -30,6 +30,7 @@ import org.ektorp.CouchDbInstance;
 import org.ektorp.DbPath;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
+import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -37,7 +38,9 @@ import org.eclipse.swt.events.SelectionEvent;
 public class DbSetup extends Composite {
 	
 //	private static final String dbName = "acip-center-input-tasks";
-	private static final String dbName = "acip-center-test-tasks";
+//	private static final String dbName = "acip-center-test-tasks";
+	
+	private static final String dbName = "test";
 	
 	private CouchDbConnector db = null;
 	private CouchDbInstance couch = null;
@@ -56,8 +59,8 @@ public class DbSetup extends Composite {
 	
 	
 
-	public DbSetup(Composite parent, int style) {
-		super(parent, style);
+	public DbSetup(Composite parent) {
+		super(parent, SWT.NONE);
 		
 		table = new Table(this, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		table.setHeaderVisible(true);
@@ -192,7 +195,7 @@ public class DbSetup extends Composite {
 	private void initDb() {
 		HttpClient httpClient = new StdHttpClient.Builder().build();
 		couch = new StdCouchDbInstance(httpClient);
-		db = new CustomCouchDbConnector(dbName, couch);
+		db = new StdCouchDbConnector(dbName, couch);
 	}
 	
 	private void uiUpdate() {
@@ -238,14 +241,19 @@ public class DbSetup extends Composite {
 	}
 	
 	private void setupDb() {
+		
 		pageIndex = 1;
 		if (dbExists && db.getAllDocIds().isEmpty()) {
 			taskRepo = new InputTaskRepo(db);
 			taskRepo.initStandardDesignDocument();
 			srcRepo = new SourceRepo(db);
+	
+			Source src = new Source();
+			src.setId("test");
+			srcRepo.add(src);
 			
-			initPage();  ///
-			initPage();
+//			initPage();  ///
+//			initPage();
 			
 //			initPage();  ///
 //			initPage();
