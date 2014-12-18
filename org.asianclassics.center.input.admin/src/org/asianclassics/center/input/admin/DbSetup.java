@@ -38,9 +38,9 @@ import org.eclipse.swt.events.SelectionEvent;
 public class DbSetup extends Composite {
 	
 //	private static final String dbName = "acip-center-input-tasks";
-//	private static final String dbName = "acip-center-test-tasks";
+	private static final String dbName = "acip-center-test-tasks";
 	
-	private static final String dbName = "test";
+//	private static final String dbName = "test";
 	
 	private CouchDbConnector db = null;
 	private CouchDbInstance couch = null;
@@ -248,11 +248,7 @@ public class DbSetup extends Composite {
 			taskRepo.initStandardDesignDocument();
 			srcRepo = new SourceRepo(db);
 	
-			Source src = new Source();
-			src.setId("test");
-			srcRepo.add(src);
-			
-//			initPage();  ///
+			initPage();  ///
 //			initPage();
 			
 //			initPage();  ///
@@ -270,13 +266,14 @@ public class DbSetup extends Composite {
 	
 	public void initPage() {
 		Source src = new Source();
-//		s.setText(text);
 		src.setPageIndex(pageIndex);
+		src.setDebugId();
 		srcRepo.add(src);
 		attachImage(src);
 		InputTask it = new InputTask();
 		it.linkWithSource(src);
 		it.setActive(true);
+		it.setDebugId();
 		taskRepo.add(it);
 		++pageIndex;
 	}

@@ -1,9 +1,12 @@
 package org.asianclassics.center.input.db;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-//import org.codehaus.jackson.annotate.JsonTypeInfo;
+import java.util.Date;
+
+
 import org.ektorp.support.Entity;
 import org.ektorp.support.TypeDiscriminator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
 //@TypeDiscriminator("doc.type === 'InputTask'")
@@ -35,6 +38,11 @@ public class InputTask extends Entity {
 	private String dateTimeFinished;
 	
 	
+	@TypeDiscriminator
+	public String getType() {
+		return type;
+	}
+	
 	@JsonIgnore
 	public void linkWithSource(Source source) {
 		sourceId=source.getId();
@@ -56,10 +64,13 @@ public class InputTask extends Entity {
 		taskPriority=task.getTaskPriority()+1;
 	}
 	
-	@TypeDiscriminator
-	public String getType() {
-		return type;
+	@JsonIgnore
+	public void setDebugId() {
+		String time = Long.toHexString(new Date().getTime());
+		setId(type+"_"+pageIndex+"_"+time);  //  TODO:  project??
 	}
+	
+
 	
 	public boolean isActive() {
 		return isActive;

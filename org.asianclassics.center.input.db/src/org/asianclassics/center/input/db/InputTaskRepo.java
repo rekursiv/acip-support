@@ -4,13 +4,10 @@ package org.asianclassics.center.input.db;
 
 import java.util.List;
 
-import org.asianclassics.database.DateTimeStamp;
-import org.asianclassics.database.Id;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
 import org.ektorp.support.CouchDbRepositorySupport;
-import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 
 public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
@@ -97,12 +94,14 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 
 		input_me.copySourceInfo(task);
 		input_me.setWorker(worker);
-		input_me.setId(Id.gen());
+//		input_me.setId(Id.gen());
+		input_me.setDebugId();
 		input_me.setDateTimeAssigned(DateTimeStamp.gen());
 	
 		input_any.copySourceInfo(task);
 		input_any.setWorker("_any");
-		input_any.setId(Id.gen());
+//		input_any.setId(Id.gen());
+		input_any.setDebugId();
 		input_any.setDateTimeAssigned(DateTimeStamp.gen());
 		
 		input_me.setPartnerId(input_any.getId());
@@ -146,15 +145,19 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 		forPartnerToDo.setTaskToFixId(partner.getId());
 		forPartnerToDo.setDateTimeAssigned(DateTimeStamp.gen());
 		forPartnerToDo.setPartnerId(me.getId());
+		forPartnerToDo.setDebugId();
 		add(forPartnerToDo);
 	}
 	
 	
 	
-	
-	
-	
-	
+/*	
+	@Override
+	public void add(InputTask entity) {       //   DEBUG IDs
+		entity.setDebugId();
+		super.add(entity);
+	}
+	*/
 	
 	
 	

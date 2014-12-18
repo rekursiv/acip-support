@@ -10,7 +10,6 @@ import org.asianclassics.center.CenterConfig;
 import org.asianclassics.center.event.LinkReadyEvent;
 import org.asianclassics.center.event.LoginMessageEvent;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
-import org.asianclassics.database.CustomCouchDbConnector;
 import org.eclipse.swt.widgets.Display;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
@@ -289,7 +288,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	}
 	
 	public CouchDbConnector getDb(String suffix) {
-		return new CustomCouchDbConnector(dbCenterPrefix+suffix, getServerLink());   ///  FIXME:  handle re-assignment of DB
+		return new StdCouchDbConnector(dbCenterPrefix+suffix, getServerLink());   ///  FIXME:  handle re-assignment of DB
 	}
 	
 	public CouchDbInstance getServerLink() {

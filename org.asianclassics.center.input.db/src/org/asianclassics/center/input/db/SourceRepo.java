@@ -26,6 +26,10 @@ public class SourceRepo extends CouchDbRepositorySupport<Source> {
         }
 	}
 
+//	public void addDebug(Source entity) {
+//		entity.setId(entity.getType()+entity.get);
+//	}
+	
 	/*
 	public String getSingleAttachmentId(Source src) {
 		Map<String, Attachment> attachmentMap = src.getAttachments();

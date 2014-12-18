@@ -1,8 +1,12 @@
 package org.asianclassics.center.input.db;
 
-//import org.codehaus.jackson.annotate.JsonTypeInfo;
+
+import java.util.Date;
+
 import org.ektorp.support.Entity;
 import org.ektorp.support.TypeDiscriminator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 //@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
@@ -21,6 +25,12 @@ public class Source extends Entity {
 	@TypeDiscriminator
 	public String getType() {
 		return type;
+	}
+	
+	@JsonIgnore
+	public void setDebugId() {
+		String time = Long.toHexString(new Date().getTime());
+		setId(type+"_"+pageIndex+"_"+time);
 	}
 	
 	public String getText() {
@@ -54,6 +64,8 @@ public class Source extends Entity {
 	public void setPageIndex(int pageIndex) {
 		this.pageIndex = pageIndex;
 	}
+
+
 
 
 

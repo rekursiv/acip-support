@@ -1,4 +1,6 @@
 
+remove "database" (sequential UUIDs now built into CouchDB)
+
 
 Project Manager:  back-end GUI
 

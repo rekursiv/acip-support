@@ -4,18 +4,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.asianclassics.center.event.LoginSuccessEvent;
-import org.asianclassics.center.event.StatusPanelUpdateEvent;
+import org.asianclassics.center.input.db.DateTimeStamp;
 import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
-import org.asianclassics.center.input.db.Source;
 import org.asianclassics.center.input.db.SourceRepo;
 import org.asianclassics.center.link.LinkManager;
-import org.asianclassics.database.DateTimeStamp;
-
-
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.widgets.Display;
 import org.ektorp.CouchDbConnector;
 
 import com.google.common.eventbus.EventBus;
