@@ -3,7 +3,6 @@ package org.asianclassics.center.catalog.scratch;
 import java.util.List;
 
 import org.asianclassics.center.catalog.entry.model.EntryModel;
-import org.asianclassics.database.CustomCouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.DbPath;
 import org.ektorp.http.HttpClient;
@@ -23,7 +22,7 @@ public class LegacyDbConverter {
 	private static final String dbOutputName = "acip-center-nlm_converted-catalog";   ////  CAREFUL - this entire DB will be DELETED and REPLACED
 	
 	private static LegacyDbConverter instance;
-	private CustomCouchDbConnector dbInput;
+	private StdCouchDbConnector dbInput;
 	private StdCouchDbConnector dbOutput;
 	private EntryModel entry;
 	private ObjectMapper mapper;
@@ -56,10 +55,10 @@ public class LegacyDbConverter {
 		
 		HttpClient httpClient = new StdHttpClient.Builder().build();
 		CouchDbInstance couch = new StdCouchDbInstance(httpClient);
-		dbInput = new CustomCouchDbConnector("acip-nlm-catalog", couch);
+		dbInput = new StdCouchDbConnector("acip-nlm-catalog", couch);
 		
 		if (couch.checkIfDbExists(new DbPath(dbOutputName))) couch.deleteDatabase(dbOutputName);
-		dbOutput = new CustomCouchDbConnector(dbOutputName, couch);
+		dbOutput = new StdCouchDbConnector(dbOutputName, couch);
 		dbOutput.createDatabaseIfNotExists();
 		
 		List<String> ids = dbInput.getAllDocIds();	

@@ -2,7 +2,6 @@ package org.asianclassics.center.catalog.scratch;
 
 import java.util.List;
 
-import org.asianclassics.database.CustomCouchDbConnector;
 import org.ektorp.AttachmentInputStream;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.DbPath;
@@ -21,7 +20,7 @@ public class LegacyStampDbConverter {
 	private static final String dbOutputName = "acip-center-nlm_converted-stamps";   ////  CAREFUL - this entire DB will be DELETED and REPLACED
 	
 	private static LegacyStampDbConverter instance;
-	private CustomCouchDbConnector dbInput;
+	private StdCouchDbConnector dbInput;
 	private StdCouchDbConnector dbOutput;
 	private ObjectMapper mapper;
 	private JsonNode docInput;
@@ -53,10 +52,10 @@ public class LegacyStampDbConverter {
 		
 		HttpClient httpClient = new StdHttpClient.Builder().build();
 		CouchDbInstance couch = new StdCouchDbInstance(httpClient);
-		dbInput = new CustomCouchDbConnector("acip-nlm-catalog-stamps", couch);
+		dbInput = new StdCouchDbConnector("acip-nlm-catalog-stamps", couch);
 		
 		if (couch.checkIfDbExists(new DbPath(dbOutputName))) couch.deleteDatabase(dbOutputName);
-		dbOutput = new CustomCouchDbConnector(dbOutputName, couch);
+		dbOutput = new StdCouchDbConnector(dbOutputName, couch);
 		dbOutput.createDatabaseIfNotExists();
 		
 		List<String> ids = dbInput.getAllDocIds();	
