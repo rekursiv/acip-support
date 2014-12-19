@@ -2,6 +2,7 @@ package org.asianclassics.center.input.admin;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -144,7 +145,14 @@ public class DbSetup extends Composite {
 		initTable();
 		
 		uiUpdate();
+		
+		test();
 
+	}
+
+	private void test() {
+//		addPagesWithRef(4);
+//		System.out.println("**"+sb.toString());
 	}
 
 	@Override
@@ -248,8 +256,9 @@ public class DbSetup extends Composite {
 			taskRepo.initStandardDesignDocument();
 			srcRepo = new SourceRepo(db);
 	
-			initPage();  ///
-//			initPage();
+			addPagesWithRef(4);
+//			initPageWithRef();  ///
+//			initPageWithRef();
 			
 //			initPage();  ///
 //			initPage();
@@ -263,6 +272,93 @@ public class DbSetup extends Composite {
 			uiUpdate();
 		}
 	}
+	
+	private void addPagesWithRef(int stopAtPageIndex) {
+		Path textPath = Paths.get("C:/projects/ACIP/tendg/text_raw/080_KA.txt");
+
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			for (String line : Files.readAllLines(textPath, StandardCharsets.UTF_8)) {
+				line = line.replace("|", "");
+//				System.out.println("'"+line+"'");
+//				if (line.matches("\\s$")) 
+				if (line.startsWith("@")) {
+					if (pageIndex>stopAtPageIndex) break;
+					line = line.replaceFirst("@\\d[AB] ", "");
+					if (sb.length()>0) {
+						initPageWithRef(sb.toString());
+						
+						
+//						Source src = new Source();
+//						src.setPageIndex(pageIndex);
+//						src.setDebugId();
+//						srcRepo.add(src);
+//						attachImage(src);
+						
+						
+						
+						
+//						System.out.print(String.format("%04d", pageIndex)+"|"+sb.toString());
+						
+						
+						sb.setLength(0);
+						++pageIndex;
+
+					}
+				}
+				if (line.length()>0) {
+					sb.append(line);
+					sb.append(" ");
+				} else {
+					sb.append("\n");
+
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void initPageWithRef(String text) {
+		Source src = new Source();
+		src.setPageIndex(pageIndex);
+		src.setDebugId();
+		srcRepo.add(src);
+		attachImage(src);
+		
+		
+		InputTask it_a = new InputTask();
+		it_a.linkWithSource(src);
+		it_a.setActive(true);
+		it_a.setWorker("A");
+		it_a.setDebugId();
+		
+		InputTask it_b = new InputTask();
+		it_b.linkWithSource(src);
+		it_b.setActive(false);
+		it_b.setWorker("B");
+		it_b.setProduct(text);
+		
+		try {
+			Thread.sleep(2);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		it_b.setDebugId();
+		
+		it_a.setPartnerId(it_b.getId());
+		it_b.setPartnerId(it_a.getId());
+		it_a.setTaskToFixId(it_a.getId());
+
+		taskRepo.add(it_a);
+		taskRepo.add(it_b);
+
+//		taskRepo.update(it_b);
+//		++pageIndex;
+	}
+	
+	
 	
 	public void initPage() {
 		Source src = new Source();
@@ -280,7 +376,8 @@ public class DbSetup extends Composite {
 	
 	
 	public void attachImage(Source src) {
-		Path path = Paths.get("C:/projects/ACIP/input_test_sample/tib_test/"+pageIndex+".png");
+		Path path = Paths.get("C:/projects/ACIP/scans/acip/t_sde_dge/080/acip-t_sde_dge-080-v-"+String.format("%04d", pageIndex)+".png");
+//		Path path = Paths.get("C:/projects/ACIP/input_test_sample/tib_test/"+pageIndex+".png");
 //		Path path = Paths.get("/home/acip/input_test_sample/tib_test/"+pageIndex+".png");
 		
 		InputStream is = null;
