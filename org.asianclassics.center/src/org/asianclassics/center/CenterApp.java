@@ -26,7 +26,7 @@ public class CenterApp {
 		cs.setText("ACIP Input Center System Test");
 		cs.setLayout(new FillLayout(SWT.HORIZONTAL));		
 		
-		CenterPanel cp = new CenterPanel(cs, SWT.NONE, injector);
+		CenterPanel cp = new CenterPanel(cs, injector);
 		
 		TaskView taskView = new DummyTaskView(cp.getMainStackView(), SWT.NONE, injector);
 		cp.getMainStackView().setTaskView(taskView);

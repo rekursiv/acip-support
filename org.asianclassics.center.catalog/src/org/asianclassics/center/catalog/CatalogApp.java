@@ -31,7 +31,7 @@ public class CatalogApp {
 		
 		Injector injector = Guice.createInjector(new CatalogModule());
 		
-		CenterPanel cp = new CenterPanel(cs, SWT.NONE, injector);
+		CenterPanel cp = new CenterPanel(cs, injector);
 		TaskView taskView = new CatalogTaskView(cp.getMainStackView(), SWT.NONE, injector);
 		cp.getMainStackView().setTaskView(taskView);
 

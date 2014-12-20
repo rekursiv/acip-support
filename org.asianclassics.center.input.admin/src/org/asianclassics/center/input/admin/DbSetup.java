@@ -256,7 +256,7 @@ public class DbSetup extends Composite {
 			taskRepo.initStandardDesignDocument();
 			srcRepo = new SourceRepo(db);
 	
-			addPagesWithRef(4);
+			addPagesWithRef(5);
 //			initPageWithRef();  ///
 //			initPageWithRef();
 			

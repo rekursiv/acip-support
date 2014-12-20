@@ -24,16 +24,16 @@ public class InputApp {
 	
 	protected void init() {
 		CenterShell cs = new CenterShell();
-		cs.setSize(800, 800);
+		cs.setSize(2000, 1000);
 		cs.setMinimumSize(400, 700);
 		cs.setText("ACIP Input Center Pecha Entry");
 		cs.setLayout(new FillLayout(SWT.HORIZONTAL));
 	
 		Injector injector = Guice.createInjector(new CenterModule());
 	
-		CenterPanel cp = new CenterPanel(cs, SWT.NONE, injector);
+		CenterPanel cp = new CenterPanel(cs, injector);
 	
-		TaskView taskView = new InputTaskView(cp.getMainStackView(), SWT.NONE, injector);
+		TaskView taskView = new InputTaskView(cp.getMainStackView(), injector);
 		cp.getMainStackView().setTaskView(taskView);
 	
 		cs.init(injector);

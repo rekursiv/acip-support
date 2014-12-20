@@ -59,7 +59,7 @@ public class AcipEditor extends Composite {
 	}
 
 	public void setWorkingText(String text) {
-		System.out.println("setWorkingText:  "+text );
+//		System.out.println("setWorkingText:  "+text );
 
 		try {
 			wrkDoc.remove(0, wrkDoc.getLength());
@@ -80,7 +80,7 @@ public class AcipEditor extends Composite {
 	}
 	
 	public void setReferenceText(String text) {
-		System.out.println("setReferenceText:  "+text );
+//		System.out.println("setReferenceText:  "+text );
 
 		try {
 			refDoc.remove(0, refDoc.getLength());

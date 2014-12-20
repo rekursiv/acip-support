@@ -20,8 +20,8 @@ public class CenterPanel extends Composite {
 
 	private Composite statusPanel;
 
-	public CenterPanel(Composite parent, int style, Injector injector) {
-		super(parent, style);
+	public CenterPanel(Composite parent, Injector injector) {
+		super(parent, SWT.NONE);
 		
 		mainStackView = new MainStackView(this, SWT.NONE, injector);
 

@@ -91,9 +91,9 @@ public class InputTaskController {
 			taskDb.update(curTask);
 		}
 		
-		log.info("taskType: "+taskType);
-		log.info("workingText: "+workingTxt);
-		log.info("referenceTxt: "+referenceTxt);
+//		log.info("taskType: "+taskType);
+//		log.info("workingText: "+workingTxt);
+//		log.info("referenceTxt: "+referenceTxt);
 
 		StringBuilder statMsg = new StringBuilder();
 		statMsg.append(taskType);
@@ -125,6 +125,14 @@ public class InputTaskController {
 			curTask=null;
 		}
 		getTask();
+	}
+
+	public void save(String product) {
+		if (curTask!=null) {
+			curTask.setProduct(product);
+			taskRepo.update(curTask);
+		}
+		
 	}
 	
 	

@@ -92,7 +92,7 @@ Diff(EQUAL,"rs of perception")
 		curTokenHint = Hint.OK;
 		curLineSegment = lineSegment;
 
-		System.out.println(lineNum+" '"+curLineSegment+"' "+startOffset+":"+curLineSegment.offset);
+//		System.out.println(lineNum+" '"+curLineSegment+"' "+startOffset+":"+curLineSegment.offset);
 		
 		resetTokenList();
 		
@@ -173,7 +173,7 @@ Diff(EQUAL,"rs of perception")
 			} else if (curOperation==Operation.INSERT) {
 				insertDiff = diff;
 			}
-			System.out.println(curTokenStartPos+":"+diff);
+//			System.out.println(curTokenStartPos+":"+diff);
 		}
 		
 		curTokenHint = Hint.OK;
@@ -188,7 +188,7 @@ Diff(EQUAL,"rs of perception")
 	
 	public void addToken(int end, String debugTag) {
 		if (curTokenStartPos<0||end<0||curTokenStartPos>end||end>=curLineSegment.count) {
-			System.out.println(">>>  "+debugTag+":"+curTokenStartPos+":"+end+":"+curLineSegment.count);
+//			System.out.println(">>>  "+debugTag+":"+curTokenStartPos+":"+end+":"+curLineSegment.count);
 			return;
 		}
 		
@@ -197,7 +197,7 @@ Diff(EQUAL,"rs of perception")
 		else if (curTokenHint==Hint.MISSING) tokenType = Token.SEPARATOR;
 		else if (curTokenHint==Hint.EXTRA) tokenType = Token.REGEX;
 	
-		System.out.println("  ["+debugTag+":"+curTokenStartPos+":"+end+"]");
+//		System.out.println("  ["+debugTag+":"+curTokenStartPos+":"+end+"]");
 //		debugToken(end, debugTag);
 
 		addToken(curLineSegment, curTokenStartPos+curLineSegment.offset, end+curLineSegment.offset, tokenType, curTokenStartPos+curStartOffset);
@@ -221,7 +221,7 @@ Diff(EQUAL,"rs of perception")
 	
 	public void _addToken(Segment segment, int start, int end, Hint hint, int startOffset, String debugTag) {
 		if (start<0||end<0||start>end||end>=segment.count) {
-			System.out.println(">>>  "+debugTag+":"+start+":"+end+":"+segment.count);
+//			System.out.println(">>>  "+debugTag+":"+start+":"+end+":"+segment.count);
 			return;
 		}
 		
@@ -236,11 +236,11 @@ Diff(EQUAL,"rs of perception")
 		try {
 			s = segment.toString().substring(start, end+1);
 		} catch (StringIndexOutOfBoundsException e) {
-			System.err.print("#");
-			System.out.println("#  "+debugTag+":"+start+":"+end+":"+segment.count);
+	//		System.err.print("#");
+	//		System.out.println("#  "+debugTag+":"+start+":"+end+":"+segment.count);
 			return;
 		}
-		System.out.println("  ["+debugTag+":"+start+":"+end+":'"+s+"']");
+//		System.out.println("  ["+debugTag+":"+start+":"+end+":'"+s+"']");
 	
 	
 		
