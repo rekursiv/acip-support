@@ -76,6 +76,8 @@ public class InputTaskView extends TaskView {
 		FormData fd_composite = new FormData();
 		editor.setLayoutData(fd_composite);
 		
+
+		
 		pnlScan = new ScanPanel(this, injector);
 		fd_composite.left = new FormAttachment(pnlScan, 0, SWT.LEFT);
 		fd_composite.right = new FormAttachment(pnlScan, 0, SWT.RIGHT);
@@ -118,6 +120,7 @@ public class InputTaskView extends TaskView {
 		this.eb = eb;
 		this.itCon = itCon;
 		itCon.setView(this);
+		editor.setEventBus(eb);
 
 /*
 		pnlScan.addListener(SWT.Resize,  new Listener () {

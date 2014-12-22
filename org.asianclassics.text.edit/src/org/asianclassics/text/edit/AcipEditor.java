@@ -1,30 +1,39 @@
 package org.asianclassics.text.edit;
 
 import java.awt.Frame;
+import java.awt.Point;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.swing.JApplet;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
+
+import com.google.common.eventbus.EventBus;
 
 
 public class AcipEditor extends Composite {
 
 	
 	private RSyntaxTextArea textArea;
+	private RTextScrollPane scrollPane;
 	private PlainDocument refDoc;
 	private DiffSyntaxDocument wrkDoc;
+	private EventBus eb;
+
 
 	public AcipEditor(Composite parent) {
 		super(parent, SWT.EMBEDDED|SWT.NO_BACKGROUND);
@@ -48,15 +57,35 @@ public class AcipEditor extends Composite {
 		
 		loadTheme("diff-theme");
 		
-		RTextScrollPane sp = new RTextScrollPane(textArea);
+		scrollPane = new RTextScrollPane(textArea);
+		
+		scrollPane.getViewport().addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent evt) {
+				postScrollEventAsync();
+			}
+		});
     
-	    applet.add(sp);
+	    applet.add(scrollPane);
+	}
+	
+	public void setEventBus(EventBus eb) {
+		this.eb = eb;
 	}
 
-	@Override
-	protected void checkSubclass() {
-		// Disable the check that prevents subclassing of SWT components
+	protected void postScrollEventAsync() {
+		if (eb!=null) {
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					Point pos = scrollPane.getViewport().getViewPosition();
+//					System.out.println(pos);
+					eb.post(new AcipEditorScrollEvent(pos.x, pos.y));
+				}
+			});
+		}
 	}
+	
 
 	public void setWorkingText(String text) {
 //		System.out.println("setWorkingText:  "+text );
@@ -120,6 +149,12 @@ public class AcipEditor extends Composite {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
 	}
 
 }

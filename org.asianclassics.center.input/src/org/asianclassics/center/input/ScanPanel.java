@@ -1,5 +1,8 @@
 package org.asianclassics.center.input;
 
+import java.util.logging.Logger;
+
+import org.asianclassics.text.edit.AcipEditorScrollEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.GC;
@@ -9,14 +12,21 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
+
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 
 
 public class ScanPanel extends ScrolledComposite {
 	
 	private Image scan = null;
 	private Label lblImage;
+	private Logger log;
 	
 	public ScanPanel(Composite parent, Injector injector) {
 
@@ -27,11 +37,32 @@ public class ScanPanel extends ScrolledComposite {
 		setExpandVertical(true);
 
 		lblImage = new Label(this, SWT.NONE);
+		lblImage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+				test();
+			}
+		});
 		setContent(lblImage);
-
 		
+		if (injector!=null) injector.injectMembers(this);
+	}
+
+	protected void test() {
+		this.setOrigin(100, 100);
+	}
+
+	@Inject
+	public void inject(Logger logger) {
+		this.log = logger;
 	}
 	
+	
+	@Subscribe
+	public void onEditorScroll(AcipEditorScrollEvent evt) {
+//		log.info("");
+		setOrigin(evt.getX(), evt.getY());
+	}
 	
 	public void setImage(ImageData imgData) {
 		if (imgData==null) scan = null;
