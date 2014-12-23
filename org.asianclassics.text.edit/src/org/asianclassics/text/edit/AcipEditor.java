@@ -36,6 +36,9 @@ public class AcipEditor extends Composite {
 	private DiffSyntaxDocument wrkDoc;
 	private EventBus eb;
 
+	public enum ScrollMode { DEFAULT, CENTER, CENTER_ON_SPACE };
+	private ScrollMode scrollMode = ScrollMode.CENTER;
+
 
 	public AcipEditor(Composite parent) {
 		super(parent, SWT.EMBEDDED|SWT.NO_BACKGROUND);
@@ -69,6 +72,7 @@ public class AcipEditor extends Composite {
 		
 		scrollPane = new RTextScrollPane(textArea);
 		
+
 		scrollPane.getViewport().addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent evt) {
@@ -78,14 +82,37 @@ public class AcipEditor extends Composite {
     
 	    applet.add(scrollPane);
 	}
+
 	
+	
+//	System.out.println(textArea.getCaret().getMagicCaretPosition().x+":"+textArea.getPreferredSize().width+":"+textArea.getVisibleRect().width);
 	protected void postCaretMoveEventAsync() {
-		Point pos = textArea.getCaret().getMagicCaretPosition();
-		if (pos!=null) {
+		
+		if (scrollMode!=ScrollMode.DEFAULT) {
+			Point caretPixelPos = textArea.getCaret().getMagicCaretPosition();
+			if (caretPixelPos!=null) {
+				try {
+					int leftOfCaretPos = textArea.getCaretPosition()-1;
+					if (leftOfCaretPos>=0) {
+						if (scrollMode==ScrollMode.CENTER || wrkDoc.getText(textArea.getCaretPosition()-1, 1).equals(" ")) {
+							Point scrollPos = scrollPane.getViewport().getViewPosition();
+							scrollPos.x = caretPixelPos.x - (textArea.getVisibleRect().width / 2);
+							if (scrollPos.x<0) scrollPos.x=0;
+							scrollPane.getViewport().setViewPosition(scrollPos);
+							
+						}
+					}
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		if (eb!=null) {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					eb.post(new AcipEditorCaretMoveEvent(pos.x, pos.y));
+					eb.post(new AcipEditorCaretMoveEvent(textArea.getCaretLineNumber(), textArea.getCaretOffsetFromLineStart()));
 				}
 			});
 		}

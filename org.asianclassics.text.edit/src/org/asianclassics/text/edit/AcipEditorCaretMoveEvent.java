@@ -2,20 +2,20 @@ package org.asianclassics.text.edit;
 
 public class AcipEditorCaretMoveEvent {
 	
-	private int pos_x;
-	private int pos_y;
+	private int line;
+	private int offset;
 	
-	public AcipEditorCaretMoveEvent(int pos_x, int pos_y) {
-		this.pos_x = pos_x;
-		this.pos_y = pos_y;
+	public AcipEditorCaretMoveEvent(int line, int offset) {
+		this.line = line;
+		this.offset = offset;
 	}
 	
-	public int getX() {
-		return pos_x;
+	public int getLine() {
+		return line;
 	}
 	
-	public int getY() {
-		return pos_y;
+	public int getOffset() {
+		return offset;
 	}
 	
 

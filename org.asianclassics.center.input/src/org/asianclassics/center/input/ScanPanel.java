@@ -28,6 +28,13 @@ public class ScanPanel extends ScrolledComposite {
 	private Image scan = null;
 	private Label lblImage;
 	private Logger log;
+	private float zoomScaleFactor = 1.0f;
+	private int scaledWidth = 0;
+	private int scaledHeight = 0;
+	
+	public enum ScrollLinkMode {OFF, SYNC, CARET };
+	private ScrollLinkMode scrollLinkMode = ScrollLinkMode.SYNC;
+	
 	
 	public ScanPanel(Composite parent, Injector injector) {
 
@@ -61,37 +68,45 @@ public class ScanPanel extends ScrolledComposite {
 	
 	@Subscribe
 	public void onEditorScroll(AcipEditorScrollEvent evt) {
-//		log.info("");
-		setOrigin(evt.getX(), evt.getY());
+		if (scrollLinkMode==ScrollLinkMode.SYNC) {
+			int x = (int)(evt.getX()*3*zoomScaleFactor);   // TODO:  test
+			int y = (int)(evt.getY()*3*zoomScaleFactor); 
+			setOrigin(x, y);
+		}
 	}
 	
 	@Subscribe
 	public void onEditorCaretMove(AcipEditorCaretMoveEvent evt) {
-//		log.info(""+evt.getX());
-		setOrigin(evt.getX(), evt.getY());
+		if (scrollLinkMode==ScrollLinkMode.CARET) {
+			int widthOutsideView = scaledWidth-getSize().x;
+			int heightOutsideView = scaledHeight-getSize().y;
+			int avgCharWidth = widthOutsideView/200;
+			int avgCharHeight = heightOutsideView/5;
+			setOrigin(evt.getOffset()*avgCharWidth, evt.getLine()*avgCharHeight);
+		}
 	}
 	
 	@Subscribe
 	public void onScale(ScanScaleEvent evt) {
-		setImageScale((float)evt.getScale()/100.0f);
-		setMinSize(lblImage.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		zoomScaleFactor=(float)evt.getScale()/100.0f;
+		setImageScale();
 	}
 	
 	public void setImage(ImageData imgData) {
 		if (imgData==null) scan = null;
 		else scan = new Image(Display.getDefault(), imgData);
-		setImageScale(1);
-		setMinSize(lblImage.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		setImageScale();
 	}
 	
 	
-	private void setImageScale(float scale) {
+	private void setImageScale() {
 		if (scan==null) {
 			lblImage.setImage(null);
 		} else {
-			int width = (int)((float)scan.getImageData().width*scale);
-			int height = (int)((float)scan.getImageData().height*scale);
-			lblImage.setImage(resizeImage(scan, width, height));
+			scaledWidth = (int)((float)scan.getImageData().width*zoomScaleFactor);
+			scaledHeight = (int)((float)scan.getImageData().height*zoomScaleFactor);
+			lblImage.setImage(resizeImage(scan, scaledWidth, scaledHeight));
+			setMinSize(lblImage.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		}
 	}
 	

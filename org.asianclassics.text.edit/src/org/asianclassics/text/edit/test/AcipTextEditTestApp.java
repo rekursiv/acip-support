@@ -57,10 +57,11 @@ public class AcipTextEditTestApp {
 	
 	protected void addTestText() {
 //		String wrkTxt = "If the doors of perception were cleansed\nevery thing would appear to man as it is, infinite.\nFor man has closed himself up,\ntill he sees all things thro'\nnarow chinks of his cavern.";
-//		String refTxt = wrkTxt;
+		String wrkTxt = "If the doors of perception were cleansed every thing would appear to man as it is, infinite.\nFor man has closed himself up, till he sees all things thro' narow chinks of his cavern.";
+		String refTxt = wrkTxt;
 //		String refTxt = "the doors of perception";
-		String refTxt = "line one\nline two\nline three";
-		String wrkTxt = "lineone\nlinne twoextra\nlinf zzree";
+//		String refTxt = "line one\nline two\nline three";
+//		String wrkTxt = "lineone\nlinne twoextra\nlinf zzree";
 
 		editor.setReferenceText(refTxt);
 		editor.setWorkingText(wrkTxt);
