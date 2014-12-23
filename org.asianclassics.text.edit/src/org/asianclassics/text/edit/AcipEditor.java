@@ -8,6 +8,8 @@ import java.io.InputStream;
 import javax.swing.JApplet;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
@@ -57,6 +59,14 @@ public class AcipEditor extends Composite {
 		
 		loadTheme("diff-theme");
 		
+		
+		textArea.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent arg0) {
+				postCaretMoveEventAsync();
+			}
+		});
+		
 		scrollPane = new RTextScrollPane(textArea);
 		
 		scrollPane.getViewport().addChangeListener(new ChangeListener() {
@@ -69,11 +79,25 @@ public class AcipEditor extends Composite {
 	    applet.add(scrollPane);
 	}
 	
+	protected void postCaretMoveEventAsync() {
+		Point pos = textArea.getCaret().getMagicCaretPosition();
+		if (pos!=null) {
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					eb.post(new AcipEditorCaretMoveEvent(pos.x, pos.y));
+				}
+			});
+		}
+	}
+
 	public void setEventBus(EventBus eb) {
 		this.eb = eb;
 	}
 
 	protected void postScrollEventAsync() {
+//		System.out.println(textArea.getPreferredSize());
+
 		if (eb!=null) {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override

@@ -2,6 +2,7 @@ package org.asianclassics.center.input;
 
 import java.util.logging.Logger;
 
+import org.asianclassics.text.edit.AcipEditorCaretMoveEvent;
 import org.asianclassics.text.edit.AcipEditorScrollEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -64,12 +65,34 @@ public class ScanPanel extends ScrolledComposite {
 		setOrigin(evt.getX(), evt.getY());
 	}
 	
+	@Subscribe
+	public void onEditorCaretMove(AcipEditorCaretMoveEvent evt) {
+//		log.info(""+evt.getX());
+		setOrigin(evt.getX(), evt.getY());
+	}
+	
+	@Subscribe
+	public void onScale(ScanScaleEvent evt) {
+		setImageScale((float)evt.getScale()/100.0f);
+		setMinSize(lblImage.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	}
+	
 	public void setImage(ImageData imgData) {
 		if (imgData==null) scan = null;
 		else scan = new Image(Display.getDefault(), imgData);
-
-		setImageSize(3000);
+		setImageScale(1);
 		setMinSize(lblImage.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	}
+	
+	
+	private void setImageScale(float scale) {
+		if (scan==null) {
+			lblImage.setImage(null);
+		} else {
+			int width = (int)((float)scan.getImageData().width*scale);
+			int height = (int)((float)scan.getImageData().height*scale);
+			lblImage.setImage(resizeImage(scan, width, height));
+		}
 	}
 	
 	

@@ -26,6 +26,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.eclipse.swt.widgets.Scale;
 
 public class InputTaskView extends TaskView {
 	private Button btnLogout;
@@ -38,6 +39,9 @@ public class InputTaskView extends TaskView {
 	private Logger log;
 
 	protected Button btnSave;
+	protected Scale scale;
+	protected Label lblZoom;
+	protected Label lblZoomTitle;
 
 	
 	public InputTaskView(Composite parent, Injector injector) {
@@ -111,12 +115,51 @@ public class InputTaskView extends TaskView {
 		btnSave.setLayoutData(fd_btnSave);
 		btnSave.setText("Save");
 		
+		scale = new Scale(this, SWT.NONE);
+		scale.setMaximum(200);
+		scale.setMinimum(20);
+		scale.setSelection(100);
+		scale.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				onZoom();
+			}
+		});
+		FormData fd_scale = new FormData();
+		fd_scale.right = new FormAttachment(0, 735);
+		fd_scale.top = new FormAttachment(0, 12);
+		fd_scale.left = new FormAttachment(0, 430);
+		scale.setLayoutData(fd_scale);
+		
+		lblZoom = new Label(this, SWT.NONE);
+		FormData fd_lblZoom = new FormData();
+		fd_lblZoom.top = new FormAttachment(lblStatus, -21, SWT.TOP);
+		fd_lblZoom.bottom = new FormAttachment(lblStatus, -6);
+		fd_lblZoom.left = new FormAttachment(0, 750);
+		lblZoom.setLayoutData(fd_lblZoom);
+		lblZoom.setText("100%");
+		
+		lblZoomTitle = new Label(this, SWT.NONE);
+		FormData fd_lblZoomTitle = new FormData();
+		fd_lblZoomTitle.top = new FormAttachment(btnSave, -15);
+		fd_lblZoomTitle.bottom = new FormAttachment(btnSave, 0, SWT.BOTTOM);
+		fd_lblZoomTitle.right = new FormAttachment(0, 410);
+		fd_lblZoomTitle.left = new FormAttachment(0, 378);
+		lblZoomTitle.setLayoutData(fd_lblZoomTitle);
+		lblZoomTitle.setText("Zoom");
+		
 		if (injector!=null) injector.injectMembers(this);
 	}
 
+	protected void onZoom() {
+		lblZoom.setText(scale.getSelection()+"%");
+//		log.info(""+scale.getSelection());
+		eb.post(new ScanScaleEvent(scale.getSelection()));
+	}
+
 	@Inject
-	public void inject(Logger logger, EventBus eb, InputTaskController itCon) {
-		this.log = logger;
+	public void inject(Logger log, EventBus eb, InputTaskController itCon) {
+		this.log = log;
 		this.eb = eb;
 		this.itCon = itCon;
 		itCon.setView(this);
@@ -166,6 +209,4 @@ public class InputTaskView extends TaskView {
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
 	}
-
-
 }
