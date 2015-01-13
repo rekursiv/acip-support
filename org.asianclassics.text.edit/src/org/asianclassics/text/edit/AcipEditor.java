@@ -35,6 +35,7 @@ public class AcipEditor extends Composite {
 	private PlainDocument refDoc;
 	private DiffSyntaxDocument wrkDoc;
 	private EventBus eb;
+	private Point prevScrollPos = new Point();
 
 	public enum ScrollMode { DEFAULT, CENTER, CENTER_ON_SPACE };
 	private ScrollMode scrollMode = ScrollMode.CENTER;
@@ -62,17 +63,14 @@ public class AcipEditor extends Composite {
 		
 		loadTheme("diff-theme");
 		
-		
 		textArea.addCaretListener(new CaretListener() {
 			@Override
-			public void caretUpdate(CaretEvent arg0) {
+			public void caretUpdate(CaretEvent evt) {
 				postCaretMoveEventAsync();
 			}
 		});
 		
 		scrollPane = new RTextScrollPane(textArea);
-		
-
 		scrollPane.getViewport().addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent evt) {
@@ -85,9 +83,7 @@ public class AcipEditor extends Composite {
 
 	
 	
-//	System.out.println(textArea.getCaret().getMagicCaretPosition().x+":"+textArea.getPreferredSize().width+":"+textArea.getVisibleRect().width);
 	protected void postCaretMoveEventAsync() {
-		
 		if (scrollMode!=ScrollMode.DEFAULT) {
 			Point caretPixelPos = textArea.getCaret().getMagicCaretPosition();
 			if (caretPixelPos!=null) {
@@ -96,10 +92,15 @@ public class AcipEditor extends Composite {
 					if (leftOfCaretPos>=0) {
 						if (scrollMode==ScrollMode.CENTER || wrkDoc.getText(textArea.getCaretPosition()-1, 1).equals(" ")) {
 							Point scrollPos = scrollPane.getViewport().getViewPosition();
-							scrollPos.x = caretPixelPos.x - (textArea.getVisibleRect().width / 2);
+							int vpWidth = textArea.getVisibleRect().width;
+							scrollPos.x = caretPixelPos.x - (vpWidth / 2);
 							if (scrollPos.x<0) scrollPos.x=0;
-							scrollPane.getViewport().setViewPosition(scrollPos);
-							
+							int maxScrollX = textArea.getWidth()-vpWidth;
+							if (scrollPos.x>maxScrollX) scrollPos.x = maxScrollX;
+							if (scrollPos.x!=prevScrollPos.x || scrollPos.y!=prevScrollPos.y) {
+//								System.out.println("# "+scrollPos.x);
+								scrollPane.getViewport().setViewPosition(scrollPos);
+							}
 						}
 					}
 				} catch (BadLocationException e) {
@@ -123,17 +124,18 @@ public class AcipEditor extends Composite {
 	}
 
 	protected void postScrollEventAsync() {
-//		System.out.println(textArea.getPreferredSize());
-
 		if (eb!=null) {
-			Display.getDefault().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					Point pos = scrollPane.getViewport().getViewPosition();
-//					System.out.println(pos);
-					eb.post(new AcipEditorScrollEvent(pos.x, pos.y));
-				}
-			});
+			Point pos = scrollPane.getViewport().getViewPosition();
+			if (pos.x!=prevScrollPos.x || pos.y!=prevScrollPos.y) {
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+//						System.out.println("* "+pos);
+						eb.post(new AcipEditorScrollEvent(pos.x, pos.y));
+					}
+				});
+				prevScrollPos = pos;
+			}
 		}
 	}
 	

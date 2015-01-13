@@ -1,5 +1,17 @@
 
+====  Input GUI
 
+auto-save
+check for some text input on finish
+?? "undo" finish, go back and edit prev.
+
+save settings to user DB:
+  auto align
+  zoom
+
+improve "status" msg
+
+====
 
 Project Manager:  back-end GUI
 

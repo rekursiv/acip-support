@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.asianclassics.center.event.LoginSuccessEvent;
+import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.asianclassics.center.input.db.DateTimeStamp;
 import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
@@ -95,6 +96,11 @@ public class InputTaskController {
 //		log.info("workingText: "+workingTxt);
 //		log.info("referenceTxt: "+referenceTxt);
 
+		view.setImage(imgData);
+		view.setReferenceText(referenceTxt);
+		view.setWorkingText(workingTxt);
+		view.setFocus();
+		
 		StringBuilder statMsg = new StringBuilder();
 		statMsg.append(taskType);
 		if (curTask!=null) {
@@ -107,12 +113,7 @@ public class InputTaskController {
 				statMsg.append(partnerWid);
 			}
 		}
-
-		view.setStatus(statMsg.toString());
-		view.setImage(imgData);
-		view.setReferenceText(referenceTxt);
-		view.setWorkingText(workingTxt);
-		view.setFocus();
+		eb.post(new StatusPanelUpdateEvent(statMsg.toString()));
 	}
 	
 	public void finishTask(String product) {

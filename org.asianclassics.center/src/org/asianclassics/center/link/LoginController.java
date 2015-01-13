@@ -132,7 +132,6 @@ public class LoginController extends ReceiverAdapter implements Runnable {
 					isUserLoggedIn = true;
 					eb.post(new LoginSuccessEvent(workerId));
 					eb.post(new MainMakeTopEvent(MainViewType.TASK));
-					eb.post(new StatusPanelUpdateEvent(""));
 				}
 			});
 		} else {

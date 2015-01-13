@@ -32,8 +32,8 @@ public class ScanPanel extends ScrolledComposite {
 	private int scaledWidth = 0;
 	private int scaledHeight = 0;
 	
-	public enum ScrollLinkMode {OFF, SYNC, CARET };
-	private ScrollLinkMode scrollLinkMode = ScrollLinkMode.SYNC;
+	public enum ScrollLinkMode {OFF, SYNC, CARET};
+	private ScrollLinkMode scrollLinkMode = ScrollLinkMode.CARET;
 	
 	
 	public ScanPanel(Composite parent, Injector injector) {
@@ -48,7 +48,7 @@ public class ScanPanel extends ScrolledComposite {
 		lblImage.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent arg0) {
-				test();
+//				test();
 			}
 		});
 		setContent(lblImage);
@@ -57,6 +57,7 @@ public class ScanPanel extends ScrolledComposite {
 	}
 
 	protected void test() {
+		log.info(this.getOrigin().toString());
 		this.setOrigin(100, 100);
 	}
 
@@ -69,8 +70,8 @@ public class ScanPanel extends ScrolledComposite {
 	@Subscribe
 	public void onEditorScroll(AcipEditorScrollEvent evt) {
 		if (scrollLinkMode==ScrollLinkMode.SYNC) {
-			int x = (int)(evt.getX()*3*zoomScaleFactor);   // TODO:  test
-			int y = (int)(evt.getY()*3*zoomScaleFactor); 
+			int x = (int)(evt.getX()*4*zoomScaleFactor);
+			int y = (int)(evt.getY()*4*zoomScaleFactor); 
 			setOrigin(x, y);
 		}
 	}
@@ -92,12 +93,17 @@ public class ScanPanel extends ScrolledComposite {
 		setImageScale();
 	}
 	
+	@Subscribe
+	public void onScanAlignMode(ScanAlignModeEvent evt) {
+		if (evt.isEnabled()) scrollLinkMode = ScrollLinkMode.CARET;
+		else scrollLinkMode = ScrollLinkMode.OFF;
+	}
+	
 	public void setImage(ImageData imgData) {
 		if (imgData==null) scan = null;
 		else scan = new Image(Display.getDefault(), imgData);
 		setImageScale();
 	}
-	
 	
 	private void setImageScale() {
 		if (scan==null) {
@@ -110,7 +116,6 @@ public class ScanPanel extends ScrolledComposite {
 		}
 	}
 	
-	
 	private void setImageSize(float size) {
 		if (scan==null) {
 			lblImage.setImage(null);
@@ -121,7 +126,6 @@ public class ScanPanel extends ScrolledComposite {
 			lblImage.setImage(resizeImage(scan, width, height));
 		}
 	}
-	
 	
 	private Image resizeImage(Image image, int width, int height) {
 		Image scaled = new Image(Display.getDefault(), width, height);

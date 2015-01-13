@@ -27,6 +27,7 @@ public class DiffSyntaxDocument extends RSyntaxDocument {
 //	}
 	
 	public DiffSyntaxDocument(DiffTokenMaker diffTokenMaker) {
+		super(null);
 		putProperty(tabSizeAttribute, Integer.valueOf(5));
 		lastTokensOnLines = new DynamicIntArray(400);
 		lastTokensOnLines.add(Token.NULL); // Initial (empty) line.

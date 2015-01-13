@@ -8,8 +8,6 @@ import org.asianclassics.text.edit.AcipEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -17,16 +15,12 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.Scale;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.eclipse.swt.widgets.Scale;
 
 public class InputTaskView extends TaskView {
 	private Button btnLogout;
@@ -35,13 +29,13 @@ public class InputTaskView extends TaskView {
 	private AcipEditor editor;
 	private ScanPanel pnlScan;
 	private InputTaskController itCon;
-	private Label lblStatus;
 	private Logger log;
 
 	protected Button btnSave;
 	protected Scale scale;
 	protected Label lblZoom;
 	protected Label lblZoomTitle;
+	private Button btnAutoAlignScan;
 
 	
 	public InputTaskView(Composite parent, Injector injector) {
@@ -71,8 +65,10 @@ public class InputTaskView extends TaskView {
 			}
 		});
 		FormData fd_btnFinish = new FormData();
-		fd_btnFinish.top = new FormAttachment(btnLogout, 0, SWT.TOP);
-		fd_btnFinish.left = new FormAttachment(0, 150);
+		fd_btnFinish.top = new FormAttachment(btnLogout, -25);
+		fd_btnFinish.bottom = new FormAttachment(btnLogout, 0, SWT.BOTTOM);
+		fd_btnFinish.right = new FormAttachment(0, 120);
+		fd_btnFinish.left = new FormAttachment(0, 77);
 		btnFinish.setLayoutData(fd_btnFinish);
 		btnFinish.setText("Finish");
 		
@@ -91,16 +87,8 @@ public class InputTaskView extends TaskView {
 		fd_lblImage.bottom = new FormAttachment(editor);
 		fd_lblImage.left = new FormAttachment(0, 12);
 		fd_lblImage.right = new FormAttachment(100, -12);
-		fd_lblImage.top = new FormAttachment(0, 85);
+		fd_lblImage.top = new FormAttachment(0, 50);
 		pnlScan.setLayoutData(fd_lblImage);
-		
-		lblStatus = new Label(this, SWT.NONE);
-		FormData fd_lblStatus = new FormData();
-		fd_lblStatus.right = new FormAttachment(0, 530);
-		fd_lblStatus.top = new FormAttachment(0, 50);
-		fd_lblStatus.left = new FormAttachment(pnlScan, 0, SWT.LEFT);
-		lblStatus.setLayoutData(fd_lblStatus);
-		lblStatus.setText("lblStatus");
 		
 		btnSave = new Button(this, SWT.NONE);
 		btnSave.addSelectionListener(new SelectionAdapter() {
@@ -110,8 +98,10 @@ public class InputTaskView extends TaskView {
 			}
 		});
 		FormData fd_btnSave = new FormData();
-		fd_btnSave.top = new FormAttachment(btnFinish, 0, SWT.TOP);
-		fd_btnSave.left = new FormAttachment(0, 270);
+		fd_btnSave.top = new FormAttachment(btnFinish, -25);
+		fd_btnSave.bottom = new FormAttachment(btnFinish, 0, SWT.BOTTOM);
+		fd_btnSave.right = new FormAttachment(0, 190);
+		fd_btnSave.left = new FormAttachment(0, 154);
 		btnSave.setLayoutData(fd_btnSave);
 		btnSave.setText("Save");
 		
@@ -126,27 +116,42 @@ public class InputTaskView extends TaskView {
 			}
 		});
 		FormData fd_scale = new FormData();
-		fd_scale.right = new FormAttachment(0, 735);
-		fd_scale.top = new FormAttachment(0, 12);
-		fd_scale.left = new FormAttachment(0, 430);
+		fd_scale.top = new FormAttachment(0, -2);
+		fd_scale.bottom = new FormAttachment(0, 40);
+		fd_scale.right = new FormAttachment(0, 950);
+		fd_scale.left = new FormAttachment(0, 645);
 		scale.setLayoutData(fd_scale);
 		
 		lblZoom = new Label(this, SWT.NONE);
 		FormData fd_lblZoom = new FormData();
-		fd_lblZoom.top = new FormAttachment(lblStatus, -21, SWT.TOP);
-		fd_lblZoom.bottom = new FormAttachment(lblStatus, -6);
-		fd_lblZoom.left = new FormAttachment(0, 750);
+		fd_lblZoom.right = new FormAttachment(scale, 34, SWT.RIGHT);
+		fd_lblZoom.left = new FormAttachment(scale, 6);
 		lblZoom.setLayoutData(fd_lblZoom);
 		lblZoom.setText("100%");
 		
 		lblZoomTitle = new Label(this, SWT.NONE);
+		fd_lblZoom.bottom = new FormAttachment(lblZoomTitle, 0, SWT.BOTTOM);
 		FormData fd_lblZoomTitle = new FormData();
-		fd_lblZoomTitle.top = new FormAttachment(btnSave, -15);
-		fd_lblZoomTitle.bottom = new FormAttachment(btnSave, 0, SWT.BOTTOM);
-		fd_lblZoomTitle.right = new FormAttachment(0, 410);
-		fd_lblZoomTitle.left = new FormAttachment(0, 378);
+		fd_lblZoomTitle.left = new FormAttachment(scale, -32, SWT.LEFT);
+		fd_lblZoomTitle.right = new FormAttachment(scale);
 		lblZoomTitle.setLayoutData(fd_lblZoomTitle);
 		lblZoomTitle.setText("Zoom");
+		
+		btnAutoAlignScan = new Button(this, SWT.CHECK);
+		fd_lblZoomTitle.bottom = new FormAttachment(btnAutoAlignScan, 0, SWT.BOTTOM);
+		btnAutoAlignScan.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent evt) {
+				eb.post(new ScanAlignModeEvent(btnAutoAlignScan.getSelection()));
+			}
+		});
+		btnAutoAlignScan.setSelection(true);
+		FormData fd_btnAutoAlignScan = new FormData();
+		fd_btnAutoAlignScan.top = new FormAttachment(btnSave, 0, SWT.TOP);
+		fd_btnAutoAlignScan.right = new FormAttachment(0, 513);
+		fd_btnAutoAlignScan.left = new FormAttachment(0, 405);
+		btnAutoAlignScan.setLayoutData(fd_btnAutoAlignScan);
+		btnAutoAlignScan.setText("Auto-Align Scan");
 		
 		if (injector!=null) injector.injectMembers(this);
 	}
@@ -195,11 +200,6 @@ public class InputTaskView extends TaskView {
 	}
 	
 
-
-	public void setStatus(String msg) {
-		lblStatus.setText(msg);
-	}
-	
 	public void setImage(ImageData imgData) {
 		pnlScan.setImage(imgData);
 	}
