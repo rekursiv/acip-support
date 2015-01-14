@@ -16,8 +16,10 @@ public class Source extends Entity {
 
 	private String type = "Source";
 	
-	private int collectionIndex = 1;
-	private int volumeIndex = 1;
+	private String collectionId = null;
+	
+//	private int collectionIndex = 1;
+	private int bookIndex = 1;
 	private int pageIndex = 1;
 	
 	private String text;
@@ -28,9 +30,9 @@ public class Source extends Entity {
 	}
 	
 	@JsonIgnore
-	public void setDebugId() {
+	public void setDebugId(String colName) {
 		String time = Long.toHexString(new Date().getTime());
-		setId(type+"_"+pageIndex+"_"+time);
+		setId(type+"_"+colName+"-"+bookIndex+"-"+pageIndex+"_"+time);
 	}
 	
 	public String getText() {
@@ -41,20 +43,20 @@ public class Source extends Entity {
 		this.text = text;
 	}
 
-	public int getCollectionIndex() {
-		return collectionIndex;
+	public String getCollectionId() {
+		return collectionId;
 	}
 
-	public void setCollectionIndex(int collectionIndex) {
-		this.collectionIndex = collectionIndex;
+	public void setCollectionId(String collectionId) {
+		this.collectionId = collectionId;
 	}
 
-	public int getVolumeIndex() {
-		return volumeIndex;
+	public int getBookIndex() {
+		return bookIndex;
 	}
 
-	public void setVolumeIndex(int volumeIndex) {
-		this.volumeIndex = volumeIndex;
+	public void setBookIndex(int bookIndex) {
+		this.bookIndex = bookIndex;
 	}
 
 	public int getPageIndex() {

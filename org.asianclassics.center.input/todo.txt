@@ -1,5 +1,14 @@
 
+=====  Linux
+
+UEFI Systor
+ check old boxes for UEFI
+
+
+
 ====  Input GUI
+
+test on Linux
 
 auto-save
 check for some text input on finish
@@ -13,27 +22,21 @@ improve "status" msg
 
 ====
 
-Project Manager:  back-end GUI
+Admin:  shows status (uploading, dispatched, finished, etc) - allows for deletion, priority change, etc
 
-Project Dispatch:  automated data shuffler  (RickshawNet version running on portable computer)
+Uploader:  uploads images, creates "PageSource" records
 
-?? Project Viewer:  for viewing finished projects
+Dispatch:  automated data shuffler - this can be part of "admin" at first -  (RickshawNet version running on portable computer)
 
+??Viewer:  for viewing finished collections
 
-"projects" DB 
- new projects added by "manager", assigned to input center
- "dispatch" moves projects in and out of input center DBs
-
-use separate DB for each project?? 
- 
 
 =====
 
-Project - set of pagesets, gets assigned to an input center
-Book - set of pages
+Collection - set of books, gets assigned to an input center
+Book - set of indexed pages (could be a volume, title, work, etc)
 PageSource - holds image
 InputTask - task for one input operator to do once (correction/input)
-
 
 
 ====

@@ -46,8 +46,8 @@ public class InputTask extends Entity {
 	@JsonIgnore
 	public void linkWithSource(Source source) {
 		sourceId=source.getId();
-		collectionIndex=source.getCollectionIndex();
-		volumeIndex=source.getVolumeIndex();
+//		collectionIndex=source.getCollectionIndex();
+		volumeIndex=source.getBookIndex();
 		pageIndex=source.getPageIndex();
 	}
 	

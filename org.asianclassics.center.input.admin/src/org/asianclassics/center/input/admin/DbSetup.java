@@ -323,7 +323,7 @@ public class DbSetup extends Composite {
 	public void initPageWithRef(String text) {
 		Source src = new Source();
 		src.setPageIndex(pageIndex);
-		src.setDebugId();
+		src.setDebugId("DbSetup");
 		srcRepo.add(src);
 		attachImage(src);
 		
@@ -363,7 +363,7 @@ public class DbSetup extends Composite {
 	public void initPage() {
 		Source src = new Source();
 		src.setPageIndex(pageIndex);
-		src.setDebugId();
+		src.setDebugId("DbSetup");
 		srcRepo.add(src);
 		attachImage(src);
 		InputTask it = new InputTask();
