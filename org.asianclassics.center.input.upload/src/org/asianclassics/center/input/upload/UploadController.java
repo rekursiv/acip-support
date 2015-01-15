@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 import org.asianclassics.center.input.db.Collection;
 import org.asianclassics.center.input.db.CollectionRepo;
+import org.asianclassics.center.input.db.DebugRepo;
+import org.asianclassics.center.input.db.IdCouchDbConnector;
 import org.asianclassics.center.input.db.Source;
 import org.asianclassics.center.input.db.SourceRepo;
 import org.ektorp.AttachmentInputStream;
@@ -52,7 +54,7 @@ public class UploadController {
 	private void initDb() {
 		HttpClient httpClient = new StdHttpClient.Builder().build();
 		couch = new StdCouchDbInstance(httpClient);
-		db = new StdCouchDbConnector(dbName, couch);
+		db = new IdCouchDbConnector(dbName, couch);
 		colRepo = new CollectionRepo(db);
 		srcRepo = new SourceRepo(db);
 	}
@@ -62,6 +64,7 @@ public class UploadController {
 		couch.createDatabase(dbName);
 		colRepo.initStandardDesignDocument();
 		srcRepo.initStandardDesignDocument();
+		new DebugRepo(db).initStandardDesignDocument();
 	}
 	
 	public void test() {
@@ -84,8 +87,7 @@ public class UploadController {
 	
 	private void addCollection() {
 		curCollection = new Collection();
-		curCollection.setName(colName);
-		curCollection.setDebugId();
+		curCollection.name = colName;
 		colRepo.add(curCollection);
 	}
 
@@ -122,12 +124,12 @@ public class UploadController {
 		s.setCollectionId(curCollection.getId());
 		s.setBookIndex(bookIndex);
 		s.setPageIndex(pageIndex);
-		s.setDebugId(colName);
 		srcRepo.add(s);
 		attachImage(s, file);
 //		s.setStaus("uploaded");  //  TODO
 //		srcRepo.update(s);
 	}
+	
 	
 	public void attachImage(Source src, File file) {
 		InputStream is = null;

@@ -15,7 +15,7 @@ import com.google.inject.Injector;
 
 public class RootPanel extends Composite {
 
-	private DbSetup mainView;
+	private AdminView mainView;
 	
 	private LogView logView;
 
@@ -27,7 +27,7 @@ public class RootPanel extends Composite {
 		
 //		mainStackView = new MainStackView(this, SWT.NONE, injector);
 		
-		mainView = new DbSetup(this);
+		mainView = new AdminView(this, injector);
 
 		setLayout(new FormLayout());
 

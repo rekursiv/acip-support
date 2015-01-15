@@ -64,11 +64,11 @@ public class InputTask extends Entity {
 		taskPriority=task.getTaskPriority()+1;
 	}
 	
-//	@JsonIgnore
-//	public void setDebugId() {
-//		String time = Long.toHexString(new Date().getTime());
-//		setId(type+"_"+pageIndex+"_"+time);  //  TODO:  project??
-//	}
+	@JsonIgnore
+	public void setDebugId() {
+		String time = Long.toHexString(new Date().getTime());
+		setId(type+"_"+pageIndex+"_"+time);  //  TODO:  project??
+	}
 	
 
 	

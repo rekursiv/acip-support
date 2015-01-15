@@ -1,4 +1,13 @@
 
+Hours:
+
+Monday:  5+
+Tuesday: 4
+Wed:
+ 8:30-11:30 - dispatch design
+ 11:30-??   - database views
+
+
 =====  Linux
 
 UEFI Systor

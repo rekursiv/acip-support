@@ -1,3 +1,6 @@
+// contains code to add partially completed input tasks to the DB that are ready for the "correction" step by one worker
+
+
 package org.asianclassics.center.input.admin;
 
 import java.io.IOException;

@@ -27,11 +27,11 @@ public class Source extends Entity {
 		return type;
 	}
 	
-	@JsonIgnore
-	public void setDebugId(String colName) {
-		String time = Long.toHexString(new Date().getTime());
-		setId(type+"_"+colName+"-"+bookIndex+"-"+pageIndex+"_"+time);
-	}
+//	@JsonIgnore
+//	public void setDebugId(String colName) {
+//		String time = Long.toHexString(new Date().getTime());
+//		setId(type+"_"+colName+"-"+bookIndex+"-"+pageIndex+"_"+time);
+//	}
 	
 	public String getText() {
 		return text;

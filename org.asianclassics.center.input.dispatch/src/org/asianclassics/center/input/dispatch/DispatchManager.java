@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.asianclassics.center.input.db.DebugRepo;
+import org.asianclassics.center.input.db.IdCouchDbConnector;
 import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
 import org.asianclassics.center.input.db.Source;
@@ -19,7 +21,7 @@ import org.ektorp.impl.StdCouchDbInstance;
 public class DispatchManager {
 	
 	private static final String hqDbName = "acip-hq-input";
-	private static final String centerDbName = "test";
+	private static final String centerDbName = "acip-center-test-tasks";
 	private static Logger log = Logger.getLogger(DispatchManager.class.getName());
 
 	private CouchDbConnector hqDb;
@@ -33,7 +35,7 @@ public class DispatchManager {
 	public void test() {
 
 		initDbs();
-//		resetCenterDb();
+		resetCenterDb();
 		
 		List<Source> srcList = hqSrcRepo.getAllNeedingDispatch(3);
 		
@@ -44,7 +46,6 @@ public class DispatchManager {
 			InputTask it = new InputTask();
 			it.linkWithSource(src);
 			it.setActive(true);
-			it.setDebugId();
 			centerTaskRepo.add(it);
 		}
 		
@@ -55,18 +56,23 @@ public class DispatchManager {
 	private void initDbs() {
 		HttpClient httpClient = new StdHttpClient.Builder().build();
 		couch = new StdCouchDbInstance(httpClient);
-		centerDb = new StdCouchDbConnector(centerDbName, couch);
-		centerSrcRepo = new SourceRepo(centerDb);
-		centerTaskRepo = new InputTaskRepo(centerDb);
-		hqDb = new StdCouchDbConnector(hqDbName, couch);
+		
+		hqDb = new IdCouchDbConnector(hqDbName, couch);
 		hqSrcRepo = new SourceRepo(hqDb);
 		hqSrcRepo.initStandardDesignDocument();
+
+		centerDb = new IdCouchDbConnector(centerDbName, couch);
+		centerSrcRepo = new SourceRepo(centerDb);
+		centerTaskRepo = new InputTaskRepo(centerDb);
 	}
 	
 	private void resetCenterDb() {
 		couch.deleteDatabase(centerDbName);
 		couch.createDatabase(centerDbName);
+
 		centerSrcRepo.initStandardDesignDocument();
+		centerTaskRepo.initStandardDesignDocument();
+		new DebugRepo(centerDb).initStandardDesignDocument();
 	}
 
 }

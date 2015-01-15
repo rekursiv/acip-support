@@ -23,7 +23,7 @@ public class AdminApp {
 		
 		AdminShell cs = new AdminShell();
 		cs.setSize(800, 600);
-		cs.setText("ACIP Input Center System Test");
+		cs.setText("ACIP Input Center System Administration");
 		cs.setLayout(new FillLayout(SWT.HORIZONTAL));		
 		
 		RootPanel cp = new RootPanel(cs, injector);

@@ -19,7 +19,6 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 	}
 
 	
-	//  TODO:  handle exception thrown when design doc missing
 	@View(name="getAssignedTasks", map="function(doc) {if (doc.type === 'InputTask' && doc.active && doc.worker) emit([doc.worker, doc.taskPriority, doc.projectPriority, doc.collectionId, doc.volumeIndex, doc.pageIndex], null)}")
 	public List<InputTask> getAssignedTasks(String worker, int limit) {
 		ComplexKey startKey = ComplexKey.of(worker);
@@ -85,12 +84,14 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 
 		input_me.copySourceInfo(task);
 		input_me.setWorker(worker);
-		input_me.setId(Id.gen());
+//		input_me.setId(Id.gen());
+		input_me.setDebugId();
 		input_me.setDateTimeAssigned(DateTimeStamp.gen());
 	
 		input_any.copySourceInfo(task);
 		input_any.setWorker("_any");
-		input_any.setId(Id.gen());
+//		input_any.setId(Id.gen());
+		input_any.setDebugId();
 		input_any.setDateTimeAssigned(DateTimeStamp.gen());
 		
 		input_me.setPartnerId(input_any.getId());
@@ -134,6 +135,7 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 		forPartnerToDo.setTaskToFixId(partner.getId());
 		forPartnerToDo.setDateTimeAssigned(DateTimeStamp.gen());
 		forPartnerToDo.setPartnerId(me.getId());
+		forPartnerToDo.setDebugId();
 		add(forPartnerToDo);
 	}
 	

@@ -45,17 +45,21 @@ public class InputTaskController {
 	
 	@Subscribe
 	public void onLogin(LoginSuccessEvent evt) {
-		workerId = evt.getWorkerId();
-		log.info(workerId);
-		
-		taskDb = lm.getDb("tasks");
-		taskRepo = new InputTaskRepo(taskDb);
-		srcRepo = new SourceRepo(taskDb);
-		
-		getTask();
-//		log.info(taskDb.getDatabaseName());
-//		log.info(taskDb.getDbInfo().getDocCount()+"");
-//		log.info(""+srcRepo.getAll().size());
+		try {
+			workerId = evt.getWorkerId();
+			log.info(workerId);
+			
+			taskDb = lm.getDb("tasks");
+			taskRepo = new InputTaskRepo(taskDb);
+			srcRepo = new SourceRepo(taskDb);
+			
+			getTask();
+	//		log.info(taskDb.getDatabaseName());
+	//		log.info(taskDb.getDbInfo().getDocCount()+"");
+	//		log.info(""+srcRepo.getAll().size());
+		} catch (Exception e) {
+			e.printStackTrace();   // FIXME
+		}
 	}
 
 	private void getTask() {
