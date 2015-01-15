@@ -2,6 +2,7 @@
 package org.asianclassics.center.input.db;
 
 
+
 import java.util.List;
 
 import org.ektorp.ComplexKey;
@@ -9,6 +10,9 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
 import org.ektorp.support.CouchDbRepositorySupport;
 import org.ektorp.support.View;
+
+import util.ektorp.DateTimeStamp;
+import util.ektorp.Id;
 
 public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 	
@@ -20,11 +24,11 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 
 	
 	//  TODO:  handle exception thrown when design doc missing
-	@View(name="getAssignedTasks", map="function(doc) {if (doc.type === 'InputTask' && doc.active && doc.worker) emit([doc.worker, doc.taskPriority, doc.projectPriority, doc.collectionId, doc.volumeIndex, doc.pageIndex], null)}")
+	@View(name="assignedTasks", map="classpath:InputTask_map_assignedTasks.js")
 	public List<InputTask> getAssignedTasks(String worker, int limit) {
 		ComplexKey startKey = ComplexKey.of(worker);
 		ComplexKey endKey = ComplexKey.of(worker, ComplexKey.emptyObject());
-		ViewQuery q = createQuery("getAssignedTasks").limit(limit).includeDocs(true).startKey(startKey).endKey(endKey);
+		ViewQuery q = createQuery("assignedTasks").limit(limit).includeDocs(true).startKey(startKey).endKey(endKey);
 		return db.queryView(q, type);
 	}
 	
@@ -32,11 +36,11 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 		InputTask validTask = null;
 		for (InputTask task : taskList) {
 			// make sure this worker doesn't input the same page twice
-			String partner = db.get(InputTask.class, task.getPartnerId()).getWorker();
+			String partner = db.get(InputTask.class, task.partnerId).worker;
 //			System.out.println("w="+worker+"  p="+partner);
 			if (partner.compareTo(worker)!=0) {
 //				System.out.println("different");
-				task.setWorker(worker);
+				task.worker=worker;
 				update(task);
 				if (validTask==null) validTask = task;
 			}
@@ -73,7 +77,7 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 		for (InputTask task : taskList) {
 			if (inputTask==null) inputTask = buildInitialInputPair(task, worker);
 			else buildInitialInputPair(task, worker);
-			task.setActive(false);
+			task.isActive=false;
 			update(task);
 		}
 		return inputTask;
@@ -84,17 +88,17 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 		InputTask input_any = new InputTask();
 
 		input_me.copySourceInfo(task);
-		input_me.setWorker(worker);
+		input_me.worker=worker;
 		input_me.setId(Id.gen());
-		input_me.setDateTimeAssigned(DateTimeStamp.gen());
+		input_me.dateTimeAssigned=DateTimeStamp.gen();
 	
 		input_any.copySourceInfo(task);
-		input_any.setWorker("_any");
+		input_any.worker="_any";
 		input_any.setId(Id.gen());
-		input_any.setDateTimeAssigned(DateTimeStamp.gen());
+		input_any.dateTimeAssigned=DateTimeStamp.gen();
 		
-		input_me.setPartnerId(input_any.getId());
-		input_any.setPartnerId(input_me.getId());
+		input_me.partnerId=input_any.getId();
+		input_any.partnerId=input_me.getId();
 		
 		add(input_me);
 		add(input_any);
@@ -106,18 +110,18 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 	// call after deactivating task and setting product
 	public void finalize(InputTask taskJustFinished) {
 		InputTask partner;
-		partner = db.get(InputTask.class, taskJustFinished.getPartnerId());
+		partner = db.get(InputTask.class, taskJustFinished.partnerId);
 		
 		// if my partner is not active, I expect my partner to have produced something
-		if (!partner.isActive()) {
-			String myProduct = taskJustFinished.getProduct();
-			String partnerProduct = partner.getProduct();
+		if (!partner.isActive) {
+			String myProduct = taskJustFinished.product;
+			String partnerProduct = partner.product;
 //			System.out.println("mine:  "+myProduct+"   partner:  "+partnerProduct);
 			if (myProduct==null || partnerProduct==null) return;	  	//  TODO: throw exception?
 			// compare my product with my partner's product
 			if (myProduct.equals(partnerProduct)) {						// TODO:  better matching (ie ignore blank lines)
 				// if they match, we're done - mark one of them as "finished"
-				taskJustFinished.setFinal(true);  
+				taskJustFinished.isFinal=true;  
 			} else {
 				// if not, build a correction task for my partner
 				buildCorrectionTask(taskJustFinished, partner);
@@ -130,41 +134,12 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 		InputTask forPartnerToDo = new InputTask();
 		forPartnerToDo.makeLowerPriority(partner);
 		forPartnerToDo.copySourceInfo(partner);
-		forPartnerToDo.setWorker(partner.getWorker());
-		forPartnerToDo.setTaskToFixId(partner.getId());
-		forPartnerToDo.setDateTimeAssigned(DateTimeStamp.gen());
-		forPartnerToDo.setPartnerId(me.getId());
+		forPartnerToDo.worker=partner.worker;
+		forPartnerToDo.taskToFixId=partner.getId();
+		forPartnerToDo.dateTimeAssigned=DateTimeStamp.gen();
+		forPartnerToDo.partnerId=me.getId();
 		add(forPartnerToDo);
 	}
 	
-	
-	
-	
-	/*
-	
-	public void buildCorrectionPair(InputTask myPrev, InputTask partnerPrev) {
-		InputTask myCur = new InputTask();
-		myCur.setSourceId(myPrev.getSourceId());
-		myCur.setWorker(myPrev.getWorker());
-		myCur.setPriority(myPrev.getPriority());
-		myCur.setMyPrevInputId(myPrev.getId());
-		myCur.setId(Id.gen());
-		myCur.setDateTimeAssigned(DateTimeStamp.gen());
-		
-		InputTask partnerCur = new InputTask();
-		partnerCur.setSourceId(partnerPrev.getSourceId());
-		partnerCur.setWorker(partnerPrev.getWorker());
-		partnerCur.setPriority(partnerPrev.getPriority());
-		partnerCur.setMyPrevInputId(partnerPrev.getId());
-		partnerCur.setId(Id.gen());
-		partnerCur.setDateTimeAssigned(DateTimeStamp.gen());
-
-		myCur.setPartnerId(partnerCur.getId());
-		partnerCur.setPartnerId(myCur.getId());
-
-		add(myCur);
-		add(partnerCur);
-	}
-	*/
 
 }

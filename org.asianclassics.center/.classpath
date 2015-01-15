@@ -13,5 +13,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.ektorp"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseSWT"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/guava-14.0.1.jar"/>
+	<classpathentry kind="src" path="/util.ektorp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.asianclassics.center.input.db.DebugRepo;
-import org.asianclassics.center.input.db.IdCouchDbConnector;
 import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
 import org.asianclassics.center.input.db.Source;
@@ -14,8 +13,9 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
-import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
+
+import util.ektorp.IdCouchDbConnector;
 
 
 public class DispatchManager {
@@ -45,7 +45,7 @@ public class DispatchManager {
 			srcIds.add(src.getId());
 			InputTask it = new InputTask();
 			it.linkWithSource(src);
-			it.setActive(true);
+			it.isActive=true;
 			centerTaskRepo.add(it);
 		}
 		

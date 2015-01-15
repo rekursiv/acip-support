@@ -3,15 +3,17 @@ package org.asianclassics.center.input;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
-import org.asianclassics.center.input.db.DateTimeStamp;
 import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
 import org.asianclassics.center.input.db.SourceRepo;
 import org.asianclassics.center.link.LinkManager;
 import org.eclipse.swt.graphics.ImageData;
 import org.ektorp.CouchDbConnector;
+
+import util.ektorp.DateTimeStamp;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -75,24 +77,24 @@ public class InputTaskController {
 		if (curTask!=null) {
 //			srcTxt = taskDb.get(Source.class, curTask.getSourceId()).getText();    //  TEST
 			try {
-				imgData = srcRepo.getImage(curTask.getSourceId(), "img.png");
+				imgData = srcRepo.getImage(curTask.sourceId, "img.png");
 			} catch (Exception e) {
 				log.log(Level.WARNING, "", e);
 			}
 
-			String fixmeId = curTask.getTaskToFixId();
+			String fixmeId = curTask.taskToFixId;
 			if (fixmeId==null) {
 				taskType = "input";
 			} else {
 				taskType = "correction";
-				workingTxt = taskDb.get(InputTask.class, curTask.getTaskToFixId()).getProduct();
-				InputTask partnerTask = taskDb.get(InputTask.class, curTask.getPartnerId());
+				workingTxt = taskDb.get(InputTask.class, curTask.taskToFixId).product;
+				InputTask partnerTask = taskDb.get(InputTask.class, curTask.partnerId);
 				if (partnerTask!=null) {
-					referenceTxt = partnerTask.getProduct();
-					partnerWid = partnerTask.getWorker();
+					referenceTxt = partnerTask.product;
+					partnerWid = partnerTask.worker;
 				}
 			}
-			curTask.setDateTimeStarted(DateTimeStamp.gen());
+			curTask.dateTimeStarted=DateTimeStamp.gen();
 			taskDb.update(curTask);
 		}
 		
@@ -108,10 +110,10 @@ public class InputTaskController {
 		StringBuilder statMsg = new StringBuilder();
 		statMsg.append(taskType);
 		if (curTask!=null) {
-			statMsg.append(":  v");
-			statMsg.append(curTask.getVolumeIndex());
+			statMsg.append(":  b");
+			statMsg.append(curTask.bookIndex);
 			statMsg.append(", p");
-			statMsg.append(curTask.getPageIndex());			
+			statMsg.append(curTask.pageIndex);			
 			if (partnerWid!=null) {
 				statMsg.append(", partner=");
 				statMsg.append(partnerWid);
@@ -123,9 +125,9 @@ public class InputTaskController {
 	public void finishTask(String product) {
 		if (curTask!=null) {
 			log.info(product);
-			curTask.setProduct(product);
-			curTask.setActive(false);
-			curTask.setDateTimeFinished(DateTimeStamp.gen());
+			curTask.product=product;
+			curTask.isActive=false;
+			curTask.dateTimeFinished=DateTimeStamp.gen();
 			taskRepo.finalize(curTask);
 			curTask=null;
 		}
@@ -134,7 +136,7 @@ public class InputTaskController {
 
 	public void save(String product) {
 		if (curTask!=null) {
-			curTask.setProduct(product);
+			curTask.product=product;
 			taskRepo.update(curTask);
 		}
 		

@@ -1,11 +1,10 @@
 
-Hours:
+====   DB
 
-Monday:  5+
-Tuesday: 4
-Wed:
- 8:30-11:30 - dispatch design
- 11:30-??   - database views
+copy projectPriority from source
+rename source->page????
+
+recordType disc.
 
 
 =====  Linux
@@ -44,7 +43,7 @@ Dispatch:  automated data shuffler - this can be part of "admin" at first -  (Ri
 
 Collection - set of books, gets assigned to an input center
 Book - set of indexed pages (could be a volume, title, work, etc)
-PageSource - holds image
+Page (Source) - holds image and finished text
 InputTask - task for one input operator to do once (correction/input)
 
 

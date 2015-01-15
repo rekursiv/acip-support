@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="C:/projects/javalib/jgroups-3.1.0.Final.jar" sourcepath="C:/projects/javalib/jgroups-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseSWT"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/guava-14.0.1.jar"/>
+	<classpathentry kind="src" path="/util.ektorp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

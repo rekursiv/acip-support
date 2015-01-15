@@ -16,5 +16,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/projects/javalib/jackson-annotations-2.3.3.jar"/>
+	<classpathentry kind="src" path="/util.ektorp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -10,5 +10,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/util.logging"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.ektorp"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.center.input.db"/>
+	<classpathentry kind="src" path="/util.ektorp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

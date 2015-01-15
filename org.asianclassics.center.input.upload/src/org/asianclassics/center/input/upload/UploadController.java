@@ -2,19 +2,14 @@ package org.asianclassics.center.input.upload;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
 import org.asianclassics.center.input.db.Collection;
 import org.asianclassics.center.input.db.CollectionRepo;
 import org.asianclassics.center.input.db.DebugRepo;
-import org.asianclassics.center.input.db.IdCouchDbConnector;
 import org.asianclassics.center.input.db.Source;
 import org.asianclassics.center.input.db.SourceRepo;
 import org.ektorp.AttachmentInputStream;
@@ -22,8 +17,9 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
-import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
+
+import util.ektorp.IdCouchDbConnector;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -121,9 +117,9 @@ public class UploadController {
 			return;
 		}
 		Source s = new Source();
-		s.setCollectionId(curCollection.getId());
-		s.setBookIndex(bookIndex);
-		s.setPageIndex(pageIndex);
+		s.collectionId=curCollection.getId();
+		s.bookIndex=bookIndex;
+		s.pageIndex=pageIndex;
 		srcRepo.add(s);
 		attachImage(s, file);
 //		s.setStaus("uploaded");  //  TODO

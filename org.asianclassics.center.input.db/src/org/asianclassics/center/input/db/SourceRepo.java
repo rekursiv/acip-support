@@ -17,19 +17,19 @@ public class SourceRepo extends CouchDbRepositorySupport<Source> {
 		super(Source.class, db, false);
 	}
 
-	@View(name="byCollection", map="function(doc) {if (doc.type === 'Source') emit(doc.collectionId, null)}")
+	@View(name="byCollection", map="function(doc) {if (doc.recordType === 'Source') emit(doc.collectionId, null)}")
 	public List<Source> getByCollection(String collectionId) {
 		ViewQuery q = createQuery("byCollection").includeDocs(true).key(collectionId);
 		return db.queryView(q, type);
 	}
 
-	@View(name="allNeedingDispatch", map="function(doc) {if (doc.type === 'Source' && !doc.dispatch) emit([doc.projectPriority, doc.collectionId, doc.volumeIndex, doc.pageIndex], null)}")
+	@View(name="allNeedingDispatch", map="function(doc) {if (doc.recordType === 'Source' && !doc.dispatch) emit([doc.projectPriority, doc.collectionId, doc.bookIndex, doc.pageIndex], null)}")
 	public List<Source> getAllNeedingDispatch(int limit) {
 		ViewQuery q = createQuery("allNeedingDispatch").limit(limit).includeDocs(true);
 		return db.queryView(q, type);
 	}
 
-		
+
 	public ImageData getImage(String id, String attachmentId) throws Exception {
 		AttachmentInputStream data = db.getAttachment(id, attachmentId);
 		InputStream is = new BufferedInputStream(data);

@@ -8,7 +8,6 @@ class Debug {
 	
 }
 
-//@View( name = "all", map = "function(doc) { emit( doc.type, doc.type ) }")
 @View( name = "all", map = "classpath:Debug_map_all.js")
 public class DebugRepo extends CouchDbRepositorySupport<Debug> {
 	

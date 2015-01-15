@@ -15,7 +15,6 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.DbPath;
 import org.ektorp.http.StdHttpClient;
-import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.jgroups.Address;
 import org.jgroups.JChannel;
@@ -23,6 +22,8 @@ import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 import org.jgroups.blocks.locking.LockService;
 import org.jgroups.util.PayloadUUID;
+
+import util.ektorp.IdCouchDbConnector;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
@@ -266,7 +267,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 		} else {
 			remoteLink = new StdCouchDbInstance(new StdHttpClient.Builder().host(serverIp).build());
 		} 
-		CouchDbConnector bootstrap = new StdCouchDbConnector("acip-center-bootstrap", getServerLink());
+		CouchDbConnector bootstrap = new IdCouchDbConnector("acip-center-bootstrap", getServerLink());
 		@SuppressWarnings("unchecked")
 		Map<String, Object> settings = bootstrap.get(Map.class, "settings");
 		String centerCode = (String) settings.get("center-code");
@@ -288,7 +289,7 @@ public class LinkManager extends ReceiverAdapter implements Runnable {
 	}
 	
 	public CouchDbConnector getDb(String suffix) {
-		return new StdCouchDbConnector(dbCenterPrefix+suffix, getServerLink());   ///  FIXME:  handle re-assignment of DB
+		return new IdCouchDbConnector(dbCenterPrefix+suffix, getServerLink());   ///  FIXME:  handle re-assignment of DB
 	}
 	
 	public CouchDbInstance getServerLink() {
