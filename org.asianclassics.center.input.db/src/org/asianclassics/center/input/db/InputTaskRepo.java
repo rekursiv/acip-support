@@ -27,7 +27,7 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 	
 	
 //	@View(name="getAssignedTasks", map="function(doc) {if (doc.type === 'InputTask' && doc.active && doc.worker) emit([doc.worker, doc.priority], null)}")
-	@View(name="getAssignedTasks", map="function(doc) {if (doc.type === 'InputTask' && doc.active && doc.worker) emit([doc.worker, doc.taskPriority, doc.projectPriority, doc.collectionIndex, doc.volumeIndex, doc.pageIndex], null)}")
+	@View(name="getAssignedTasks", map="function(doc) {if (doc.type === 'InputTask' && doc.active && doc.worker) emit([doc.worker, doc.taskPriority, doc.projectPriority, doc.collectionId, doc.volumeIndex, doc.pageIndex], null)}")
 //	@View(name="getAssignedTasks", map="function(doc) {if (doc.active && doc.worker) emit([doc.worker, doc.taskPriority, doc.projectPriority, doc.collectionIndex, doc.volumeIndex, doc.pageIndex], null)}")
 
 	public List<InputTask> getAssignedTasks(String worker, int limit) {

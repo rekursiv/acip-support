@@ -23,7 +23,7 @@ public class InputTask extends Entity {
 	private int taskPriority=10;
 	private int projectPriority=10;
 	
-	private int collectionIndex;
+	private String collectionId;
 	private int volumeIndex;
 	private int pageIndex;
 	
@@ -46,7 +46,7 @@ public class InputTask extends Entity {
 	@JsonIgnore
 	public void linkWithSource(Source source) {
 		sourceId=source.getId();
-//		collectionIndex=source.getCollectionIndex();
+		collectionId=source.getCollectionId();
 		volumeIndex=source.getBookIndex();
 		pageIndex=source.getPageIndex();
 	}
@@ -54,7 +54,7 @@ public class InputTask extends Entity {
 	@JsonIgnore
 	public void copySourceInfo(InputTask task) {
 		sourceId=task.getSourceId();
-		collectionIndex=task.getCollectionIndex();
+		collectionId=task.getCollectionId();
 		volumeIndex=task.getVolumeIndex();
 		pageIndex=task.getPageIndex();
 	}
@@ -133,12 +133,12 @@ public class InputTask extends Entity {
 		this.dateTimeFinished = dateTimeFinished;
 	}
 
-	public int getCollectionIndex() {
-		return collectionIndex;
+	public String getCollectionId() {
+		return collectionId;
 	}
 
-	public void setCollectionIndex(int collectionIndex) {
-		this.collectionIndex = collectionIndex;
+	public void setCollectionId(String collectionId) {
+		this.collectionId = collectionId;
 	}
 
 	public int getVolumeIndex() {

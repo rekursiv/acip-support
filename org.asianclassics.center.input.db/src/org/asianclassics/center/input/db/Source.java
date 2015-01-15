@@ -1,6 +1,5 @@
 package org.asianclassics.center.input.db;
 
-
 import java.util.Date;
 
 import org.ektorp.support.Entity;
@@ -8,9 +7,6 @@ import org.ektorp.support.TypeDiscriminator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
-//@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
-//@TypeDiscriminator("doc.type === 'Source'")
 @SuppressWarnings("serial")
 public class Source extends Entity {
 
@@ -18,11 +14,13 @@ public class Source extends Entity {
 	
 	private String collectionId = null;
 	
-//	private int collectionIndex = 1;
 	private int bookIndex = 1;
 	private int pageIndex = 1;
 	
-	private String text;
+	public int projectPriority = 10;	
+	public boolean dispatched = false;
+
+	private String text;  //  TODO?
 
 	@TypeDiscriminator
 	public String getType() {

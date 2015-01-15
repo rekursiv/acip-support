@@ -60,6 +60,8 @@ public class UploadController {
 	private void resetDb() {
 		couch.deleteDatabase(dbName);
 		couch.createDatabase(dbName);
+		colRepo.initStandardDesignDocument();
+		srcRepo.initStandardDesignDocument();
 	}
 	
 	public void test() {

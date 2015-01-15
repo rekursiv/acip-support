@@ -25,7 +25,7 @@ public class UploadModule extends AbstractModule {
 
 	
 	public UploadModule() {
-		filePrefix = "admin";
+		filePrefix = "upload";
 		cfgMgr = new ConfigManager<UploadConfig>(UploadConfig.class, filePrefix+"-config.js");
 		eventBus = new EventBus();
 	}
