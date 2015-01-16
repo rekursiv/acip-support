@@ -8,7 +8,7 @@ class Debug {
 	
 }
 
-@View( name = "all", map = "classpath:Debug_map_all.js")
+@View(name="all", map="classpath:Debug_map_all.js")
 public class DebugRepo extends CouchDbRepositorySupport<Debug> {
 	
 	public DebugRepo(CouchDbConnector db) {

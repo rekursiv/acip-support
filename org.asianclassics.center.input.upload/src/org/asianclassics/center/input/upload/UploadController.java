@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 import org.asianclassics.center.input.db.Collection;
 import org.asianclassics.center.input.db.CollectionRepo;
 import org.asianclassics.center.input.db.DebugRepo;
-import org.asianclassics.center.input.db.Source;
-import org.asianclassics.center.input.db.SourceRepo;
+import org.asianclassics.center.input.db.Page;
+import org.asianclassics.center.input.db.PageRepo;
 import org.ektorp.AttachmentInputStream;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
@@ -35,7 +35,7 @@ public class UploadController {
 	private CouchDbConnector db;
 	private CouchDbInstance couch;
 	private CollectionRepo colRepo;
-	private SourceRepo srcRepo;
+	private PageRepo srcRepo;
 	private Collection curCollection;
 
 	private int pageIndex;
@@ -52,7 +52,7 @@ public class UploadController {
 		couch = new StdCouchDbInstance(httpClient);
 		db = new IdCouchDbConnector(dbName, couch);
 		colRepo = new CollectionRepo(db);
-		srcRepo = new SourceRepo(db);
+		srcRepo = new PageRepo(db);
 	}
 	
 	private void resetDb() {
@@ -116,7 +116,7 @@ public class UploadController {
 			log.info("Source Repository not initialized!");
 			return;
 		}
-		Source s = new Source();
+		Page s = new Page();
 		s.collectionId=curCollection.getId();
 		s.bookIndex=bookIndex;
 		s.pageIndex=pageIndex;
@@ -127,7 +127,7 @@ public class UploadController {
 	}
 	
 	
-	public void attachImage(Source src, File file) {
+	public void attachImage(Page src, File file) {
 		InputStream is = null;
 		try {
 			is = new FileInputStream(file);

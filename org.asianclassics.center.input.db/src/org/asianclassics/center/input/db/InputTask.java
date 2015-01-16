@@ -21,7 +21,7 @@ public class InputTask extends Entity {
 	public int bookIndex;
 	public int pageIndex;
 	
-	public String sourceId;
+	public String pageId;
 	public String partnerId;
 	public String taskToFixId;
 	
@@ -38,17 +38,17 @@ public class InputTask extends Entity {
 	}
 	
 	@JsonIgnore
-	public void linkWithSource(Source source) {
-		sourceId=source.getId();
-		collectionId=source.collectionId;
-		bookIndex=source.bookIndex;
-		pageIndex=source.pageIndex;
-		projectPriority=source.projectPriority;
+	public void linkWithSource(Page page) {
+		pageId=page.getId();
+		collectionId=page.collectionId;
+		bookIndex=page.bookIndex;
+		pageIndex=page.pageIndex;
+		projectPriority=page.projectPriority;
 	}
 	
 	@JsonIgnore
 	public void copySourceInfo(InputTask task) {
-		sourceId=task.sourceId;
+		pageId=task.pageId;
 		collectionId=task.collectionId;
 		bookIndex=task.bookIndex;
 		pageIndex=task.pageIndex;

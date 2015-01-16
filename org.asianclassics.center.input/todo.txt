@@ -1,12 +1,6 @@
 
 ====   DB
 
-copy projectPriority from source
-rename source->page????
-
-recordType disc.
-
-
 =====  Linux
 
 UEFI Systor

@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 import org.asianclassics.center.input.db.DebugRepo;
 import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
-import org.asianclassics.center.input.db.Source;
-import org.asianclassics.center.input.db.SourceRepo;
+import org.asianclassics.center.input.db.Page;
+import org.asianclassics.center.input.db.PageRepo;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
@@ -28,8 +28,8 @@ public class DispatchManager {
 	private CouchDbConnector centerDb;
 	private CouchDbInstance couch;
 //	private CollectionRepo colRepo;
-	private SourceRepo centerSrcRepo;
-	private SourceRepo hqSrcRepo;
+	private PageRepo centerSrcRepo;
+	private PageRepo hqSrcRepo;
 	private InputTaskRepo centerTaskRepo;
 	
 	public void test() {
@@ -37,10 +37,10 @@ public class DispatchManager {
 		initDbs();
 		resetCenterDb();
 		
-		List<Source> srcList = hqSrcRepo.getAllNeedingDispatch(3);
+		List<Page> srcList = hqSrcRepo.getAllNeedingDispatch(3);
 		
 		ArrayList<String> srcIds = new ArrayList<String>();
-		for (Source src : srcList) {
+		for (Page src : srcList) {
 			System.out.println(src.getId());
 			srcIds.add(src.getId());
 			InputTask it = new InputTask();
@@ -58,11 +58,11 @@ public class DispatchManager {
 		couch = new StdCouchDbInstance(httpClient);
 		
 		hqDb = new IdCouchDbConnector(hqDbName, couch);
-		hqSrcRepo = new SourceRepo(hqDb);
+		hqSrcRepo = new PageRepo(hqDb);
 		hqSrcRepo.initStandardDesignDocument();
 
 		centerDb = new IdCouchDbConnector(centerDbName, couch);
-		centerSrcRepo = new SourceRepo(centerDb);
+		centerSrcRepo = new PageRepo(centerDb);
 		centerTaskRepo = new InputTaskRepo(centerDb);
 	}
 	

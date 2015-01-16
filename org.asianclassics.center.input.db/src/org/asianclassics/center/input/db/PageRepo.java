@@ -11,20 +11,20 @@ import org.ektorp.ViewQuery;
 import org.ektorp.support.CouchDbRepositorySupport;
 import org.ektorp.support.View;
 
-public class SourceRepo extends CouchDbRepositorySupport<Source> {
+public class PageRepo extends CouchDbRepositorySupport<Page> {
 	
-	public SourceRepo(CouchDbConnector db) {
-		super(Source.class, db, false);
+	public PageRepo(CouchDbConnector db) {
+		super(Page.class, db, false);
 	}
 
-	@View(name="byCollection", map="function(doc) {if (doc.recordType === 'Source') emit(doc.collectionId, null)}")
-	public List<Source> getByCollection(String collectionId) {
+	@View(name="byCollection", map="classpath:Page_map_byCollection.js")   //  TODO:  will we use this??
+	public List<Page> getByCollection(String collectionId) {
 		ViewQuery q = createQuery("byCollection").includeDocs(true).key(collectionId);
 		return db.queryView(q, type);
 	}
 
-	@View(name="allNeedingDispatch", map="function(doc) {if (doc.recordType === 'Source' && !doc.dispatch) emit([doc.projectPriority, doc.collectionId, doc.bookIndex, doc.pageIndex], null)}")
-	public List<Source> getAllNeedingDispatch(int limit) {
+	@View(name="allNeedingDispatch", map="classpath:Page_map_allNeedingDispatch.js")
+	public List<Page> getAllNeedingDispatch(int limit) {
 		ViewQuery q = createQuery("allNeedingDispatch").limit(limit).includeDocs(true);
 		return db.queryView(q, type);
 	}

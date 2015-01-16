@@ -8,7 +8,7 @@ import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
-import org.asianclassics.center.input.db.SourceRepo;
+import org.asianclassics.center.input.db.PageRepo;
 import org.asianclassics.center.link.LinkManager;
 import org.eclipse.swt.graphics.ImageData;
 import org.ektorp.CouchDbConnector;
@@ -29,7 +29,7 @@ public class InputTaskController {
 	private String workerId;
 	private CouchDbConnector taskDb;
 	private InputTaskRepo taskRepo;
-	private SourceRepo srcRepo;
+	private PageRepo srcRepo;
 	private InputTask curTask;
 	private InputTaskView view;
 	
@@ -53,7 +53,7 @@ public class InputTaskController {
 			
 			taskDb = lm.getDb("tasks");
 			taskRepo = new InputTaskRepo(taskDb);
-			srcRepo = new SourceRepo(taskDb);
+			srcRepo = new PageRepo(taskDb);
 			
 			getTask();
 	//		log.info(taskDb.getDatabaseName());
@@ -77,7 +77,7 @@ public class InputTaskController {
 		if (curTask!=null) {
 //			srcTxt = taskDb.get(Source.class, curTask.getSourceId()).getText();    //  TEST
 			try {
-				imgData = srcRepo.getImage(curTask.sourceId, "img.png");
+				imgData = srcRepo.getImage(curTask.pageId, "img.png");
 			} catch (Exception e) {
 				log.log(Level.WARNING, "", e);
 			}
