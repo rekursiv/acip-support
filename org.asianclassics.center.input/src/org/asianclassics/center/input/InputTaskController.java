@@ -3,14 +3,15 @@ package org.asianclassics.center.input;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import org.asianclassics.center.event.LoginSuccessEvent;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.asianclassics.center.input.db.InputTask;
 import org.asianclassics.center.input.db.InputTaskRepo;
 import org.asianclassics.center.input.db.PageRepo;
 import org.asianclassics.center.link.LinkManager;
+import org.asianclassics.text.edit.AcipEditor;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.widgets.Display;
 import org.ektorp.CouchDbConnector;
 
 import util.ektorp.DateTimeStamp;
@@ -31,8 +32,9 @@ public class InputTaskController {
 	private InputTaskRepo taskRepo;
 	private PageRepo srcRepo;
 	private InputTask curTask;
-	private InputTaskView view;
 	private InputTest test;
+	private ScanPanel scan;
+	private AcipEditor editor;
 	
 
 	@Inject
@@ -43,9 +45,14 @@ public class InputTaskController {
 		this.test = test;
 	}
 	
-	public void setView(InputTaskView view) {
-		this.view = view;
+	public void setEditor(AcipEditor editor) {
+		this.editor = editor;
 	}
+
+	public void setScan(ScanPanel scan) {
+		this.scan = scan;
+	}
+	
 	
 	@Subscribe
 	public void onLogin(LoginSuccessEvent evt) {
@@ -66,6 +73,34 @@ public class InputTaskController {
 		}
 	}
 
+	
+	
+	public void finishTask() {
+		if (curTask!=null && editor!=null) {
+			curTask.product=editor.getWorkingText();
+			curTask.isActive=false;
+			curTask.dateTimeFinished=DateTimeStamp.gen();
+			taskRepo.finalize(curTask);
+			curTask=null;
+		}
+		getTask();
+	}
+
+	public void save() {
+		if (curTask!=null && editor!=null) {
+			log.info(editor.getWorkingText());
+			curTask.product=editor.getWorkingText();
+			taskRepo.update(curTask);
+		}
+		
+	}
+
+	public void testInput(InputTest.ErrorType errorType) {
+		if (curTask!=null) editor.setWorkingText(test.getPage(curTask.pageIndex, errorType));
+	}
+
+	
+	
 	private void getTask() {
 		String taskType = "empty";
 		String workingTxt = "";
@@ -86,9 +121,10 @@ public class InputTaskController {
 
 			String fixmeId = curTask.taskToFixId;
 			if (fixmeId==null) {
-				taskType = "input";
+				taskType = "Input";
+//				workingTxt =               ///  FIXME
 			} else {
-				taskType = "correction";
+				taskType = "Correction";
 				workingTxt = taskDb.get(InputTask.class, curTask.taskToFixId).product;
 				InputTask partnerTask = taskDb.get(InputTask.class, curTask.partnerId);
 				if (partnerTask!=null) {
@@ -100,54 +136,38 @@ public class InputTaskController {
 			taskDb.update(curTask);
 		}
 		
-//		log.info("taskType: "+taskType);
-//		log.info("workingText: "+workingTxt);
-//		log.info("referenceTxt: "+referenceTxt);
+		log.info("taskType: "+taskType);
+		log.info("workingText: "+workingTxt);
+		log.info("referenceTxt: "+referenceTxt);
 
-		view.setImage(imgData);
-		view.setReferenceText(referenceTxt);
-		view.setWorkingText(workingTxt);
-		view.setFocus();
+		scan.setImage(imgData);
+		editor.setReferenceText(referenceTxt);
+		editor.setWorkingText(workingTxt);
+		setFocus();
 		
 		StringBuilder statMsg = new StringBuilder();
 		statMsg.append(taskType);
 		if (curTask!=null) {
-			statMsg.append(":  b");
+			statMsg.append(":  Book ");
 			statMsg.append(curTask.bookIndex);
-			statMsg.append(", p");
+			statMsg.append(", Page ");
 			statMsg.append(curTask.pageIndex);			
 			if (partnerWid!=null) {
-				statMsg.append(", partner=");
+				statMsg.append(", Partner=");
 				statMsg.append(partnerWid);
 			}
 		}
 		eb.post(new StatusPanelUpdateEvent(statMsg.toString()));
 	}
 	
-	public void finishTask(String product) {
-		if (curTask!=null) {
-			log.info(product);
-			curTask.product=product;
-			curTask.isActive=false;
-			curTask.dateTimeFinished=DateTimeStamp.gen();
-			taskRepo.finalize(curTask);
-			curTask=null;
-		}
-		getTask();
-	}
-
-	public void save(String product) {
-		if (curTask!=null) {
-			curTask.product=product;
-			taskRepo.update(curTask);
-		}
-		
-	}
-
-	public void testInput() {
-		if (curTask!=null) view.setWorkingText(test.getPage(curTask.pageIndex, InputTest.ErrorType.OBVIOUS));
-	}
 	
-	
+	private void setFocus() {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				editor.setFocus();
+			}
+		});
+	}
 
 }

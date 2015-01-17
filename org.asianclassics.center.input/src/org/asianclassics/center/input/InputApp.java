@@ -32,7 +32,7 @@ public class InputApp {
 	protected void init() {
 		CenterShell cs = new CenterShell();
 		cs.setSize(2000, 1000);
-		cs.setMinimumSize(400, 700);
+		cs.setMinimumSize(1000, 700);
 		cs.setText("ACIP Input Center Pecha Entry");
 		cs.setLayout(new FillLayout(SWT.HORIZONTAL));
 	

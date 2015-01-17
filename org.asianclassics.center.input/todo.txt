@@ -1,4 +1,7 @@
 
+BUGFIX:  load product from saved InputTask
+
+
 === demo
 
 Uploader:
@@ -13,8 +16,6 @@ UEFI Systor
  check old boxes for UEFI
 
 ====  Input GUI
-
-"test" section
 
 improve "status" msg
 
