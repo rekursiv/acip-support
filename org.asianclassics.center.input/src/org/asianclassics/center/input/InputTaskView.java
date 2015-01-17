@@ -100,8 +100,8 @@ public class InputTaskView extends TaskView {
 		FormData fd_btnSave = new FormData();
 		fd_btnSave.top = new FormAttachment(btnFinish, -25);
 		fd_btnSave.bottom = new FormAttachment(btnFinish, 0, SWT.BOTTOM);
-		fd_btnSave.right = new FormAttachment(0, 190);
-		fd_btnSave.left = new FormAttachment(0, 154);
+		fd_btnSave.right = new FormAttachment(0, 286);
+		fd_btnSave.left = new FormAttachment(0, 250);
 		btnSave.setLayoutData(fd_btnSave);
 		btnSave.setText("Save");
 		
@@ -152,6 +152,19 @@ public class InputTaskView extends TaskView {
 		fd_btnAutoAlignScan.left = new FormAttachment(0, 405);
 		btnAutoAlignScan.setLayoutData(fd_btnAutoAlignScan);
 		btnAutoAlignScan.setText("Auto-Align Scan");
+		
+		Button btnType = new Button(this, SWT.NONE);
+		btnType.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				itCon.testInput();
+			}
+		});
+		FormData fd_btnType = new FormData();
+		fd_btnType.top = new FormAttachment(btnFinish, 0, SWT.TOP);
+		fd_btnType.left = new FormAttachment(btnFinish, 6);
+		btnType.setLayoutData(fd_btnType);
+		btnType.setText("Type");
 		
 		if (injector!=null) injector.injectMembers(this);
 	}

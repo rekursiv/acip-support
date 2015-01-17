@@ -42,8 +42,8 @@ public class TestInputTaskView extends TaskView {
 	private Image scan = null;
 
 	
-	public TestInputTaskView(Composite parent, int style, Injector injector) {
-		super(parent, style);
+	public TestInputTaskView(Composite parent, Injector injector) {
+		super(parent, SWT.NONE);
 		setLayout(new FormLayout());
 		
 		btnLogout = new Button(this, SWT.NONE);

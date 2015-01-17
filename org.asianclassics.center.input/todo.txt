@@ -1,14 +1,23 @@
 
-====   DB
+=== demo
 
+Uploader:
+ "dispatch" btn
+ dir chooser
+
+====   testing
+2+ "input operators" in Sedona/Scriptorium 
 =====  Linux
 
 UEFI Systor
  check old boxes for UEFI
 
-
-
 ====  Input GUI
+
+"test" section
+
+improve "status" msg
+
 
 test on Linux
 
@@ -20,7 +29,9 @@ save settings to user DB:
   auto align
   zoom
 
-improve "status" msg
+work out "block size" and when to switch from input to correction
+
+figger out re-assignment of tasks in case of input operator quitting/going on vacation
 
 ====
 

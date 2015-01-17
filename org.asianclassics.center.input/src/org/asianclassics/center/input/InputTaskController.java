@@ -32,13 +32,15 @@ public class InputTaskController {
 	private PageRepo srcRepo;
 	private InputTask curTask;
 	private InputTaskView view;
+	private InputTest test;
 	
 
 	@Inject
-	public InputTaskController(Logger log, EventBus eb, LinkManager lm) {
+	public InputTaskController(Logger log, EventBus eb, LinkManager lm, InputTest test) {
 		this.log = log;
 		this.eb = eb;
 		this.lm = lm;
+		this.test = test;
 	}
 	
 	public void setView(InputTaskView view) {
@@ -140,6 +142,10 @@ public class InputTaskController {
 			taskRepo.update(curTask);
 		}
 		
+	}
+
+	public void testInput() {
+		if (curTask!=null) view.setWorkingText(test.getPage(curTask.pageIndex, InputTest.ErrorType.OBVIOUS));
 	}
 	
 	

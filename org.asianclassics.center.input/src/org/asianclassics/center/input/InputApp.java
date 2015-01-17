@@ -20,6 +20,13 @@ public class InputApp {
 		CenterShell.setProperties();
 		InputApp instance = new InputApp();
 		instance.init();
+//		instance.test();
+	}
+	
+	protected void test() {
+		Injector injector = Guice.createInjector(new CenterModule());
+		InputTest it = injector.getInstance(InputTest.class);
+		it.test();
 	}
 	
 	protected void init() {

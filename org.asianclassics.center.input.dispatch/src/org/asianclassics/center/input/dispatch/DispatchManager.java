@@ -37,7 +37,7 @@ public class DispatchManager {
 		initDbs();
 		resetCenterDb();
 		
-		List<Page> srcList = hqSrcRepo.getAllNeedingDispatch(3);
+		List<Page> srcList = hqSrcRepo.getAllNeedingDispatch(30);
 		
 		ArrayList<String> srcIds = new ArrayList<String>();
 		for (Page src : srcList) {

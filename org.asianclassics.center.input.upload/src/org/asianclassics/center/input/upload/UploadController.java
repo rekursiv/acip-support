@@ -27,7 +27,8 @@ import com.google.inject.Singleton;
 @Singleton
 public class UploadController {
 	
-	private static final String colName = "books";
+	private static final int maxPages = 2;
+	private static final String colName = "tengyur";
 	private static final String baseDir = "C:/projects/ACIP/input_test_sample/";
 	private static final String dbName = "acip-hq-input";
 	
@@ -107,7 +108,7 @@ public class UploadController {
 			log.info("  Uploading page #"+pageIndex+", filename="+file.getName());
 			addSource(file);
 			++pageIndex;
-//			break;
+			if (pageIndex > maxPages) break;
 		}
 	}
 	
