@@ -6,10 +6,11 @@
 	<classpathentry kind="lib" path="C:/projects/javalib/guice-3.0/guice-3.0-no_aop.jar"/>
 	<classpathentry kind="lib" path="C:/projects/javalib/guice-3.0/javax.inject.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseSWT"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.ektorp"/>
+	<classpathentry kind="src" path="/util.ektorp"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util.config"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util.logging"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.ektorp"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.center.input.db"/>
-	<classpathentry kind="src" path="/util.ektorp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.asianclassics.center.input.dispatch"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

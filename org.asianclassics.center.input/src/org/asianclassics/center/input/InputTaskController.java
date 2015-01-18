@@ -88,7 +88,6 @@ public class InputTaskController {
 
 	public void save() {
 		if (curTask!=null && editor!=null) {
-			log.info(editor.getWorkingText());
 			curTask.product=editor.getWorkingText();
 			taskRepo.update(curTask);
 		}
@@ -102,7 +101,7 @@ public class InputTaskController {
 	
 	
 	private void getTask() {
-		String taskType = "empty";
+		String taskType = "EMPTY";
 		String workingTxt = "";
 		String referenceTxt = null;
 		
@@ -122,7 +121,7 @@ public class InputTaskController {
 			String fixmeId = curTask.taskToFixId;
 			if (fixmeId==null) {
 				taskType = "Input";
-//				workingTxt =               ///  FIXME
+				workingTxt = curTask.product;
 			} else {
 				taskType = "Correction";
 				workingTxt = taskDb.get(InputTask.class, curTask.taskToFixId).product;

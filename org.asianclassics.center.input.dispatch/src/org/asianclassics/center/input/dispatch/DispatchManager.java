@@ -32,16 +32,18 @@ public class DispatchManager {
 	private PageRepo hqSrcRepo;
 	private InputTaskRepo centerTaskRepo;
 	
-	public void test() {
-
+	
+	
+	public void dispatch(int blockSize) {
+		
 		initDbs();
 		resetCenterDb();
 		
-		List<Page> srcList = hqSrcRepo.getAllNeedingDispatch(30);
+		List<Page> srcList = hqSrcRepo.getAllNeedingDispatch(blockSize);
 		
 		ArrayList<String> srcIds = new ArrayList<String>();
 		for (Page src : srcList) {
-			System.out.println(src.getId());
+			log.info(src.getId());
 			srcIds.add(src.getId());
 			InputTask it = new InputTask();
 			it.linkWithSource(src);
@@ -51,6 +53,7 @@ public class DispatchManager {
 		
 		centerDb.replicateFrom(hqDbName, srcIds);
 
+		log.info("Done.");
 	}
 	
 	private void initDbs() {

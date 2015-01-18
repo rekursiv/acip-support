@@ -26,11 +26,12 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class UploadController {
-	
-	private static final int maxPages = 2;
-	private static final String colName = "tengyur";
-	private static final String baseDir = "C:/projects/ACIP/input_test_sample/";
+
 	private static final String dbName = "acip-hq-input";
+	
+	private int maxPages = 2;
+	private String colName = "tengyur";
+	private String baseDir = "C:/projects/ACIP/input_test_sample/";
 	
 	private Logger log;
 	private CouchDbConnector db;
@@ -64,7 +65,19 @@ public class UploadController {
 		new DebugRepo(db).initStandardDesignDocument();
 	}
 	
-	public void test() {
+	public void setMaxPages(int pages) {
+		maxPages = pages;
+	}
+	
+	public void setColName(String name) {
+		colName = name;
+	}
+	
+	public void setBaseDir(String dir) {
+		baseDir = dir;
+	}
+	
+	public void upload() {
 	
 		initDb();
 		resetDb();
@@ -79,6 +92,9 @@ public class UploadController {
 			} else {
 				uploadFiles(dir);
 			}
+			log.info("Done.");			
+		} else {
+			log.info("Path not found: "+baseDir+colName);
 		}
 	}
 	
@@ -139,23 +155,5 @@ public class UploadController {
 		}
 	}
 	
-	
-	public void sortTest() {
-		File dir = new File("C:/projects/ACIP/renovationpictures");
-		
-		File[] fileList = dir.listFiles();
-		File x = fileList[2];
-		fileList[2]=fileList[5];
-		fileList[5]=x;
-		
-		for (File file : fileList) {
-			log.info(file.getName());
-		}
-		log.info("----");
-		
-		Arrays.sort(fileList);
-		for (File file : fileList) {
-			log.info(file.getName());
-		}
-	}
+
 }

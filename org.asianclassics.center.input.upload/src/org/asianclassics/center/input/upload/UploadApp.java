@@ -15,15 +15,15 @@ public class UploadApp {
 	public static void main(String[] args) {
 		UploadShell.setProperties();
 		UploadApp instance = new UploadApp();
-//		instance.init();
-		instance.test();
+		instance.init();
+//		instance.test();
 	}
 	
 
 	protected void test() {
 		Injector injector = Guice.createInjector(new UploadModule());
 		UploadController uc = injector.getInstance(UploadController.class);
-		uc.test();
+		uc.upload();
 	}
 	
 	protected void init() {

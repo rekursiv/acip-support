@@ -1,12 +1,4 @@
 
-BUGFIX:  load product from saved InputTask
-
-
-=== demo
-
-Uploader:
- "dispatch" btn
- dir chooser
 
 ====   testing
 2+ "input operators" in Sedona/Scriptorium 
@@ -16,9 +8,6 @@ UEFI Systor
  check old boxes for UEFI
 
 ====  Input GUI
-
-improve "status" msg
-
 
 test on Linux
 
