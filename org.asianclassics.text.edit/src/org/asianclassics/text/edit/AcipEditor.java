@@ -20,7 +20,6 @@ import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -45,7 +44,7 @@ public class AcipEditor extends Composite {
 		super(parent, SWT.EMBEDDED|SWT.NO_BACKGROUND);
 		System.setProperty("sun.awt.noerasebackground", "true");
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");  // see https://bugs.eclipse.org/bugs/show_bug.cgi?id=341799
 		} catch (ClassNotFoundException | InstantiationException| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}

@@ -32,7 +32,7 @@ public class InputTestPanel  extends Group {
 				itCon.testInput(InputTest.ErrorType.NONE);
 			}
 		});
-		btnInputNoErrors.setBounds(10, 21, 133, 25);
+		btnInputNoErrors.setBounds(10, 21, 170, 25);
 		btnInputNoErrors.setText("Input With No Errors");
 		
 		Button btnInputWithObvious = new Button(this, SWT.NONE);
@@ -43,7 +43,7 @@ public class InputTestPanel  extends Group {
 			}
 		});
 		btnInputWithObvious.setText("Input With Obvious Errors");
-		btnInputWithObvious.setBounds(149, 21, 163, 25);
+		btnInputWithObvious.setBounds(186, 21, 193, 25);
 		
 		Button btnInputWithSimple = new Button(this, SWT.NONE);
 		btnInputWithSimple.addSelectionListener(new SelectionAdapter() {
@@ -53,7 +53,7 @@ public class InputTestPanel  extends Group {
 			}
 		});
 		btnInputWithSimple.setText("Input With Simple Errors");
-		btnInputWithSimple.setBounds(318, 21, 156, 25);
+		btnInputWithSimple.setBounds(385, 21, 185, 25);
 		
 		Button btnInputWithComplex = new Button(this, SWT.NONE);
 		btnInputWithComplex.addSelectionListener(new SelectionAdapter() {
@@ -63,7 +63,7 @@ public class InputTestPanel  extends Group {
 			}
 		});
 		btnInputWithComplex.setText("Input With Complex Errors");
-		btnInputWithComplex.setBounds(480, 21, 156, 25);
+		btnInputWithComplex.setBounds(576, 21, 193, 25);
 		
 		Button btnSave = new Button(this, SWT.NONE);
 		btnSave.addSelectionListener(new SelectionAdapter() {
@@ -72,7 +72,7 @@ public class InputTestPanel  extends Group {
 				itCon.save();
 			}
 		});
-		btnSave.setBounds(732, 21, 75, 25);
+		btnSave.setBounds(837, 21, 75, 25);
 		btnSave.setText("Save");
 		
 		if (injector!=null) injector.injectMembers(this);

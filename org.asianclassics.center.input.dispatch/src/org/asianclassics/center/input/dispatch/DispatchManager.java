@@ -19,17 +19,21 @@ import util.ektorp.IdCouchDbConnector;
 
 
 public class DispatchManager {
-	
+
+	private static final String centerDbIp = "127.0.0.1";
+//	private static final String centerDbIp = "192.168.0.16";
 	private static final String hqDbName = "acip-hq-input";
 	private static final String centerDbName = "acip-center-test-tasks";
+	
+	
 	private static Logger log = Logger.getLogger(DispatchManager.class.getName());
 
 	private CouchDbConnector hqDb;
 	private CouchDbConnector centerDb;
-	private CouchDbInstance couch;
-//	private CollectionRepo colRepo;
+	private CouchDbInstance hqCouch;
+	private CouchDbInstance centerCouch;
 	private PageRepo centerSrcRepo;
-	private PageRepo hqSrcRepo;
+	private PageRepo hqPageRepo;
 	private InputTaskRepo centerTaskRepo;
 	
 	
@@ -39,7 +43,7 @@ public class DispatchManager {
 		initDbs();
 		resetCenterDb();
 		
-		List<Page> srcList = hqSrcRepo.getAllNeedingDispatch(blockSize);
+		List<Page> srcList = hqPageRepo.getAllNeedingDispatch(blockSize);
 		
 		ArrayList<String> srcIds = new ArrayList<String>();
 		for (Page src : srcList) {
@@ -51,27 +55,30 @@ public class DispatchManager {
 			centerTaskRepo.add(it);
 		}
 		
-		centerDb.replicateFrom(hqDbName, srcIds);
+		hqDb.replicateTo("http://"+centerDbIp+":5984/"+centerDbName, srcIds);
 
 		log.info("Done.");
 	}
 	
 	private void initDbs() {
-		HttpClient httpClient = new StdHttpClient.Builder().build();
-		couch = new StdCouchDbInstance(httpClient);
+		HttpClient hqHttpClient = new StdHttpClient.Builder().build();
+		hqCouch = new StdCouchDbInstance(hqHttpClient);
 		
-		hqDb = new IdCouchDbConnector(hqDbName, couch);
-		hqSrcRepo = new PageRepo(hqDb);
-		hqSrcRepo.initStandardDesignDocument();
+		HttpClient centerHttpClient = new StdHttpClient.Builder().host(centerDbIp).build();
+		centerCouch = new StdCouchDbInstance(centerHttpClient);
+		
+		hqDb = new IdCouchDbConnector(hqDbName, hqCouch);
+		hqPageRepo = new PageRepo(hqDb);
+		hqPageRepo.initStandardDesignDocument();
 
-		centerDb = new IdCouchDbConnector(centerDbName, couch);
+		centerDb = new IdCouchDbConnector(centerDbName, centerCouch);
 		centerSrcRepo = new PageRepo(centerDb);
 		centerTaskRepo = new InputTaskRepo(centerDb);
 	}
 	
 	private void resetCenterDb() {
-		couch.deleteDatabase(centerDbName);
-		couch.createDatabase(centerDbName);
+		centerCouch.deleteDatabase(centerDbName);
+		centerCouch.createDatabase(centerDbName);
 
 		centerSrcRepo.initStandardDesignDocument();
 		centerTaskRepo.initStandardDesignDocument();

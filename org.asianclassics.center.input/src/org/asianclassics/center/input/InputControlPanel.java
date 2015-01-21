@@ -49,7 +49,7 @@ public class InputControlPanel extends Composite {
 			}
 		});
 		FormData fd_btnLogout = new FormData();
-		fd_btnLogout.right = new FormAttachment(0, 65);
+		fd_btnLogout.right = new FormAttachment(0, 85);
 		fd_btnLogout.bottom = new FormAttachment(0, 35);
 		fd_btnLogout.top = new FormAttachment(0, 10);
 		fd_btnLogout.left = new FormAttachment(0, 15);
@@ -64,10 +64,10 @@ public class InputControlPanel extends Composite {
 			}
 		});
 		FormData fd_btnFinish = new FormData();
-		fd_btnFinish.top = new FormAttachment(btnLogout, -25);
-		fd_btnFinish.bottom = new FormAttachment(btnLogout, 0, SWT.BOTTOM);
-		fd_btnFinish.right = new FormAttachment(0, 120);
-		fd_btnFinish.left = new FormAttachment(0, 77);
+		fd_btnFinish.bottom = new FormAttachment(btnLogout, 25);
+		fd_btnFinish.top = new FormAttachment(btnLogout, 0, SWT.TOP);
+		fd_btnFinish.right = new FormAttachment(0, 165);
+		fd_btnFinish.left = new FormAttachment(0, 102);
 		btnFinish.setLayoutData(fd_btnFinish);
 		btnFinish.setText("Finish");
 		
@@ -90,7 +90,7 @@ public class InputControlPanel extends Composite {
 		
 		lblZoom = new Label(this, SWT.NONE);
 		FormData fd_lblZoom = new FormData();
-		fd_lblZoom.right = new FormAttachment(scale, 34, SWT.RIGHT);
+		fd_lblZoom.right = new FormAttachment(0, 905);
 		fd_lblZoom.left = new FormAttachment(scale, 6);
 		lblZoom.setLayoutData(fd_lblZoom);
 		lblZoom.setText("100%");
@@ -98,7 +98,7 @@ public class InputControlPanel extends Composite {
 		lblZoomTitle = new Label(this, SWT.NONE);
 		fd_lblZoom.bottom = new FormAttachment(lblZoomTitle, 0, SWT.BOTTOM);
 		FormData fd_lblZoomTitle = new FormData();
-		fd_lblZoomTitle.left = new FormAttachment(scale, -32, SWT.LEFT);
+		fd_lblZoomTitle.left = new FormAttachment(0, 485);
 		fd_lblZoomTitle.right = new FormAttachment(scale);
 		lblZoomTitle.setLayoutData(fd_lblZoomTitle);
 		lblZoomTitle.setText("Zoom");
