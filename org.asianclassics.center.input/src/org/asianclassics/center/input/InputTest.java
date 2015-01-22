@@ -1,12 +1,9 @@
 package org.asianclassics.center.input;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Date;
-import java.util.Random;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
 import com.google.inject.Inject;
@@ -75,11 +72,13 @@ public class InputTest {
 	
 	public String getPage(int page) {
 		int pageToGet = page+offset;
-		int curPageIndex = 0;	
-		Path textPath = Paths.get("C:/projects/ACIP/tendg/text_raw/080_KA.txt");
+		int curPageIndex = 0;
 		StringBuilder sb = new StringBuilder();
 		try {
-			for (String line : Files.readAllLines(textPath, StandardCharsets.UTF_8)) {
+			InputStream is = InputTest.class.getResourceAsStream("080_KA.txt");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			String line;
+			while ((line = reader.readLine()) != null) {
 				if (line.startsWith("@")) {
 					++curPageIndex;
 					line = line.replaceFirst("@\\d[AB] ", "$0\n");
