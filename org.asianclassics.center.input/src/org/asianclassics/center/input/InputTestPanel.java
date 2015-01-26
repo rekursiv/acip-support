@@ -75,6 +75,16 @@ public class InputTestPanel  extends Group {
 		btnSave.setBounds(837, 21, 75, 25);
 		btnSave.setText("Save");
 		
+		Button btnTest = new Button(this, SWT.NONE);
+		btnTest.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				itCon.test();
+			}
+		});
+		btnTest.setBounds(935, 21, 75, 25);
+		btnTest.setText("TEST");
+		
 		if (injector!=null) injector.injectMembers(this);
 	}
 	

@@ -209,4 +209,11 @@ public class AcipEditor extends Composite {
 		// Disable the check that prevents subclassing of SWT components
 	}
 
+
+
+	public void test() {
+		DiffUtil du = new DiffUtil();
+		du.test(getReferenceText(), getWorkingText());
+	}
+
 }

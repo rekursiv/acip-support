@@ -169,4 +169,8 @@ public class InputTaskController {
 		});
 	}
 
+	public void test() {
+		editor.test();
+	}
+
 }

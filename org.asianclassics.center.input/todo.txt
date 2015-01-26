@@ -1,5 +1,35 @@
 
+dispatch:
+  replicate all non-active InputTasks from Center to HQ
+  for all isFinal, copy text into HQ-Page and delete Center-Page
+  delete all non-active InputTasks in Center
 
+ reassignment:  for all active ITs with dateTimeAssigned older than X days, reassign to "_any"
+
+===== 
+
+InputTask fields:
+ dateTimeDispatched
+ dataVersion
+ secondsWorked
+ corrections
+
+add "versioning" to db records
+
+
+====
+
+Admin:
+ per-worker stats:  
+   for all inputTasks with no "taskToFixId" field (input) count syllables typed:
+      Chars Per Minute
+      total per daterange: use field "dateTimeFinished"
+   for all inputTasks WITH taskToFixId count errors corrected
+      Corrections Per Minute
+      total per daterange: use field "dateTimeFinished"
+   CPPH - Corrected Pages Per Hour
+ per-collection stats:  % done, drill-down details
+ 
 ====   testing
 2+ "input operators" in Sedona/Scriptorium 
 =====  Linux
@@ -11,8 +41,6 @@ export SWT_GTK3=0
 UEFI Systor - is it worth it???
 
 ====  Input GUI
-
-test on Linux
 
 auto-save
 check for some text input on finish

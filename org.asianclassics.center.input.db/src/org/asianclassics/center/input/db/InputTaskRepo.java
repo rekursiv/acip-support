@@ -41,6 +41,7 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 			if (partner.compareTo(worker)!=0) {
 //				System.out.println("different");
 				task.worker=worker;
+				task.dateTimeAssigned=DateTimeStamp.gen();
 				update(task);
 				if (validTask==null) validTask = task;
 			}
