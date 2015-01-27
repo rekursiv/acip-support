@@ -22,6 +22,10 @@ import util.ektorp.IdCouchDbConnector;
 
 public class DispatchManager {
 
+	private static final int centerPageCount = 4;
+	
+	private static final int copyDataFromCenterBlockSize = 30;
+	
 	private static final String centerDbIp = "127.0.0.1";
 //	private static final String centerDbIp = "192.168.0.16";
 	private static final String hqDbName = "acip-hq-input";
@@ -34,7 +38,7 @@ public class DispatchManager {
 	private CouchDbConnector centerDb;
 	private CouchDbInstance hqCouch;
 	private CouchDbInstance centerCouch;
-	private PageRepo centerSrcRepo;
+	private PageRepo centerPageRepo;
 	private PageRepo hqPageRepo;
 	private InputTaskRepo centerTaskRepo;
 	
@@ -44,7 +48,7 @@ public class DispatchManager {
 	}
 	
 	public void copyDataFromCenter() {
-		List<InputTask> nonActiveTasks = centerTaskRepo.getNonActive(100);
+		List<InputTask> nonActiveTasks = centerTaskRepo.getNonActive(copyDataFromCenterBlockSize);
 		
 		// pass one:  replicate into HQ database
 		ArrayList<String> itIds = new ArrayList<String>();
@@ -71,7 +75,7 @@ public class DispatchManager {
 					hqPageRepo.update(p);
 
 					// delete Center page
-					p = centerSrcRepo.get(it.pageId);
+					p = centerPageRepo.get(it.pageId);
 					if (p!=null) centerDb.delete(p);
 				}
 			}
@@ -89,19 +93,22 @@ public class DispatchManager {
 		
 		List<Page> srcList = hqPageRepo.getAllNeedingDispatch(blockSize);
 		
-		ArrayList<String> srcIds = new ArrayList<String>();
-		for (Page src : srcList) {
-			log.info(src.getId());
-			srcIds.add(src.getId());
+		ArrayList<String> pageIds = new ArrayList<String>();
+		for (Page page : srcList) {
+			log.info("Preparing page "+page.pageIndex+" in book "+page.bookIndex);
+			pageIds.add(page.getId());
+			page.dispatchedTo=centerName;
+			hqPageRepo.update(page);
+			
 			InputTask it = new InputTask();
-			it.linkWithSource(src);
+			it.linkWithSource(page);
 			it.isActive=true;
 			it.center=centerName;
 			it.dateTimeDispatched=DateTimeStamp.gen();
 			centerTaskRepo.add(it);
 		}
 		
-		ReplicationStatus status = hqDb.replicateTo("http://"+centerDbIp+":5984/"+getCenterDbName(), srcIds);
+		ReplicationStatus status = hqDb.replicateTo("http://"+centerDbIp+":5984/"+getCenterDbName(), pageIds);
 		if (status.isOk()) log.info("replication OK");
 		else log.warning("replication FAIL");
 
@@ -109,25 +116,40 @@ public class DispatchManager {
 	
 	public void reassignIfNeeded() {
 		//  TODO:   for all active ITs with dateTimeAssigned older than X days, reassign to "_any"
-
 	}
-	
-	public void dispatch(int blockSize) {
-		
+
+	public void reset() {
 		initDbs();
-//		resetCenterDb();
+		log.info("Deleting and re-creating Center DB....");		
+		resetCenterDb();
 		initDesignDocs();
-
-		copyDataFromCenter();
-//		copyDataToCenter(blockSize);
-
 		log.info("Done.");
 	}
 	
-	
-	
-	
-	
+	public void dispatch() {
+		initDbs();
+		initDesignDocs();
+
+		copyDataFromCenter();
+		
+		int blockSize = centerPageCount - centerPageRepo.getNumPages();
+		if (blockSize>0) copyDataToCenter(blockSize);
+		
+		reassignIfNeeded();
+
+		log.info("Done.");
+	}
+
+	public void test() {
+		initDbs();
+		initDesignDocs();
+		
+		System.out.println(centerPageRepo.getNumPages());
+		
+	}
+
+
+
 	private void initDbs() {
 		HttpClient hqHttpClient = new StdHttpClient.Builder().build();
 		hqCouch = new StdCouchDbInstance(hqHttpClient);
@@ -140,7 +162,7 @@ public class DispatchManager {
 		hqPageRepo.initStandardDesignDocument();
 
 		centerDb = new IdCouchDbConnector(getCenterDbName(), centerCouch);
-		centerSrcRepo = new PageRepo(centerDb);
+		centerPageRepo = new PageRepo(centerDb);
 		centerTaskRepo = new InputTaskRepo(centerDb);
 	}
 	
@@ -150,7 +172,7 @@ public class DispatchManager {
 	}
 	
 	private void initDesignDocs() {
-		centerSrcRepo.initStandardDesignDocument();
+		centerPageRepo.initStandardDesignDocument();
 		centerTaskRepo.initStandardDesignDocument();
 		new DebugRepo(centerDb).initStandardDesignDocument();
 	}

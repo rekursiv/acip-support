@@ -29,7 +29,6 @@ public class UploadView extends Composite {
 	private Spinner spnPgUl;
 	
 	private DispatchManager dm;
-	private Spinner spnDispatchPages;
 
 
 	public UploadView(Composite parent, Injector injector) {
@@ -72,23 +71,35 @@ public class UploadView extends Composite {
 		btnNewButton.setBounds(245, 79, 75, 25);
 		btnNewButton.setText("Upload");
 		
-		Label lblPagesToDispatch = new Label(this, SWT.NONE);
-		lblPagesToDispatch.setBounds(10, 179, 120, 15);
-		lblPagesToDispatch.setText("Pages To Dispatch:");
-		
-		spnDispatchPages = new Spinner(this, SWT.BORDER);
-		spnDispatchPages.setBounds(131, 172, 47, 22);
-		spnDispatchPages.setSelection(10);
-		
 		Button btnDispatch = new Button(this, SWT.NONE);
 		btnDispatch.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				dm.dispatch(spnDispatchPages.getSelection());
+				dm.dispatch();
 			}
 		});
-		btnDispatch.setBounds(245, 169, 75, 25);
+		btnDispatch.setBounds(379, 79, 75, 25);
 		btnDispatch.setText("Dispatch");
+		
+		Button btnResetHqDb = new Button(this, SWT.NONE);
+		btnResetHqDb.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				ctlr.reset();
+			}
+		});
+		btnResetHqDb.setBounds(22, 138, 103, 25);
+		btnResetHqDb.setText("Reset HQ DB");
+		
+		Button btnResetCenterDb = new Button(this, SWT.NONE);
+		btnResetCenterDb.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				dm.reset();
+			}
+		});
+		btnResetCenterDb.setBounds(205, 138, 115, 25);
+		btnResetCenterDb.setText("Reset Center DB");
 
 		if (injector!=null) injector.injectMembers(this);
 	}

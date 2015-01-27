@@ -1,4 +1,7 @@
 
+
+FIXME:  not copying text into page!!!
+
 dispatch:
   replicate all non-active InputTasks from Center to HQ
   for all isFinal, copy text into HQ-Page and delete Center-Page

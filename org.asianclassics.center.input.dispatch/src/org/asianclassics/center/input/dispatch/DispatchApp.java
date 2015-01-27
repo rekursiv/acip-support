@@ -10,7 +10,8 @@ public class DispatchApp {
 	
 	private void test() {
 		DispatchManager dm = new DispatchManager();
-		dm.dispatch(2);
+//		dm.reset();
+		dm.dispatch();
 	}
 
 }

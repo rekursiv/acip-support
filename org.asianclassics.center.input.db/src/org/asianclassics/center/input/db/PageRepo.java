@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.ektorp.AttachmentInputStream;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
+import org.ektorp.ViewResult;
 import org.ektorp.support.CouchDbRepositorySupport;
 import org.ektorp.support.View;
 
@@ -29,6 +30,13 @@ public class PageRepo extends CouchDbRepositorySupport<Page> {
 		return db.queryView(q, type);
 	}
 
+	@View(name="numPages", map="function(doc){ if (doc.recordType==='Page') emit(null, null); }", reduce="_count")
+	public int getNumPages() {
+		ViewQuery q = createQuery("numPages");
+		ViewResult r = db.queryView(q);
+		if (r.isEmpty()) return 0;
+		else return r.getRows().get(0).getValueAsInt();
+	}
 
 	public ImageData getImage(String id, String attachmentId) throws Exception {
 		AttachmentInputStream data = db.getAttachment(id, attachmentId);

@@ -60,9 +60,12 @@ public class UploadController {
 	private void resetDb() {
 		couch.deleteDatabase(dbName);
 		couch.createDatabase(dbName);
+	}
+	
+	private void initDesignDocs() {
 		colRepo.initStandardDesignDocument();
 		srcRepo.initStandardDesignDocument();
-		new DebugRepo(db).initStandardDesignDocument();
+		new DebugRepo(db).initStandardDesignDocument();		
 	}
 	
 	public void setMaxPages(int pages) {
@@ -77,10 +80,19 @@ public class UploadController {
 		baseDir = dir;
 	}
 	
+	public void reset() {
+		initDb();
+		log.info("Deleting and re-creating HQ DB....");	
+		resetDb();
+		initDesignDocs();
+		log.info("Done.");
+	}
+	
 	public void upload() {
 	
 		initDb();
-		resetDb();
+		initDesignDocs();
+		
 		addCollection();
 		
 		bookIndex = 1;

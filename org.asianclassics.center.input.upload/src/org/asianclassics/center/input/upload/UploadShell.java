@@ -13,6 +13,7 @@ public class UploadShell extends Shell {
 	public static void setProperties() {
 		System.getProperties().setProperty("java.util.logging.config.class", "util.logging.LogSetup");
 		System.getProperties().setProperty("java.net.preferIPv4Stack", "true");
+		System.getProperties().setProperty("org.ektorp.support.AutoUpdateViewOnChange", "true");
 	}
 
 

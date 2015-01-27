@@ -15,9 +15,9 @@ public class Page extends Entity {
 	
 	public int projectPriority = 100;
 	
-	public boolean dispatched = false;
+	public String dispatchedTo = null;
 	
-	public String text;
+	public String text = null;
 
 	@TypeDiscriminator
 	public String getRecordType() {
