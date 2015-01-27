@@ -4,27 +4,16 @@ dispatch:
   for all isFinal, copy text into HQ-Page and delete Center-Page
   delete all non-active InputTasks in Center
 
- reassignment:  for all active ITs with dateTimeAssigned older than X days, reassign to "_any"
-
-===== 
-
-InputTask fields:
- dateTimeDispatched
- dataVersion
- secondsWorked
- corrections
-
-add "versioning" to db records
 
 
 ====
 
 Admin:
  per-worker stats:  
-   for all inputTasks with no "taskToFixId" field (input) count syllables typed:
+   for all inputTasks with no "taskToFixId" field (input): count syllables typed:
       Chars Per Minute
       total per daterange: use field "dateTimeFinished"
-   for all inputTasks WITH taskToFixId count errors corrected
+   for all inputTasks WITH taskToFixId: count errors corrected
       Corrections Per Minute
       total per daterange: use field "dateTimeFinished"
    CPPH - Corrected Pages Per Hour
@@ -42,17 +31,17 @@ UEFI Systor - is it worth it???
 
 ====  Input GUI
 
-auto-save
+timer:
+  auto-save
+  fill in "minutes worked" db field
+
 check for some text input on finish
-?? "undo" finish, go back and edit prev.
 
 save settings to user DB:
   auto align
   zoom
-
-work out "block size" and when to switch from input to correction
-
-figger out re-assignment of tasks in case of input operator quitting/going on vacation
+  
+"marker" on scan - click to add a graphic to mark spot for correcting
 
 ====
 

@@ -24,6 +24,8 @@ import com.google.inject.Singleton;
 @Singleton
 public class InputTaskController {
 	
+	private static final int taskBlockSize = 2;  //  TODO:  read from db or config file
+	
 	private Logger log;
 	private EventBus eb;
 	private LinkManager lm;
@@ -105,7 +107,7 @@ public class InputTaskController {
 		String workingTxt = "";
 		String referenceTxt = null;
 		
-		curTask = taskRepo.getTask(workerId);
+		curTask = taskRepo.getTask(workerId, taskBlockSize);
 		
 		String partnerWid = null;
 		

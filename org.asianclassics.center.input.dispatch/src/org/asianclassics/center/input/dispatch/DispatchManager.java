@@ -11,10 +11,12 @@ import org.asianclassics.center.input.db.Page;
 import org.asianclassics.center.input.db.PageRepo;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
+import org.ektorp.ReplicationStatus;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 
+import util.ektorp.DateTimeStamp;
 import util.ektorp.IdCouchDbConnector;
 
 
@@ -23,7 +25,7 @@ public class DispatchManager {
 	private static final String centerDbIp = "127.0.0.1";
 //	private static final String centerDbIp = "192.168.0.16";
 	private static final String hqDbName = "acip-hq-input";
-	private static final String centerDbName = "acip-center-test-tasks";
+	private static final String centerName = "test";
 	
 	
 	private static Logger log = Logger.getLogger(DispatchManager.class.getName());
@@ -37,11 +39,53 @@ public class DispatchManager {
 	private InputTaskRepo centerTaskRepo;
 	
 	
+	public DispatchManager() {
+		System.getProperties().setProperty("org.ektorp.support.AutoUpdateViewOnChange", "true");
+	}
 	
-	public void dispatch(int blockSize) {
+	public void copyDataFromCenter() {
+		List<InputTask> nonActiveTasks = centerTaskRepo.getNonActive(100);
 		
-		initDbs();
-		resetCenterDb();
+		// pass one:  replicate into HQ database
+		ArrayList<String> itIds = new ArrayList<String>();
+		for (InputTask it : nonActiveTasks) {
+			itIds.add(it.getId());
+			//  TODO:  any reason to copy IT with worker=_init  ????
+		}
+		ReplicationStatus status = hqDb.replicateFrom("http://"+centerDbIp+":5984/"+getCenterDbName(), itIds);
+		if (status.isOk()) log.info("replication OK");
+		else log.warning("replication FAIL");
+		
+		// pass two:  for all isFinal, copy text into HQ:Page and delete Center:Page
+//		itIds.clear();
+		for (InputTask it : nonActiveTasks) {
+			if (it.isFinal==true && it.pageId!=null) {
+				System.out.println("Final: "+it.pageIndex);
+				Page p = hqPageRepo.get(it.pageId);
+				if (p==null) {
+					log.warning("cannot find page id in HQ database: "+it.pageId);
+				}
+				else {
+					// copy text into HQ page
+					p.text = it.product;
+					hqPageRepo.update(p);
+
+					// delete Center page
+					p = centerSrcRepo.get(it.pageId);
+					if (p!=null) centerDb.delete(p);
+				}
+			}
+			else System.out.println("---");
+		}
+		
+		// pass three: delete from Center db
+		for (InputTask it : nonActiveTasks) {
+			centerDb.delete(it);
+		}
+		
+	}
+	
+	public void copyDataToCenter(int blockSize) {
 		
 		List<Page> srcList = hqPageRepo.getAllNeedingDispatch(blockSize);
 		
@@ -52,13 +96,37 @@ public class DispatchManager {
 			InputTask it = new InputTask();
 			it.linkWithSource(src);
 			it.isActive=true;
+			it.center=centerName;
+			it.dateTimeDispatched=DateTimeStamp.gen();
 			centerTaskRepo.add(it);
 		}
 		
-		hqDb.replicateTo("http://"+centerDbIp+":5984/"+centerDbName, srcIds);
+		ReplicationStatus status = hqDb.replicateTo("http://"+centerDbIp+":5984/"+getCenterDbName(), srcIds);
+		if (status.isOk()) log.info("replication OK");
+		else log.warning("replication FAIL");
+
+	}
+	
+	public void reassignIfNeeded() {
+		//  TODO:   for all active ITs with dateTimeAssigned older than X days, reassign to "_any"
+
+	}
+	
+	public void dispatch(int blockSize) {
+		
+		initDbs();
+//		resetCenterDb();
+		initDesignDocs();
+
+		copyDataFromCenter();
+//		copyDataToCenter(blockSize);
 
 		log.info("Done.");
 	}
+	
+	
+	
+	
 	
 	private void initDbs() {
 		HttpClient hqHttpClient = new StdHttpClient.Builder().build();
@@ -71,18 +139,24 @@ public class DispatchManager {
 		hqPageRepo = new PageRepo(hqDb);
 		hqPageRepo.initStandardDesignDocument();
 
-		centerDb = new IdCouchDbConnector(centerDbName, centerCouch);
+		centerDb = new IdCouchDbConnector(getCenterDbName(), centerCouch);
 		centerSrcRepo = new PageRepo(centerDb);
 		centerTaskRepo = new InputTaskRepo(centerDb);
 	}
 	
 	private void resetCenterDb() {
-		centerCouch.deleteDatabase(centerDbName);
-		centerCouch.createDatabase(centerDbName);
-
+		centerCouch.deleteDatabase(getCenterDbName());
+		centerCouch.createDatabase(getCenterDbName());
+	}
+	
+	private void initDesignDocs() {
 		centerSrcRepo.initStandardDesignDocument();
 		centerTaskRepo.initStandardDesignDocument();
 		new DebugRepo(centerDb).initStandardDesignDocument();
+	}
+	
+	private String getCenterDbName() {
+		return "acip-center-"+centerName+"-tasks";
 	}
 
 }

@@ -8,33 +8,41 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @SuppressWarnings("serial")
 public class InputTask extends Entity {
 	private final String recordType = "InputTask";
+	private final int dataVersion = 1;
 	
-
 	public boolean isActive = true;
 	public boolean isFinal = false;
+	
 	public String worker = "_init";
+	public String center;
 	
-	public int taskPriority=100;
-	public int projectPriority=100;
+	public int taskPriority = 100;
+	public int projectPriority = 100;
 	
-	public String collectionId;
 	public int bookIndex;
 	public int pageIndex;
 	
+	public String collectionId;
 	public String pageId;
 	public String partnerId;
 	public String taskToFixId;
 	
 	public String product;
-
+	
+	public String dateTimeDispatched;
 	public String dateTimeAssigned;
 	public String dateTimeStarted;
 	public String dateTimeFinished;
+	public int secondsWorked;
 	
-	
+
 	@TypeDiscriminator
 	public String getRecordType() {
 		return recordType;
+	}
+	
+	public int getDataVersion() {
+		return dataVersion;
 	}
 	
 	@JsonIgnore

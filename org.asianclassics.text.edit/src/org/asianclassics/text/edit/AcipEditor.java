@@ -213,7 +213,9 @@ public class AcipEditor extends Composite {
 
 	public void test() {
 		DiffUtil du = new DiffUtil();
-		du.test(getReferenceText(), getWorkingText());
+		int c = du.getNumCorrections(getReferenceText(), getWorkingText());
+//		du.test(getWorkingText(), getReferenceText());
+		System.out.println("===========  "+c);
 	}
 
 }

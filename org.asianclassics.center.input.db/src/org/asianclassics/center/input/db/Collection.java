@@ -5,8 +5,8 @@ import org.ektorp.support.TypeDiscriminator;
 
 @SuppressWarnings("serial")
 public class Collection extends Entity {
-
 	private final String recordType = "Collection";
+	private final int dataVersion = 1;
 	
 	public String name;
 	
@@ -15,5 +15,8 @@ public class Collection extends Entity {
 		return recordType;
 	}
 	
+	public int getDataVersion() {
+		return dataVersion;
+	}
 
 }

@@ -16,21 +16,26 @@ import util.ektorp.Id;
 
 public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 	
-	private static final int taskBlockSize = 2;
-	
 	public InputTaskRepo(CouchDbConnector db) {
 		super(InputTask.class, db, false);
 	}
 
 	
 	//  TODO:  handle exception thrown when design doc missing
-	@View(name="assignedTasks", map="classpath:InputTask_map_assignedTasks.js")
+	@View(name="assigned", map="classpath:InputTask_map_assigned.js")
 	public List<InputTask> getAssignedTasks(String worker, int limit) {
 		ComplexKey startKey = ComplexKey.of(worker);
 		ComplexKey endKey = ComplexKey.of(worker, ComplexKey.emptyObject());
-		ViewQuery q = createQuery("assignedTasks").limit(limit).includeDocs(true).startKey(startKey).endKey(endKey);
+		ViewQuery q = createQuery("assigned").limit(limit).includeDocs(true).startKey(startKey).endKey(endKey);
 		return db.queryView(q, type);
 	}
+	
+	@View(name="nonActive", map="classpath:InputTask_map_nonActive.js")
+	public List<InputTask> getNonActive(int limit) {
+		ViewQuery q = createQuery("nonActive").limit(limit).includeDocs(true);
+		return db.queryView(q, type);
+	}
+
 	
 	public InputTask assignTasks(List<InputTask> taskList, String worker) {
 		InputTask validTask = null;
@@ -52,7 +57,7 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 	}
 	
 	
-	public InputTask getTask(String worker) {
+	public InputTask getTask(String worker, int taskBlockSize) {
 		List<InputTask> taskList = getAssignedTasks(worker, 1);
 		log.info("W:"+taskList.size());
 		if (!taskList.isEmpty()) return taskList.get(0);
@@ -120,7 +125,7 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 //			System.out.println("mine:  "+myProduct+"   partner:  "+partnerProduct);
 			if (myProduct==null || partnerProduct==null) return;	  	//  TODO: throw exception?
 			// compare my product with my partner's product
-			if (myProduct.equals(partnerProduct)) {						// TODO:  better matching (ie ignore blank lines)
+			if (myProduct.equals(partnerProduct)) {						// TODO:  use diff-match-patch??
 				// if they match, we're done - mark one of them as "finished"
 				taskJustFinished.isFinal=true;  
 			} else {
