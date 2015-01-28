@@ -15,7 +15,8 @@ public class AdminApp {
 	public static void main(String[] args) {
 		AdminShell.setProperties();
 		AdminApp instance = new AdminApp();
-		instance.init();
+//		instance.init();
+		instance.test();
 	}
 	
 	protected void init() {
@@ -36,5 +37,10 @@ public class AdminApp {
 	}
 	
 
+	protected void test() {
+		Injector injector = Guice.createInjector(new AdminModule());
+		AdminController ac = injector.getInstance(AdminController.class);
+		ac.test();
+	}
 
 }

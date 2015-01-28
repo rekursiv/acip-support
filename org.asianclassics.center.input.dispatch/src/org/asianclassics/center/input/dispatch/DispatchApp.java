@@ -11,7 +11,8 @@ public class DispatchApp {
 	private void test() {
 		DispatchManager dm = new DispatchManager();
 //		dm.reset();
-		dm.dispatch();
+//		dm.dispatch();
+		dm.test();
 	}
 
 }

@@ -1,22 +1,21 @@
 
+InputTask:   public int taskPriority = 100;      // taskIndex = 0;
 
-Testing:  VirtualBox???
 
-====
 
-Admin:
- per-worker stats:  
-   for all inputTasks with no "taskToFixId" field (input): count syllables typed:
-      Chars Per Minute
-      total per daterange: use field "dateTimeFinished"
-   for all inputTasks WITH taskToFixId: count errors corrected
-      Corrections Per Minute
-      total per daterange: use field "dateTimeFinished"
-   CPPH - Corrected Pages Per Hour
- per-collection stats:  % done, drill-down details
+
+====  Admin:
+calc corrections and chars per minute (need minutesWork field)
+  total per daterange
+calc Corrected Pages Per Hour
+  
+per-collection stats:  total, # done, % done, estimated # of days to complete
  
 ====   testing
+
+VirtualBox???
 2+ "input operators" in Sedona/Scriptorium 
+
 =====  Linux
 
 swt-4.4-gtk-linux-x86_64
@@ -32,6 +31,7 @@ timer:
   fill in "minutes worked" db field
 
 check for some text input on finish
+  make sure at least 100 chars unless chars are [BP]
 
 save settings to user DB:
   auto align
@@ -39,22 +39,11 @@ save settings to user DB:
   
 "marker" on scan - click to add a graphic to mark spot for correcting
 
-====
-
-Admin:  shows status (uploading, dispatched, finished, etc) - allows for deletion, priority change, etc
-
-Uploader:  uploads images, creates "PageSource" records
-
-Dispatch:  automated data shuffler - this can be part of "admin" at first -  (RickshawNet version running on portable computer)
-
-??Viewer:  for viewing finished collections
-
-
 =====
 
-Collection - set of books, gets assigned to an input center
+Collection - set of books
 Book - set of indexed pages (could be a volume, title, work, etc)
-Page (Source) - holds image and finished text
+Page - holds image and finished text
 InputTask - task for one input operator to do once (correction/input)
 
 

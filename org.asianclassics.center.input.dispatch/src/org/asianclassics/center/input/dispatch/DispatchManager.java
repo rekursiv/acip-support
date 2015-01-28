@@ -54,7 +54,6 @@ public class DispatchManager {
 		ArrayList<String> itIds = new ArrayList<String>();
 		for (InputTask it : nonActiveTasks) {
 			itIds.add(it.getId());
-			//  TODO:  any reason to copy IT with worker=_init  ????
 		}
 		ReplicationStatus status = hqDb.replicateFrom("http://"+centerDbIp+":5984/"+getCenterDbName(), itIds);
 		if (status.isOk()) log.info("replication OK");
@@ -174,6 +173,7 @@ public class DispatchManager {
 		centerPageRepo.initStandardDesignDocument();
 		centerTaskRepo.initStandardDesignDocument();
 		new DebugRepo(centerDb).initStandardDesignDocument();
+		new DebugRepo(hqDb).initStandardDesignDocument();
 	}
 	
 	private String getCenterDbName() {

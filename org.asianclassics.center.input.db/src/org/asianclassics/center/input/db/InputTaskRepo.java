@@ -36,6 +36,14 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 		return db.queryView(q, type);
 	}
 
+	//  TODO:  return date range
+	@View(name="byWorker", map="classpath:InputTask_map_byWorker.js")
+	public List<InputTask> getByWorker(String worker) {
+		ViewQuery q = createQuery("byWorker").includeDocs(true).key(worker);
+		return db.queryView(q, type);
+	}
+	
+	
 	
 	public InputTask assignTasks(List<InputTask> taskList, String worker) {
 		InputTask validTask = null;
