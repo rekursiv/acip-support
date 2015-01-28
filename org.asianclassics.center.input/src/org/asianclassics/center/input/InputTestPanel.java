@@ -2,6 +2,8 @@ package org.asianclassics.center.input;
 
 import java.util.logging.Logger;
 
+import org.asianclassics.center.event.LoginRequestEvent;
+import org.asianclassics.center.event.LogoutEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -85,6 +87,46 @@ public class InputTestPanel  extends Group {
 		btnTest.setBounds(935, 21, 75, 25);
 		btnTest.setText("TEST");
 		
+		Button btnA = new Button(this, SWT.NONE);
+		btnA.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				switchUser("A");
+			}
+		});
+		btnA.setBounds(1067, 21, 25, 25);
+		btnA.setText("A");
+		
+		Button btnNewButton = new Button(this, SWT.NONE);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				switchUser("B");
+			}
+		});
+		btnNewButton.setBounds(1098, 21, 25, 25);
+		btnNewButton.setText("B");
+		
+		Button btnC = new Button(this, SWT.NONE);
+		btnC.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				switchUser("C");
+			}
+		});
+		btnC.setBounds(1129, 21, 25, 25);
+		btnC.setText("C");
+		
+		Button btnD = new Button(this, SWT.NONE);
+		btnD.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				switchUser("D");
+			}
+		});
+		btnD.setBounds(1160, 21, 25, 25);
+		btnD.setText("D");
+		
 		if (injector!=null) injector.injectMembers(this);
 	}
 	
@@ -95,6 +137,10 @@ public class InputTestPanel  extends Group {
 		this.itCon = itCon;
 	}
 
+	private void switchUser(String newUser) {
+		eb.post(new LogoutEvent());
+		eb.post(new LoginRequestEvent(newUser));
+	}
 	
 	@Override
 	protected void checkSubclass() {

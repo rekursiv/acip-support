@@ -61,7 +61,6 @@ public class DispatchManager {
 		else log.warning("replication FAIL");
 		
 		// pass two:  for all isFinal, copy text into HQ:Page and delete Center:Page
-//		itIds.clear();
 		for (InputTask it : nonActiveTasks) {
 			if (it.isFinal==true && it.pageId!=null) {
 				System.out.println("Final: "+it.pageIndex);
@@ -79,7 +78,7 @@ public class DispatchManager {
 					if (p!=null) centerDb.delete(p);
 				}
 			}
-			else System.out.println("---");
+//			else System.out.println("---");
 		}
 		
 		// pass three: delete from Center db
