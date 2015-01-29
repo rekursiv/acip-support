@@ -5,7 +5,7 @@ InputTask:   public int taskPriority = 100;      // taskIndex = 0;
 
 
 ====  Admin:
-calc corrections and chars per minute (need minutesWork field)
+calc corrections and chars per minute (need minutesWorked field)
   total per daterange
 calc Corrected Pages Per Hour
   

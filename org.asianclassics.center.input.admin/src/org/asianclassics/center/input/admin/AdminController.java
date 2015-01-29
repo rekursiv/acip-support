@@ -50,7 +50,7 @@ public class AdminController {
 
 	private void printWorkerStats(String worker) {
 		System.out.println("---------------");
-		System.out.println("Worker ID:"+worker);
+		System.out.println("Worker ID: "+worker);
 		
 		int numPagesInput = 0;
 		int numCharsInput = 0;
@@ -71,10 +71,10 @@ public class AdminController {
 				numCorrections+=numCor;
 			}
 		}
-		System.out.println("Pages Input:"+numPagesInput);
-		System.out.println("Characters Input:"+numCharsInput);
-		System.out.println("Pages Corrected:"+numPagesCorrected);
-		System.out.println("Corrections made:"+numCorrections);		
+		System.out.println("Pages Input: "+numPagesInput);
+		System.out.println("Characters Input: "+numCharsInput);
+		System.out.println("Pages Corrected: "+numPagesCorrected);
+		System.out.println("Corrections made: "+numCorrections);		
 	
 		
 	}

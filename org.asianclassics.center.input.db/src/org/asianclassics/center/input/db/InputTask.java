@@ -16,7 +16,7 @@ public class InputTask extends Entity {
 	public String worker = "_init";
 	public String center;
 	
-	public int taskPriority = 100;      // taskIndex = 0;
+	public int taskIndex = 0;
 	public int projectPriority = 100;
 	
 	public int bookIndex;
@@ -65,8 +65,8 @@ public class InputTask extends Entity {
 	}
 	
 	@JsonIgnore
-	public void makeLowerPriority(InputTask task) {  // incrementTaskIndex
-		taskPriority=task.taskPriority+1;
+	public void incrementTaskIndex(InputTask task) {
+		taskIndex=task.taskIndex+1;
 	}
 	
 

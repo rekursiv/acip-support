@@ -22,7 +22,7 @@ import util.ektorp.IdCouchDbConnector;
 
 public class DispatchManager {
 
-	private static final int centerPageCount = 4;
+	private static final int centerPageCount = 10;
 	
 	private static final int copyDataFromCenterBlockSize = 30;
 	

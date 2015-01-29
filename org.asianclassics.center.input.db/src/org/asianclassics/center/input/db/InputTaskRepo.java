@@ -105,11 +105,13 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 		input_me.worker=worker;
 		input_me.setId(Id.gen());
 		input_me.dateTimeAssigned=DateTimeStamp.gen();
+		input_me.taskIndex=1;
 	
 		input_any.copySourceInfo(task);
 		input_any.worker="_any";
 		input_any.setId(Id.gen());
 		input_any.dateTimeAssigned=DateTimeStamp.gen();
+		input_any.taskIndex=1;
 		
 		input_me.partnerId=input_any.getId();
 		input_any.partnerId=input_me.getId();
@@ -146,7 +148,7 @@ public class InputTaskRepo extends CouchDbRepositorySupport<InputTask> {
 	
 	public void buildCorrectionTask(InputTask me, InputTask partner) {
 		InputTask forPartnerToDo = new InputTask();
-		forPartnerToDo.makeLowerPriority(partner);
+		forPartnerToDo.incrementTaskIndex(partner);
 		forPartnerToDo.copySourceInfo(partner);
 		forPartnerToDo.worker=partner.worker;
 		forPartnerToDo.taskToFixId=partner.getId();
