@@ -29,7 +29,6 @@ public class InputTask extends Entity {
 	
 	public String product;
 	
-	public String dateTimeDispatched;
 	public String dateTimeAssigned;
 	public String dateTimeStarted;
 	public String dateTimeFinished;

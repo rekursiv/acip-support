@@ -37,13 +37,18 @@ public class InputApp {
 		cs.setLayout(new FillLayout(SWT.HORIZONTAL));
 	
 		Injector injector = Guice.createInjector(new CenterModule());
+		
+		InputTaskController itc = injector.getInstance(InputTaskController.class);
+		itc.init();
 	
 		CenterPanel cp = new CenterPanel(cs, injector);
 	
 		TaskView taskView = new InputTaskView(cp.getMainStackView(), injector);
 		cp.getMainStackView().setTaskView(taskView);
 	
-		cs.init(injector);
+		cs.init(injector);  //  main loop
+		
+		itc.release();
 
 	}
 

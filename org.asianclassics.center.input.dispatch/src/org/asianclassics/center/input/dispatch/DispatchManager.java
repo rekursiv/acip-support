@@ -102,7 +102,7 @@ public class DispatchManager {
 			it.linkWithSource(page);
 			it.isActive=true;
 			it.center=centerName;
-			it.dateTimeDispatched=DateTimeStamp.gen();
+			it.dateTimeAssigned=DateTimeStamp.gen();
 			centerTaskRepo.add(it);
 		}
 		

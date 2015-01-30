@@ -1,16 +1,12 @@
 
-InputTask:   public int taskPriority = 100;      // taskIndex = 0;
-
-
-
 
 ====  Admin:
-calc corrections and chars per minute (need minutesWorked field)
+calc corrections and chars per minute (use minutesWorked field)
   total per daterange
 calc Corrected Pages Per Hour
-  
+
 per-collection stats:  total, # done, % done, estimated # of days to complete
- 
+
 ====   testing
 
 VirtualBox???
@@ -26,9 +22,6 @@ UEFI Systor - is it worth it???
 
 ====  Input GUI
 
-timer:
-  auto-save
-  fill in "minutes worked" db field
 
 check for some text input on finish
   make sure at least 100 chars unless chars are [BP]
