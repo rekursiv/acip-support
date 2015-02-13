@@ -67,8 +67,7 @@ public class InputTaskController extends Thread {
 	public void run() {
 		while (isAlive()) {
 		
-//			System.out.println("*");
-			log.info(""+idleCount+":"+secondsWorked);
+//			log.info(""+idleCount+":"+secondsWorked);
 			if (autoSaveIdleTime > 0 && idleCount==autoSaveIdleTime) doAutoSave();
 			if (idleCount<workingIdleTime) ++secondsWorked;
 			++idleCount;
