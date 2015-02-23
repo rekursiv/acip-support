@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -42,6 +43,7 @@ public class UploadController {
 
 	private int pageIndex;
 	private int bookIndex;
+
 
 	
 	@Inject
@@ -145,22 +147,43 @@ public class UploadController {
 			log.info("Source Repository not initialized!");
 			return;
 		}
+		
+		String mimeType = null;
+		String path = file.getParent();
+		String fileName = file.getName();
+		String fileExt = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+		switch (fileExt) {
+		case ".png":
+			mimeType="image/png";
+			break;
+		case ".jpg":
+		case ".jpeg":
+			mimeType="image/jpeg";
+			break;
+		default:
+			log.info("    Extention '"+fileExt+"' not recognized, skipping");
+			return;
+		}
+		
 		Page s = new Page();
 		s.collectionId=curCollection.getId();
 		s.bookIndex=bookIndex;
 		s.pageIndex=pageIndex;
+		s.fileName=fileName;
+		s.filePath=path;
 		srcRepo.add(s);
-		attachImage(s, file);
+		attachImage(s, file, fileName, mimeType);
 //		s.setStaus("uploaded");  //  TODO
 //		srcRepo.update(s);
 	}
 	
 	
-	public void attachImage(Page src, File file) {
+	public void attachImage(Page src, File file, String fileName, String mimeType) {
 		InputStream is = null;
+		AttachmentInputStream ais = null;
 		try {
 			is = new FileInputStream(file);
-			AttachmentInputStream ais = new AttachmentInputStream("img.png", is, "image/png");
+			ais = new AttachmentInputStream(fileName, is, mimeType);
 			db.createAttachment(src.getId(), src.getRevision(), ais);
 		} catch (IOException e) {
 			e.printStackTrace();

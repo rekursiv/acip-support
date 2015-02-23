@@ -7,18 +7,12 @@ calc Corrected Pages Per Hour
 
 per-collection stats:  total, # done, % done, estimated # of days to complete
 
-====   testing
-
-VirtualBox???
-2+ "input operators" in Sedona/Scriptorium 
-
 =====  Linux
 
 swt-4.4-gtk-linux-x86_64
 
 export SWT_GTK3=0
 
-UEFI Systor - is it worth it???
 
 ====  Input GUI
 

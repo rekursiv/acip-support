@@ -178,7 +178,7 @@ public class InputTaskController extends Thread {
 //			srcTxt = taskDb.get(Source.class, curTask.getSourceId()).getText();    //  TEST
 			
 			try {
-				imgData = srcRepo.getImage(curTask.pageId, "img.png");
+				imgData = srcRepo.getImage(curTask.pageId);
 			} catch (Exception e) {
 				log.log(Level.WARNING, "", e);
 			}

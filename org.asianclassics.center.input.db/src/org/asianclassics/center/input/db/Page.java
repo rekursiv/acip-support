@@ -18,6 +18,9 @@ public class Page extends Entity {
 	public String dispatchedTo = null;
 	
 	public String text = null;
+	public String fileName = null;
+	public String filePath = null;
+	
 
 	@TypeDiscriminator
 	public String getRecordType() {

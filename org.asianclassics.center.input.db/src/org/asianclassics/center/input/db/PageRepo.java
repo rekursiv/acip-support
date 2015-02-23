@@ -3,8 +3,10 @@ package org.asianclassics.center.input.db;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.ImageData;
+import org.ektorp.Attachment;
 import org.ektorp.AttachmentInputStream;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
@@ -36,6 +38,10 @@ public class PageRepo extends CouchDbRepositorySupport<Page> {
 		ViewResult r = db.queryView(q);
 		if (r.isEmpty()) return 0;
 		else return r.getRows().get(0).getValueAsInt();
+	}
+	
+	public ImageData getImage(String id) throws Exception {
+		return getImage(id, this.get(id).fileName);
 	}
 
 	public ImageData getImage(String id, String attachmentId) throws Exception {
