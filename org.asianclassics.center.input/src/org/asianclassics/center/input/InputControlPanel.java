@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Scale;
 
 import com.google.common.eventbus.EventBus;
@@ -60,7 +61,7 @@ public class InputControlPanel extends Composite {
 		btnFinish.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				itCon.finishTask();
+				onFinish();
 			}
 		});
 		FormData fd_btnFinish = new FormData();
@@ -132,6 +133,18 @@ public class InputControlPanel extends Composite {
 		this.itCon = itCon;
 	}
 
+	protected void onFinish() {
+		boolean doFinish = true;
+		if (itCon.checkForInput()==false) {
+			MessageBox messageBox = new MessageBox(getShell(), SWT.APPLICATION_MODAL|SWT.YES|SWT.NO);
+	        messageBox.setText("Finish Task");
+	        messageBox.setMessage("This page appears to be incomplete.\nReally mark this page as finished?");
+	       if (messageBox.open()==SWT.NO) doFinish=false;
+		}
+		log.info(""+doFinish);
+		if (doFinish) itCon.finishTask();
+	}
+	
 	protected void onZoom() {
 		lblZoom.setText(scale.getSelection()+"%");
 //		log.info(""+scale.getSelection());

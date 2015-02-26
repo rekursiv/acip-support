@@ -132,6 +132,10 @@ public class InputTaskController extends Thread {
 		idleCount=0;
 	}
 
+	public boolean checkForInput() {
+		if (curTask.taskToFixId==null) return editor.checkForInput();
+		else return true;
+	}
 	
 	public void finishTask() {
 		if (curTask!=null && editor!=null) {

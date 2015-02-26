@@ -160,6 +160,15 @@ public class AcipEditor extends Composite {
 		}
 	}
 	
+	public boolean checkForInput() {
+		int len = wrkDoc.getLength();
+		if (len==0) return false;
+		String txt = getWorkingText();
+		if (txt.contains("[BP]")) return true;
+		if (len<100) return false;
+		else return true;
+	}
+	
 	public void setReferenceText(String text) {
 //		System.out.println("setReferenceText:  "+text );
 

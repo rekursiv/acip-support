@@ -1,6 +1,7 @@
 
 
 ====  Admin:
+
 calc corrections and chars per minute (use minutesWorked field)
   total per daterange
 calc Corrected Pages Per Hour
@@ -13,12 +14,7 @@ swt-4.4-gtk-linux-x86_64
 
 export SWT_GTK3=0
 
-
 ====  Input GUI
-
-
-check for some text input on finish
-  make sure at least 100 chars unless chars are [BP]
 
 save settings to user DB:
   auto align
@@ -33,7 +29,6 @@ Book - set of indexed pages (could be a volume, title, work, etc)
 Page - holds image and finished text
 InputTask - task for one input operator to do once (correction/input)
 
-
 ====
 
 bug: (COMMA AFTER GYAD ERASES REST OF LINE)
@@ -43,3 +38,4 @@ RDZOGS RTOGS PA DANG, ,RTZE MOR PHYIN DANG MTHAR GYIS PA, ,SKAD CIG GCIG MNGON R
 
 *, ,ZHES; ,BYA BA RTZAM PA'I DGOS PA YIN, ,SHES RAB PHA ROL PHYIN PA NI, ,DNGOS PO BRGYAD KYIS YANG DAG BSHAD, ,RNAM KUN MKHYEN NYID LAM SHES NYID, ,DE NAS THAMS CAD SHES PA NYID, ,RNAM KUN MNGON 
 RDZOGS RTOGS PA DANG, ,RTZE MOR PHYIN DANG MTHAR GYIS PA, ,SKAD CIG GCIG MNGON RDZOG BYANG CHUB, CHOS KYI SKU DANG DE RNAMB RGYAD,  ,SEMS 
+
