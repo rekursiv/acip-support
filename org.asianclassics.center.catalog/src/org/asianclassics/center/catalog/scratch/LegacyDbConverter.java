@@ -1,5 +1,6 @@
 package org.asianclassics.center.catalog.scratch;
 
+import java.util.Date;
 import java.util.List;
 
 import org.asianclassics.center.catalog.entry.model.EntryModel;
@@ -9,8 +10,7 @@ import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -136,7 +136,7 @@ public class LegacyDbConverter {
 		entry = mapper.readValue(root.toString(), EntryModel.class);   //  NOTE:  updated for newer version of Jackson, NOT TESTED
 		convertId(oldId);
 		entry.isValid = true;
-		entry.dateTimeLastEdited = new DateTime();
+		entry.dateTimeLastEdited = new Date();   //new DateTime();   //  FIXME
 		entry.format = titleCase(entry.format);
 		entry.inkColor = titleCase(entry.inkColor);
 		entry.paperGrade = titleCase(entry.paperGrade);

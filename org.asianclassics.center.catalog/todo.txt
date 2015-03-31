@@ -1,7 +1,18 @@
 
+fix Joda Time issue:  
+  DateTime no longer serializes the same way with Ektorp's upgrade to Jackson 2.0.  
+  java.util.Date creates a nice looking string:  "2014-06-19T19:28:15.575+0000"
+  Joda Time has been replaced in Java 8???
+  code is currently "hacked" to function without crashing, but the date/time info needs work before going back into production
+  
+
+-------------------------  Futon test:
+function(doc) {
+  if (doc.libraryNumber=='test') emit(null, doc);
+}
+------------------
 
 
----
 
 search by title, brief, author
 

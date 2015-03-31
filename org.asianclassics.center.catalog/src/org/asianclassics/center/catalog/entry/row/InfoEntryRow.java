@@ -1,5 +1,7 @@
 package org.asianclassics.center.catalog.entry.row;
 
+import java.util.Date;
+
 import org.asianclassics.center.catalog.entry.cell.EntryCell;
 import org.asianclassics.center.catalog.event.EntryModelPostReadEvent;
 import org.eclipse.swt.SWT;
@@ -7,8 +9,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+
 
 import com.google.common.eventbus.Subscribe;
 
@@ -80,9 +81,10 @@ public class InfoEntryRow extends EntryCell {
 		lblEditDate.setText(formatDate(ctlr.getModel().dateTimeLastEdited));
 	}
 	
-	private String formatDate(DateTime dt) {
-		if (dt==null) return "(not recorded)";
-		return dt.withZone(DateTimeZone.getDefault()).toString("d MMMM, y 'at' h:mm a"); 
+	private String formatDate(Date date) {
+		return "FIXME";
+//		if (dt==null) return "(not recorded)";
+//		return dt.withZone(DateTimeZone.getDefault()).toString("d MMMM, y 'at' h:mm a"); 
 	}
 	
 

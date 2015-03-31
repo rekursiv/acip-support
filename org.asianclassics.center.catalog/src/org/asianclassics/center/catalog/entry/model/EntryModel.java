@@ -1,10 +1,10 @@
 package org.asianclassics.center.catalog.entry.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.ektorp.support.Entity;
-import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,8 +19,8 @@ public class EntryModel extends Entity {
 	public int potiIndex;
 	public int sutraIndex;
 
-	public DateTime dateTimeFirstSubmitted;
-	public DateTime dateTimeLastEdited;
+	public Date dateTimeFirstSubmitted;
+	public Date dateTimeLastEdited;
 	
 
 	public String libraryNumber;

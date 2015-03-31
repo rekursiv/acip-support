@@ -13,8 +13,7 @@ import javax.imageio.ImageIO;
 
 import org.asianclassics.center.catalog.entry.stamp.StampScanDialog;
 import org.eclipse.swt.graphics.ImageData;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+
 
 
 public class Test {
@@ -63,10 +62,10 @@ public class Test {
 	
 	
 	public static void test_time() {
-		DateTime dt = new DateTime();
-		String s = dt.toString("h:m:ss a");
+//		DateTime dt = new DateTime();
+//		String s = dt.toString("h:m:ss a");
 //		String s = dt.toString("d MMMM, y 'at' h:m a");
-		System.out.println(s);
+//		System.out.println(s);
 	}
 
 }

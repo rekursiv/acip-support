@@ -2,6 +2,7 @@ package org.asianclassics.center.catalog.entry;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +22,7 @@ import org.asianclassics.center.catalog.event.EntryValidateEvent;
 import org.asianclassics.center.event.StatusPanelUpdateEvent;
 import org.eclipse.swt.widgets.Display;
 import org.ektorp.ViewResult.Row;
-import org.joda.time.DateTime;
+
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -127,7 +128,7 @@ public class EntryController implements Runnable {
 		model.isValid = isValid;
 		if (isValid) {
 			if (model.dateTimeFirstSubmitted==null) {
-				model.dateTimeFirstSubmitted = new DateTime();
+				model.dateTimeFirstSubmitted = new Date();
 			}
 			write();
 			endEditSession();
@@ -188,7 +189,7 @@ public class EntryController implements Runnable {
 	
 	private void write() {
 		eb.post(new EntryModelPreWriteEvent());
-		DateTime now = new DateTime();
+		Date now = new Date();
 		model.dateTimeLastEdited = now;
 		try {
 			repo.update(model);
@@ -197,7 +198,7 @@ public class EntryController implements Runnable {
 			log.log(Level.SEVERE, "ERROR", e);
 			return;
 		}
-		eb.post(new StatusPanelUpdateEvent("Saved "+model.getSerial()+" to database at "+now.toString("h:mm a")));
+//		eb.post(new StatusPanelUpdateEvent("Saved "+model.getSerial()+" to database at "+now.toString("h:mm a")));   //  FIXME
 	}
 
 	private void validate() {
